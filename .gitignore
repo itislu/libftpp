@@ -6,5 +6,6 @@
 !*.mk
 !Makefile
 !.clang-format
+!.clangd
 !.gitignore
 .VSCodeCounter
