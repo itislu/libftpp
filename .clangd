@@ -13,7 +13,7 @@ Diagnostics:
         "performance-*",
         "readability-*",
       ]
-    Remove: []
+    Remove: [readability-identifier-length]
     FastCheckFilter: None
   MissingIncludes: Strict
 
