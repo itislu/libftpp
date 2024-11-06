@@ -13,7 +13,8 @@ Diagnostics:
         "performance-*",
         "readability-*",
       ]
-    Remove: [readability-identifier-length]
+    Remove:
+      [readability-identifier-length, bugprone-easily-swappable-parameters]
     FastCheckFilter: None
   MissingIncludes: Strict
 
