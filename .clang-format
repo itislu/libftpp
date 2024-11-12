@@ -35,7 +35,7 @@ ConstructorInitializerAllOnOneLineOrOnePerLine: true
 FixNamespaceComments: true
 IncludeBlocks: Merge
 IndentCaseLabels: false
-IndentPPDirectives: AfterHash
+# IndentPPDirectives: AfterHash
 IndentWidth: 4
 IndentWrappedFunctionNames: false
 InsertBraces: true
