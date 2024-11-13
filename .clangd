@@ -14,7 +14,11 @@ Diagnostics:
         "readability-*",
       ]
     Remove:
-      [readability-identifier-length, bugprone-easily-swappable-parameters]
+      [
+        readability-identifier-length,
+        bugprone-easily-swappable-parameters,
+        misc-non-private-member-variables-in-classes,
+      ]
     FastCheckFilter: None
   MissingIncludes: Strict
 
