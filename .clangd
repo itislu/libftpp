@@ -1,5 +1,5 @@
 CompileFlags:
-  Add: [-Wall, -Wextra, -Werror, --std=c++98, -pedantic-errors]
+  Add: [-Wall, -Wextra, -Werror, --std=c++98, -pedantic-errors, --language=c++]
   Compiler: c++
 
 Diagnostics:
@@ -20,6 +20,8 @@ Diagnostics:
         misc-non-private-member-variables-in-classes,
       ]
     FastCheckFilter: None
+  Includes:
+    IgnoreHeader: ".tpp"
   MissingIncludes: Strict
 
 InlayHints:
