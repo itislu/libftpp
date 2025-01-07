@@ -9,4 +9,6 @@
 !.clang-format
 !.clangd
 !.gitignore
+!*devcontainer*
+!Dockerfile
 .VSCodeCounter

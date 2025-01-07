@@ -1,0 +1,36 @@
+{
+	"name": "42-Vienna",
+	"build": {
+		"dockerfile": "Dockerfile"
+	},
+	"features": {
+		"ghcr.io/devcontainers/features/common-utils": {
+			"configureZshAsDefaultShell": true
+		}
+    },
+	"customizations": {
+		"vscode": {
+			"settings": {
+                "clangd.path": "clangd",
+                "clangd.enabled": true
+            },
+			"extensions": [
+				"ms-vscode.cpptools-extension-pack",
+				"llvm-vs-code-extensions.vscode-clangd",
+				"vadimcn.vscode-lldb",
+				"eamodio.gitlens",
+				"usernamehw.errorlens",
+				"bbenoist.togglehs",
+				"Guyutongxue.cpp-reference",
+				"esbenp.prettier-vscode",
+				"jeff-hykin.better-cpp-syntax"
+			]
+		}
+	},
+    "onCreateCommand": "mkdir -p ${env:HOME}/.ssh && touch ${env:HOME}/.gitconfig",
+    "mounts": [
+        "source=${env:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
+        "source=${env:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
+    ],
+	"remoteUser": "root"
+}
