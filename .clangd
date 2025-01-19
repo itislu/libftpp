@@ -20,8 +20,6 @@ Diagnostics:
         misc-non-private-member-variables-in-classes,
       ]
     FastCheckFilter: None
-  Includes:
-    IgnoreHeader: ".tpp"
   MissingIncludes: Strict
 
 InlayHints:
