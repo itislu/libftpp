@@ -1,36 +1,40 @@
 {
-	"name": "42-Vienna",
-	"build": {
-		"dockerfile": "Dockerfile"
-	},
-	"features": {
-		"ghcr.io/devcontainers/features/common-utils": {
-			"configureZshAsDefaultShell": true
-		}
+    "name": "42-Docker-DevEnv-CPP",
+    "build": {
+        "dockerfile": "Dockerfile",
+        "args": {
+            "USERNAME": "${env:USERNAME:devcontainer}",
+            "UID": "${env:UID:1000}",
+            "GID": "${env:GID:1000}",
+            "WORKSPACE_FOLDER": "/workspaces/${localWorkspaceFolderBasename}"
+        }
     },
-	"customizations": {
-		"vscode": {
-			"settings": {
+    "initializeCommand": "mkdir -p ${env:HOME}/.ssh && touch ${env:HOME}/.gitconfig ${env:HOME}/.zsh_history ${env:HOME}/.zshrc",
+    "mounts": [
+        "source=${env:HOME}/.ssh,target=/home/${env:USERNAME:devcontainer}/.ssh,type=bind,consistency=cached,readonly=true",
+        "source=${env:HOME}/.gitconfig,target=/home/${env:USERNAME:devcontainer}/.gitconfig,type=bind,consistency=cached",
+        "source=${env:HOME}/.zsh_history,target=/home/${env:USERNAME:devcontainer}/.zsh_history,type=bind,consistency=cached",
+        "source=${env:HOME}/.zshrc,target=/home/devcontainer/.zshrc,type=bind,consistency=cached"
+    ],
+    "customizations": {
+        "vscode": {
+            "settings": {
+                "terminal.integrated.shell.linux": "/bin/zsh",
                 "clangd.path": "clangd",
                 "clangd.enabled": true
             },
-			"extensions": [
-				"ms-vscode.cpptools-extension-pack",
-				"llvm-vs-code-extensions.vscode-clangd",
-				"vadimcn.vscode-lldb",
-				"eamodio.gitlens",
-				"usernamehw.errorlens",
-				"bbenoist.togglehs",
-				"Guyutongxue.cpp-reference",
-				"esbenp.prettier-vscode",
-				"jeff-hykin.better-cpp-syntax"
-			]
-		}
-	},
-    "onCreateCommand": "mkdir -p ${env:HOME}/.ssh && touch ${env:HOME}/.gitconfig",
-    "mounts": [
-        "source=${env:HOME}/.ssh,target=/root/.ssh,type=bind,consistency=cached",
-        "source=${env:HOME}/.gitconfig,target=/root/.gitconfig,type=bind,consistency=cached"
-    ],
-	"remoteUser": "root"
+            "extensions": [
+                "ms-vscode.cpptools-extension-pack",
+                "llvm-vs-code-extensions.vscode-clangd", // Alternative language server for C/C++
+                "github.copilot",
+                "vadimcn.vscode-lldb", // Improved debugger features
+                "eamodio.gitlens", // Powerful git UI and visualizations
+                "bbenoist.togglehs", // F4 to jump between header and source files
+                "ms-vscode.makefile-tools", // IntelliSense for Makefile
+                "esbenp.prettier-vscode", // Code formatter for Markdown, YAML and more
+                "dqisme.sync-scroll", // Scroll multiple editors simultaneously
+                "uctakeoff.vscode-counter" // Count lines of code
+            ]
+        }
+    }
 }
