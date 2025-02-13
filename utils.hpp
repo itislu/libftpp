@@ -1,5 +1,4 @@
-#ifndef SWAP_HPP
-#define SWAP_HPP
+#pragma once
 
 #include <cstddef>
 #include <iomanip>
@@ -62,5 +61,3 @@ namespace log {
 } // namespace log
 
 } // namespace utils
-
-#endif
