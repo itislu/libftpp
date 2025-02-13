@@ -41,7 +41,7 @@ IndentWrappedFunctionNames: false
 InsertBraces: true
 InsertNewlineAtEOF: true
 KeepEmptyLinesAtTheStartOfBlocks: false
-NamespaceIndentation: All
+NamespaceIndentation: Inner
 PointerAlignment: Left
 ReflowComments: true
 SortIncludes: true
