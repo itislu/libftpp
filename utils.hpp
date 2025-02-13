@@ -2,8 +2,14 @@
 #define SWAP_HPP
 
 #include <cstddef>
+#include <iomanip>
+#include <iostream>
 #include <sstream>
 #include <string>
+
+#define BOLD(str)  std::string() + "\033[1m" + str + "\033[0m"
+#define RED(str)   std::string() + "\033[31m" + str + "\033[0m"
+#define GREEN(str) std::string() + "\033[32m" + str + "\033[0m"
 
 #define WHERE(msg) utils::where(__FILE__, __LINE__, (msg))
 
@@ -30,6 +36,30 @@ std::string where(const char* file, size_t line, const T& msg)
 	}
 	return os.str();
 }
+
+namespace log {
+
+	const size_t g_label_width = 25;
+
+	template <typename T>
+	std::string error(const T& msg)
+	{
+		std::ostringstream os;
+		os << std::left << std::setw(g_label_width) << BOLD(RED("[ERROR]"))
+		   << msg;
+		return os.str();
+	}
+
+	template <typename T>
+	std::string ok(const T& msg)
+	{
+		std::ostringstream os;
+		os << std::left << std::setw(g_label_width) << BOLD(GREEN("[OK]"))
+		   << msg;
+		return os.str();
+	}
+
+} // namespace log
 
 } // namespace utils
 
