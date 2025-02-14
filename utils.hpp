@@ -36,6 +36,31 @@ std::string where(const char* file, size_t line, const T& msg)
 	return os.str();
 }
 
+template <typename T>
+std::string to_string(T v)
+{
+	std::ostringstream oss;
+	oss << v;
+	return oss.str();
+}
+
+template <typename T>
+std::string to_string(T* v)
+{
+	if (v == NULL) {
+		return "(null)";
+	}
+	std::ostringstream oss;
+	oss << v;
+	return oss.str();
+}
+
+template <>
+inline std::string to_string(bool v)
+{
+	return v ? "true" : "false";
+}
+
 namespace log {
 
 	const size_t g_label_width = 25;
