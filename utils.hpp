@@ -9,6 +9,7 @@
 #define BOLD(str)  std::string() + "\033[1m" + str + "\033[0m"
 #define RED(str)   std::string() + "\033[31m" + str + "\033[0m"
 #define GREEN(str) std::string() + "\033[32m" + str + "\033[0m"
+#define BLUE(str)  std::string() + "\033[34m" + str + "\033[0m"
 
 #define WHERE utils::where(__FILE__, __LINE__, __FUNCTION__)
 
@@ -51,14 +52,24 @@ inline std::string to_string(bool v)
 
 namespace log {
 
-	const size_t g_label_width = 25;
+	const size_t label_width_text = 8;
+	const size_t label_width_colored = 25;
 
 	template <typename T>
 	std::string error(const T& msg)
 	{
 		std::ostringstream os;
-		os << std::left << std::setw(g_label_width) << BOLD(RED("[ERROR]"))
-		   << msg;
+		os << std::left << std::setw(label_width_colored)
+		   << BOLD(RED("[ERROR]")) << msg;
+		return os.str();
+	}
+
+	template <typename T>
+	std::string info(const T& msg)
+	{
+		std::ostringstream os;
+		os << std::left << std::setw(label_width_colored)
+		   << BOLD(BLUE("[INFO]")) << msg;
 		return os.str();
 	}
 
@@ -66,8 +77,16 @@ namespace log {
 	std::string ok(const T& msg)
 	{
 		std::ostringstream os;
-		os << std::left << std::setw(g_label_width) << BOLD(GREEN("[OK]"))
+		os << std::left << std::setw(label_width_colored) << BOLD(GREEN("[OK]"))
 		   << msg;
+		return os.str();
+	}
+
+	template <typename T>
+	std::string line(const T& msg)
+	{
+		std::ostringstream os;
+		os << '\n' << std::left << std::setw(label_width_text) << "" << msg;
 		return os.str();
 	}
 
