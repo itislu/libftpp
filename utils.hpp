@@ -10,6 +10,7 @@
 #define RED(str)   std::string() + "\033[31m" + str + "\033[0m"
 #define GREEN(str) std::string() + "\033[32m" + str + "\033[0m"
 #define BLUE(str)  std::string() + "\033[34m" + str + "\033[0m"
+#define GRAY(str)  std::string() + "\033[37m" + str + "\033[0m"
 
 #define WHERE utils::where(__FILE__, __LINE__, __FUNCTION__)
 
