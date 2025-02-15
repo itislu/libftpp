@@ -10,9 +10,11 @@
 #define RED(str)   std::string() + "\033[31m" + str + "\033[0m"
 #define GREEN(str) std::string() + "\033[32m" + str + "\033[0m"
 
-#define WHERE(msg) utils::where(__FILE__, __LINE__, (msg))
+#define WHERE utils::where(__FILE__, __LINE__, __FUNCTION__)
 
 namespace utils {
+
+std::string where(const char* file, size_t line, const char* function);
 
 template <typename T>
 void swap(T& a, T& b)
@@ -20,20 +22,6 @@ void swap(T& a, T& b)
 	T tmp = a;
 	a = b;
 	b = tmp;
-}
-
-template <typename T>
-std::string where(const char* file, size_t line, const T& msg)
-{
-	std::ostringstream os;
-	std::ostringstream os_msg;
-
-	os << file << ":" << line;
-	os_msg << msg;
-	if (!os_msg.str().empty()) {
-		os << ": " << os_msg.str();
-	}
-	return os.str();
 }
 
 template <typename T>
