@@ -31,7 +31,6 @@ BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: AfterColon
 BreakInheritanceList: AfterColon
 BreakStringLiterals: false
-ConstructorInitializerAllOnOneLineOrOnePerLine: true
 FixNamespaceComments: true
 IncludeBlocks: Merge
 IndentCaseLabels: false
@@ -42,6 +41,7 @@ InsertBraces: true
 InsertNewlineAtEOF: true
 KeepEmptyLinesAtTheStartOfBlocks: false
 NamespaceIndentation: Inner
+PackConstructorInitializers: NextLine
 PointerAlignment: Left
 ReflowComments: true
 SortIncludes: true
@@ -52,10 +52,6 @@ SpaceAfterTemplateKeyword: true
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeParens: ControlStatements
 SpaceBeforeRangeBasedForLoopColon: true
-SpaceInEmptyParentheses: false
-SpacesInCStyleCastParentheses: false
-SpacesInContainerLiterals: false
-SpacesInParentheses: false
 SpacesInSquareBrackets: false
 Standard: Auto
 TabWidth: 4
