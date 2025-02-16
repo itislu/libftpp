@@ -41,7 +41,7 @@ InsertBraces: true
 InsertNewlineAtEOF: true
 KeepEmptyLinesAtTheStartOfBlocks: false
 NamespaceIndentation: Inner
-PackConstructorInitializers: NextLine
+PackConstructorInitializers: Never
 PointerAlignment: Left
 ReflowComments: true
 SortIncludes: true
