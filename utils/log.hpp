@@ -12,10 +12,10 @@ const size_t label_width_text = 8;
 const size_t label_width_colored = 25;
 
 template <typename T>
-std::string error(const T& msg)
+std::string ok(const T& msg)
 {
 	std::ostringstream os;
-	os << std::left << std::setw(label_width_colored) << BOLD(RED("[ERROR]"))
+	os << std::left << std::setw(label_width_colored) << BOLD(GREEN("[OK]"))
 	   << msg;
 	return os.str();
 }
@@ -30,10 +30,19 @@ std::string info(const T& msg)
 }
 
 template <typename T>
-std::string ok(const T& msg)
+std::string warn(const T& msg)
 {
 	std::ostringstream os;
-	os << std::left << std::setw(label_width_colored) << BOLD(GREEN("[OK]"))
+	os << std::left << std::setw(label_width_colored) << BOLD(YELLOW("[WARN]"))
+	   << msg;
+	return os.str();
+}
+
+template <typename T>
+std::string error(const T& msg)
+{
+	std::ostringstream os;
+	os << std::left << std::setw(label_width_colored) << BOLD(RED("[ERROR]"))
 	   << msg;
 	return os.str();
 }
