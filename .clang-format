@@ -40,7 +40,7 @@ IndentWrappedFunctionNames: false
 InsertBraces: true
 InsertNewlineAtEOF: true
 KeepEmptyLinesAtTheStartOfBlocks: false
-NamespaceIndentation: Inner
+NamespaceIndentation: None
 PackConstructorInitializers: Never
 PointerAlignment: Left
 ReflowComments: true
