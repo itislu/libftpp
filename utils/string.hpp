@@ -7,6 +7,9 @@
 namespace utils {
 namespace string {
 
+std::string& trim(std::string& str);
+std::string trim(const std::string& str);
+
 template <typename T>
 std::string to_string(T v)
 {
