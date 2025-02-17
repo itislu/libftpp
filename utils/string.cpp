@@ -32,24 +32,24 @@ std::string trim(const std::string& str)
 } // namespace string
 } // namespace utils
 
-/*
+#ifdef TEST_STRING
 #include <iostream>
 #include "utils.hpp"
 
 int main()
 {
-    std::string tests[] = {"  Hello World  ",
-                           "   ",
-                           "Hello",
-                           "",
-                           " a ",
-                           "a ",
-                           " a",
-                           " ",
-                           "Hey there"};
+	std::string tests[] = {"  Hello World  ",
+	                       "   ",
+	                       "Hello",
+	                       "",
+	                       " a ",
+	                       "a ",
+	                       " a",
+	                       " ",
+	                       "Hey there"};
 
-    for (unsigned int i = 0; i < ARRAY_SIZE(tests); ++i) {
-        std::cout << "'" << utils::string::trim(tests[i]) << "'" << '\n';
-    }
+	for (unsigned int i = 0; i < ARRAY_SIZE(tests); ++i) {
+		std::cout << "'" << utils::string::trim(tests[i]) << "'" << '\n';
+	}
 }
-*/
+#endif
