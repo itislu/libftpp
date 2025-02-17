@@ -15,10 +15,11 @@ Diagnostics:
       ]
     Remove:
       [
-        readability-identifier-length,
         bugprone-easily-swappable-parameters,
-        misc-non-private-member-variables-in-classes,
         cppcoreguidelines-avoid-magic-numbers,
+        misc-non-private-member-variables-in-classes,
+        misc-use-anonymous-namespace,
+        readability-identifier-length,
       ]
     CheckOptions:
       readability-magic-numbers.IgnoredIntegerValues: "1;2;3;4;10"
