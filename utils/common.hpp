@@ -5,15 +5,15 @@
 #include <ios>
 #include <string>
 
-#define BOLD(str)   std::string() + "\033[1m" + str + "\033[0m"
-#define RED(str)    std::string() + "\033[31m" + str + "\033[0m"
-#define GREEN(str)  std::string() + "\033[32m" + str + "\033[0m"
-#define YELLOW(str) std::string() + "\033[33m" + str + "\033[0m"
-#define BLUE(str)   std::string() + "\033[34m" + str + "\033[0m"
-#define GRAY(str)   std::string() + "\033[37m" + str + "\033[0m"
+#define BOLD(msg)   (std::string("\033[1m") + msg + "\033[0m")
+#define RED(msg)    (std::string("\033[31m") + msg + "\033[0m")
+#define GREEN(msg)  (std::string("\033[32m") + msg + "\033[0m")
+#define YELLOW(msg) (std::string("\033[33m") + msg + "\033[0m")
+#define BLUE(msg)   (std::string("\033[34m") + msg + "\033[0m")
+#define GRAY(msg)   (std::string("\033[37m") + msg + "\033[0m")
 
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
-#define WHERE utils::where(__FILE__, __LINE__, __FUNCTION__)
+#define WHERE             (utils::where(__FILE__, __LINE__, __FUNCTION__))
 
 namespace utils {
 
