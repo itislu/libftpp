@@ -12,6 +12,7 @@
 #define BLUE(str)   std::string() + "\033[34m" + str + "\033[0m"
 #define GRAY(str)   std::string() + "\033[37m" + str + "\033[0m"
 
+#define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
 #define WHERE utils::where(__FILE__, __LINE__, __FUNCTION__)
 
 namespace utils {
