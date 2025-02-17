@@ -33,8 +33,8 @@ std::string trim(const std::string& str)
 } // namespace utils
 
 #ifdef TEST_STRING
+#include "common.hpp"
 #include <iostream>
-#include "utils.hpp"
 
 int main()
 {
