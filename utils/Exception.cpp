@@ -22,13 +22,13 @@ Exception::Exception(const Exception& other)
 
 Exception::~Exception() throw() {}
 
-Exception& Exception::operator=(Exception other)
+Exception& Exception::operator=(Exception other) throw()
 {
 	swap(other);
 	return *this;
 }
 
-void Exception::swap(Exception& other)
+void Exception::swap(Exception& other) throw()
 {
 	_msg.swap(other._msg);
 	_where.swap(other._where);
@@ -52,11 +52,11 @@ Exception& Exception::set_who(const std::string& who)
 	return *this;
 }
 
-const std::string& Exception::msg() const { return _msg; }
+const std::string& Exception::msg() const throw() { return _msg; }
 
-const std::string& Exception::where() const { return _where; }
+const std::string& Exception::where() const throw() { return _where; }
 
-const std::string& Exception::who() const { return _who; }
+const std::string& Exception::who() const throw() { return _who; }
 
 void Exception::_update_full_msg()
 {

@@ -20,7 +20,7 @@ namespace utils {
 std::string where(const char* file, size_t line, const char* function);
 
 template <typename T>
-void swap(T& a, T& b)
+void swap(T& a, T& b) throw()
 {
 	T tmp = a;
 	a = b;
