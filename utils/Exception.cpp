@@ -17,7 +17,8 @@ Exception::Exception(const std::string& msg,
 Exception::Exception(const Exception& other)
     : _msg(other._msg),
       _where(other._where),
-      _who(other._who)
+      _who(other._who),
+      _full_msg(other._full_msg)
 {}
 
 Exception::~Exception() throw() {}
