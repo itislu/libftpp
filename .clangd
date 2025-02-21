@@ -7,8 +7,10 @@ Diagnostics:
     Add:
       [
         "bugprone-*",
+        "cert-*",
         "clang-analyzer-*",
         "cppcoreguidelines-*",
+        "hicpp-*",
         "misc-*",
         "performance-*",
         "readability-*",
@@ -17,6 +19,8 @@ Diagnostics:
       [
         bugprone-easily-swappable-parameters,
         cppcoreguidelines-avoid-magic-numbers,
+        hicpp-special-member-functions,
+        hicpp-use-nullptr,
         misc-non-private-member-variables-in-classes,
         misc-use-anonymous-namespace,
         readability-identifier-length,
