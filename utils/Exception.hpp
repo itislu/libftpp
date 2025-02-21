@@ -12,9 +12,9 @@ namespace utils {
  */
 class Exception : public std::exception {
 public:
-	Exception(const std::string& msg,
-	          const std::string& where = "",
-	          const std::string& who = "");
+	explicit Exception(const std::string& msg,
+	                   const std::string& where = "",
+	                   const std::string& who = "");
 	Exception(const Exception& other);
 	virtual ~Exception() throw();
 
