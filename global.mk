@@ -103,16 +103,16 @@ DEP_SUBDIRS		:=	$(sort $(dir $(DEP)))
 
 export				CXX CXXFLAGS MAKECMDGOALS MAKEFLAGS
 
-PHONY_TARGETS	:=	all run opt san val valfd term clear modes re clean fclean ffclean
+BUILD_TARGETS	:=	all run val valfd term clear modes
+REBUILD_TARGETS	:=	opt san re
+CLEAN_TARGETS	:=	clean fclean ffclean
+PHONY_TARGETS	:=	$(BUILD_TARGETS) $(REBUILD_TARGETS) $(CLEAN_TARGETS)
 ENV_VARIABLES	:=	MODE ARGS TERMINAL
 HELP_TARGETS	:=	help help-print \
 					$(addprefix help-,$(PHONY_TARGETS) $(ENV_VARIABLES)) \
 					$(addsuffix -help,$(PHONY_TARGETS) $(ENV_VARIABLES))
 PHONY_TARGETS	+=	$(HELP_TARGETS)
 export .PHONY	:	$(PHONY_TARGETS)
-
-REBUILD_TARGETS	:=	opt san re
-CLEAN_TARGETS	:=	clean fclean ffclean
 
 .DEFAULT		:
 					$(MAKE) help
@@ -217,7 +217,8 @@ re				:
 
 #	Dependency files inclusion
 
-ifeq (, $(filter $(HELP_TARGETS) $(REBUILD_TARGETS) $(CLEAN_TARGETS),$(MAKECMDGOALS)))
+#	Include if building or if no target specified
+ifneq (, $(or $(filter $(BUILD_TARGETS),$(MAKECMDGOALS)),$(if $(MAKECMDGOALS),,all)))
     ifneq (, $(wildcard $(OBJ_DIR)))
         -include	$(DEP)
     endif
