@@ -1,0 +1,36 @@
+compilation_database_dir: .
+output_directory: docs/uml
+diagrams:
+  full_overview:
+    type: class
+    glob:
+      - src/*
+      - inc/*
+    exclude:
+      namespaces:
+        - std
+
+  class_relationships:
+    type: class
+    glob:
+      - src/*
+      - inc/*
+    exclude:
+      namespaces:
+        - std
+    include:
+      relationships:
+        - inheritance
+        - composition
+        - aggregation
+
+  file_organization:
+    type: include
+    glob:
+      - src/*
+      - inc/*
+    include:
+      paths:
+        - src
+      relationships:
+        - composition

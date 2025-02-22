@@ -31,6 +31,8 @@ INC_DIRS		:=	inc $(SRC_DIR)
 BUILD_DIR		:=	build
 OBJ_DIR			:=	$(BUILD_DIR)/_obj
 DEP_DIR			:=	$(BUILD_DIR)/_dep
+DOC_DIR			:=	docs
+DOCKER_DIR		:=	$(REPO_ROOT_REL)/docker
 
 
 #	Dependencies
@@ -105,13 +107,15 @@ export				CXX CXXFLAGS MAKECMDGOALS MAKEFLAGS
 
 BUILD_TARGETS	:=	all run val valfd term clear modes
 REBUILD_TARGETS	:=	opt san re
+DOC_TARGETS		:=	bear doxygen uml
 CLEAN_TARGETS	:=	clean fclean ffclean
-PHONY_TARGETS	:=	$(BUILD_TARGETS) $(REBUILD_TARGETS) $(CLEAN_TARGETS)
+PHONY_TARGETS	:=	$(BUILD_TARGETS) $(REBUILD_TARGETS) $(DOC_TARGETS) $(CLEAN_TARGETS)
 ENV_VARIABLES	:=	MODE ARGS TERMINAL
 HELP_TARGETS	:=	help help-print \
 					$(addprefix help-,$(PHONY_TARGETS) $(ENV_VARIABLES)) \
 					$(addsuffix -help,$(PHONY_TARGETS) $(ENV_VARIABLES))
-PHONY_TARGETS	+=	$(HELP_TARGETS)
+HIDDEN_TARGETS	:=	.bear-image .doxygen-image .clang-uml .clang-uml-image .plantuml .plantuml-image
+PHONY_TARGETS	+=	$(HELP_TARGETS) $(HIDDEN_TARGETS)
 export .PHONY	:	$(PHONY_TARGETS)
 
 .DEFAULT		:
@@ -251,6 +255,106 @@ $(DEP_SUBDIRS)	:
 					mkdir -p $@
 
 
+# ************************* DOCUMENTATION TARGETS **************************** #
+
+BEAR_IMG		:=	bear
+DOXYGEN_IMG		:=	doxygen
+CLANG_UML_IMG	:=	clang-uml
+PLANTUML_IMG	:=	plantuml
+DOXYFILE		:=	$(REPO_ROOT_REL)/Doxyfile
+CLANG_UML_CFG	:=	$(REPO_ROOT_REL)/.clang-uml
+DOXYGEN_OUTDIR	:=	$(DOC_DIR)/doxygen
+UML_OUTDIR		:=	$(DOC_DIR)/uml
+
+
+bear			:	.bear-image
+					docker run --rm \
+						-v $(REPO_ROOT):$(REPO_ROOT) \
+						-w $(PWD) \
+						$(BEAR_IMG) \
+						bear -- make re >/dev/null
+					echo
+					echo -e "Generated compile_commands.json."
+
+.bear-image		:
+					docker build -t $(BEAR_IMG) $(DOCKER_DIR)/$(BEAR_IMG)
+
+doxygen			:	.doxygen-image bear
+					if [ ! -f $(DOXYFILE) ]; then \
+						docker run --rm \
+							-v $(REPO_ROOT):$(REPO_ROOT) \
+							-w $(PWD) \
+							$(DOXYGEN_IMG) \
+							doxygen -g $(DOXYFILE) \
+						&& echo \
+						&& echo -e "Created default Doxyfile. Please review and adjust settings as needed, then rerun."; \
+						exit 1; \
+					fi
+					mkdir -p $(DOXYGEN_OUTDIR)
+					docker run --rm \
+						-v $(REPO_ROOT):$(REPO_ROOT) \
+						-w $(PWD) \
+						$(DOXYGEN_IMG) \
+						bash -c '{ cat $(DOXYFILE); \
+							echo PROJECT_NAME="[$(REPO_SUBDIR)] - $(NAME)"; \
+							echo OUTPUT_DIRECTORY=$(DOXYGEN_OUTDIR); \
+							} | doxygen -q -'
+					echo
+					echo -e "Generated Doxygen documentation in $(DOXYGEN_OUTDIR)."
+					open $(DOXYGEN_OUTDIR)/html/index.html
+
+.doxygen-image	:
+					docker build -t $(DOXYGEN_IMG) $(DOCKER_DIR)/$(DOXYGEN_IMG)
+
+uml				:	.clang-uml .plantuml-image
+					$(MAKE) .plantuml
+
+.clang-uml		:	.clang-uml-image bear
+					if [ ! -f $(CLANG_UML_CFG) ]; then \
+						docker run --rm \
+							-v $(REPO_ROOT):$(REPO_ROOT) \
+							-w $(PWD) \
+							$(CLANG_UML_IMG) \
+							clang-uml --init \
+						&& mv .clang-uml $(CLANG_UML_CFG) \
+						&& echo \
+						&& echo -e "Created default .clang-uml configuration file. Please review and adjust settings as needed, then rerun."; \
+						exit 1; \
+					fi
+					mkdir -p $(UML_OUTDIR)
+					docker run --rm \
+						-v $(REPO_ROOT):$(REPO_ROOT) \
+						-w $(PWD) \
+						$(CLANG_UML_IMG) \
+						clang-uml --progress --paths-relative-to-pwd --config=$(CLANG_UML_CFG) --output-directory=$(UML_OUTDIR)
+					echo
+					echo -e "Generated PlantUML files in $(UML_OUTDIR)."
+
+.clang-uml-image	:
+					docker build -t $(CLANG_UML_IMG) $(DOCKER_DIR)/$(CLANG_UML_IMG)
+
+.plantuml		:	.plantuml-image
+					echo -e "Converting PlantUML files to PNG and SVG ..."
+					mkdir -p $(UML_OUTDIR)
+					docker run --rm \
+						-v $(REPO_ROOT):$(REPO_ROOT) \
+						-w $(PWD) \
+						$(PLANTUML_IMG) \
+						plantuml -tpng -tsvg "$(UML_OUTDIR)/*.puml"
+					echo -e "Generated PNG and SVG files in $(UML_OUTDIR)."
+					open $(UML_OUTDIR)
+					echo -e "Converting PlantUML files to PDF (this may take a moment) ..."
+					docker run --rm \
+						-v $(REPO_ROOT):$(REPO_ROOT) \
+						-w $(PWD) \
+						$(PLANTUML_IMG) \
+						plantuml -tpdf "$(UML_OUTDIR)/*.puml"
+					echo -e "Generated PDF files in $(UML_OUTDIR)."
+
+.plantuml-image	:
+					docker build -t $(PLANTUML_IMG) $(DOCKER_DIR)/$(PLANTUML_IMG)
+
+
 # ***************************** CLEAN TARGETS ******************************** #
 
 clean			:
@@ -290,6 +394,9 @@ help			:
 					echo -e "  term             Build and run the project in a new terminal window"
 					echo -e "  clear            Build the project and clear the terminal"
 					echo -e "  re               Rebuild the project"
+					echo -e "  bear             Generate compilation database using Bear"
+					echo -e "  doxygen          Generate documentation using Doxygen"
+					echo -e "  uml              Generate UML diagrams using clang-uml and convert them to PNG, SVG and PDF"
 					echo -e "  clean            Remove build artifacts"
 					echo -e "  fclean           Remove build artifacts and executable"
 					echo -e "  ffclean          Remove build artifacts and executable without checking for unknown files"
@@ -358,6 +465,26 @@ help-clear		:
 
 help-re			:
 					echo -e "Rebuild the project."
+
+help-bear		:
+					echo -e "Generate compilation database (compile_commands.json) using Bear."
+					echo -e "The compilation database is used by tools like clangd to significantly speed up workspace parsing."
+					echo -e "It is also required for tools like doxygen or clang-uml that need compilation information to analyze the codebase."
+					echo -e "The compilation database is generated by running 'bear -- make re'."
+
+help-doxygen	:
+					echo -e "Generate documentation using Doxygen."
+					echo -e "A Doxyfile is required to configure the documentation generation."
+					echo -e "If no Doxyfile exists, a default configuration file will be created."
+					echo -e "The documentation will be generated in $(DOXYGEN_OUTDIR)."
+					echo -e "After generation, the HTML documentation will be opened in the default browser."
+
+help-uml		:
+					echo -e "Generate UML diagrams using clang-uml and convert them to PNG, SVG and PDF."
+					echo -e "A .clang-uml configuration file is required to configure the UML generation."
+					echo -e "If no .clang-uml configuration file exists, a default configuration file will be created."
+					echo -e "The generated files will be saved in $(UML_OUTDIR)."
+					echo -e "After generation, the output directory will be opened."
 
 help-clean		:
 					echo -e "Remove build artifacts."
