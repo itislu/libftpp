@@ -377,7 +377,7 @@ fclean			:
 ffclean			:
 					echo -e -n $(MSG_FFCLEAN)
 					$(MAKE) fclean
-					rm -rf $(OBJ_DIR) $(DEP_DIR)
+					rm -rf $(OBJ_DIR) $(DEP_DIR) $(DOXYGEN_OUTDIR) $(UML_OUTDIR)
 					echo -e -n $(MSG_SUCCESS)
 
 
@@ -399,7 +399,7 @@ help			:
 					echo -e "  uml              Generate UML diagrams using clang-uml and convert them to PNG, SVG and PDF"
 					echo -e "  clean            Remove build artifacts"
 					echo -e "  fclean           Remove build artifacts and executable"
-					echo -e "  ffclean          Remove build artifacts and executable without checking for unknown files"
+					echo -e "  ffclean          Remove build artifacts, executable and generated documentation without checking for unknown files"
 					echo -e "  print-%          Print the value of a Makefile variable (replace % with variable name)"
 					echo -e "  help             Display this message"
 					echo -e "  help-% | %-help  Display more information for a specific target (replace % with target name)"
@@ -493,7 +493,13 @@ help-fclean		:
 					echo -e "Remove build artifacts and the executable."
 
 help-ffclean	:
-					echo -e "Remove build artifacts and the executable without checking for unknown files."
+					echo -e "Remove build artifacts, the executable and generated documentation without checking for unknown files."
+					echo
+					echo -e "The following directories will be removed:"
+					echo -e "  $(OBJ_DIR)"
+					echo -e "  $(DEP_DIR)"
+					echo -e "  $(DOXYGEN_OUTDIR)"
+					echo -e "  $(UML_OUTDIR)"
 
 help-print		:
 					echo -e "Print the value of a Makefile variable by appending the variable name to print-..."
@@ -622,7 +628,7 @@ MSG_CLEAN		:=	$(STY_ITA)"Cleaning up build artifacts ... "$(STY_RES)"\n"
 
 MSG_FCLEAN		:=	$(STY_ITA)"Cleaning up build artifacts and executable ... "$(STY_RES)"\n"
 
-MSG_FFCLEAN		:=	$(STY_ITA)"Forcefully cleaning up build artifacts directory and executable ... "$(STY_RES)"\n"
+MSG_FFCLEAN		:=	$(STY_ITA)"Forcefully cleaning up build artifacts directory, executable and generated documentation ... "$(STY_RES)"\n"
 
 endif
 ################################################################################
