@@ -272,7 +272,7 @@ bear			:	.bear-image
 						-v $(REPO_ROOT):$(REPO_ROOT) \
 						-w $(PWD) \
 						$(BEAR_IMG) \
-						bear -- make re >/dev/null
+						bash -c '{ bear -- make re; make fclean; } >/dev/null'
 					echo
 					echo -e "Generated compile_commands.json."
 
