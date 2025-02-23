@@ -280,17 +280,7 @@ bear			:	.bear-image
 .bear-image		:
 					docker build -t $(BEAR_IMG) $(DOCKER_DIR)/$(BEAR_IMG)
 
-doxygen			:	.doxygen-image bear
-					if [ ! -f $(DOXYFILE) ]; then \
-						docker run --rm \
-							-v $(REPO_ROOT):$(REPO_ROOT) \
-							-w $(PWD) \
-							$(DOXYGEN_IMG) \
-							doxygen -g $(DOXYFILE) \
-						&& echo \
-						&& echo -e $(MSG_PREFIX)"Created default Doxyfile. Please review and adjust settings as needed, then rerun."; \
-						exit 1; \
-					fi
+doxygen			:	.doxygen-image bear $(DOXYFILE)
 					mkdir -p $(DOXYGEN_OUTDIR)
 					docker run --rm \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
@@ -304,24 +294,23 @@ doxygen			:	.doxygen-image bear
 					echo -e $(MSG_PREFIX)"Generated Doxygen documentation in $(DOXYGEN_OUTDIR)."
 					open $(DOXYGEN_OUTDIR)/html/index.html
 
+$(DOXYFILE)		:	| .doxygen-image
+					docker run --rm \
+						-v $(REPO_ROOT):$(REPO_ROOT) \
+						-w $(PWD) \
+						$(DOXYGEN_IMG) \
+						doxygen -g $(DOXYFILE)
+					echo
+					echo -e $(MSG_PREFIX)"Created default Doxyfile. Please review and adjust settings as needed, then rerun."
+					exit 1
+
 .doxygen-image	:
 					docker build -t $(DOXYGEN_IMG) $(DOCKER_DIR)/$(DOXYGEN_IMG)
 
 uml				:	.clang-uml .plantuml-image
 					$(MAKE) .plantuml
 
-.clang-uml		:	.clang-uml-image bear
-					if [ ! -f $(CLANG_UML_CFG) ]; then \
-						docker run --rm \
-							-v $(REPO_ROOT):$(REPO_ROOT) \
-							-w $(PWD) \
-							$(CLANG_UML_IMG) \
-							clang-uml --init \
-						&& mv .clang-uml $(CLANG_UML_CFG) \
-						&& echo \
-						&& echo -e $(MSG_PREFIX)"Created default .clang-uml configuration file. Please review and adjust settings as needed, then rerun."; \
-						exit 1; \
-					fi
+.clang-uml		:	.clang-uml-image bear $(CLANG_UML_CFG)
 					mkdir -p $(UML_OUTDIR)
 					docker run --rm \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
@@ -330,6 +319,17 @@ uml				:	.clang-uml .plantuml-image
 						clang-uml --progress --paths-relative-to-pwd --config=$(CLANG_UML_CFG) --output-directory=$(UML_OUTDIR)
 					echo
 					echo -e $(MSG_PREFIX)"Generated PlantUML files in $(UML_OUTDIR)."
+
+$(CLANG_UML_CFG):	| .clang-uml-image
+					docker run --rm \
+						-v $(REPO_ROOT):$(REPO_ROOT) \
+						-w $(PWD) \
+						$(CLANG_UML_IMG) \
+						clang-uml --init
+					mv .clang-uml $(CLANG_UML_CFG)
+					echo
+					echo -e $(MSG_PREFIX)"Created default .clang-uml configuration file. Please review and adjust settings as needed, then rerun."
+					exit 1
 
 .clang-uml-image	:
 					docker build -t $(CLANG_UML_IMG) $(DOCKER_DIR)/$(CLANG_UML_IMG)
