@@ -275,7 +275,7 @@ bear			:	.bear-image
 						$(BEAR_IMG) \
 						bash -c '{ bear -- make re; make fclean; } >/dev/null'
 					echo
-					echo -e "Generated compile_commands.json."
+					echo -e $(MSG_PREFIX)"Generated compile_commands.json."
 
 .bear-image		:
 					docker build -t $(BEAR_IMG) $(DOCKER_DIR)/$(BEAR_IMG)
@@ -288,7 +288,7 @@ doxygen			:	.doxygen-image bear
 							$(DOXYGEN_IMG) \
 							doxygen -g $(DOXYFILE) \
 						&& echo \
-						&& echo -e "Created default Doxyfile. Please review and adjust settings as needed, then rerun."; \
+						&& echo -e $(MSG_PREFIX)"Created default Doxyfile. Please review and adjust settings as needed, then rerun."; \
 						exit 1; \
 					fi
 					mkdir -p $(DOXYGEN_OUTDIR)
@@ -301,7 +301,7 @@ doxygen			:	.doxygen-image bear
 							echo OUTPUT_DIRECTORY=$(DOXYGEN_OUTDIR); \
 							} | doxygen -q -'
 					echo
-					echo -e "Generated Doxygen documentation in $(DOXYGEN_OUTDIR)."
+					echo -e $(MSG_PREFIX)"Generated Doxygen documentation in $(DOXYGEN_OUTDIR)."
 					open $(DOXYGEN_OUTDIR)/html/index.html
 
 .doxygen-image	:
@@ -319,7 +319,7 @@ uml				:	.clang-uml .plantuml-image
 							clang-uml --init \
 						&& mv .clang-uml $(CLANG_UML_CFG) \
 						&& echo \
-						&& echo -e "Created default .clang-uml configuration file. Please review and adjust settings as needed, then rerun."; \
+						&& echo -e $(MSG_PREFIX)"Created default .clang-uml configuration file. Please review and adjust settings as needed, then rerun."; \
 						exit 1; \
 					fi
 					mkdir -p $(UML_OUTDIR)
@@ -329,28 +329,28 @@ uml				:	.clang-uml .plantuml-image
 						$(CLANG_UML_IMG) \
 						clang-uml --progress --paths-relative-to-pwd --config=$(CLANG_UML_CFG) --output-directory=$(UML_OUTDIR)
 					echo
-					echo -e "Generated PlantUML files in $(UML_OUTDIR)."
+					echo -e $(MSG_PREFIX)"Generated PlantUML files in $(UML_OUTDIR)."
 
 .clang-uml-image	:
 					docker build -t $(CLANG_UML_IMG) $(DOCKER_DIR)/$(CLANG_UML_IMG)
 
 .plantuml		:	.plantuml-image
-					echo -e "Converting PlantUML files to PNG and SVG ..."
+					echo -e $(MSG_PREFIX)"Converting PlantUML files to PNG and SVG ..."
 					mkdir -p $(UML_OUTDIR)
 					docker run --rm \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
 						-w $(PWD) \
 						$(PLANTUML_IMG) \
 						plantuml -tpng -tsvg "$(UML_OUTDIR)/*.puml"
-					echo -e "Generated PNG and SVG files in $(UML_OUTDIR)."
+					echo -e $(MSG_PREFIX)"Generated PNG and SVG files in $(UML_OUTDIR)."
 					open $(UML_OUTDIR)
-					echo -e "Converting PlantUML files to PDF (this may take a moment) ..."
+					echo -e $(MSG_PREFIX)"Converting PlantUML files to PDF (this may take a moment) ..."
 					docker run --rm \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
 						-w $(PWD) \
 						$(PLANTUML_IMG) \
 						plantuml -tpdf "$(UML_OUTDIR)/*.puml"
-					echo -e "Generated PDF files in $(UML_OUTDIR)."
+					echo -e $(MSG_PREFIX)"Generated PDF files in $(UML_OUTDIR)."
 
 .plantuml-image	:
 					docker build -t $(PLANTUML_IMG) $(DOCKER_DIR)/$(PLANTUML_IMG)
@@ -562,8 +562,12 @@ STY_WHI_BRI_BG	:=	"\e[107m"
 
 # **************************** CUSTOM MESSAGES ******************************* #
 
+ifneq (, $(MSG_PREFIX))
+MSG_PREFIX		:=	$(STY_WHI)$(MSG_PREFIX)$(STY_RES)
+endif
+
 ifneq (, $(MSG_USAGE))
-MSG_USAGE		:=	"\n"$(MSG_USAGE)
+MSG_USAGE		:=	"\n"$(MSG_PREFIX)$(MSG_USAGE)
 endif
 
 ########################## Top-level only messages #############################
@@ -571,70 +575,70 @@ ifeq (0, $(MAKELEVEL))
 
 #	Make status messages
 
-MSG_MAKE_INFO	:=	$(STY_ITA)$(STY_WHI)" Make version: $(MAKE_VERSION)"$(STY_RES)"\n"
+MSG_MAKE_INFO	:=	$(MSG_PREFIX)$(STY_ITA)$(STY_WHI)" Make version: $(MAKE_VERSION)"$(STY_RES)"\n"
 
-MSG_COMP_INFO	:=	$(STY_ITA)$(STY_WHI)" Compiler version: $(CXX_VERSION)"$(STY_RES)"\n"
+MSG_COMP_INFO	:=	$(MSG_PREFIX)$(STY_ITA)$(STY_WHI)" Compiler version: $(CXX_VERSION)"$(STY_RES)"\n"
 
-MSG_HELP		:=	$(STY_ITA)$(STY_WHI)" Run 'make help' to see all available Makefile targets."$(STY_RES)"\n"
+MSG_HELP		:=	$(MSG_PREFIX)$(STY_ITA)$(STY_WHI)" Run 'make help' to see all available Makefile targets."$(STY_RES)"\n"
 
 ifneq (, $(filter $(REBUILD_TARGETS),$(MAKECMDGOALS) $(MODE)))
-MSG_START		:=	$(STY_ITA)"Rebuilding $(NAME) ... "$(STY_RES)
+MSG_START		:=	$(MSG_PREFIX)$(STY_ITA)"Rebuilding $(NAME) ... "$(STY_RES)
 else
-MSG_START		:=	$(STY_ITA)"Building $(NAME) ... "$(STY_RES)
+MSG_START		:=	$(MSG_PREFIX)$(STY_ITA)"Building $(NAME) ... "$(STY_RES)
 endif
 
-MSG_SUCCESS		?=	$(STY_BOL)$(STY_ITA)$($(COLOR_MAKE))"DONE!"$(STY_RES)"\n"
+MSG_SUCCESS		?=	$(MSG_PREFIX)$(STY_BOL)$(STY_ITA)$($(COLOR_MAKE))"DONE!"$(STY_RES)"\n"
 
-MSG_NO_CHANGE	:=	$(STY_ITA)$(STY_WHI)"Everything up-to-date!"$(STY_RES)"\n"
+MSG_NO_CHANGE	:=	$(MSG_PREFIX)$(STY_ITA)$(STY_WHI)"Everything up-to-date!"$(STY_RES)"\n"
 
-MSG_FAILURE		:=	$(STY_BOL)$(STY_ITA)$(STY_RED)"BUILD FAILED!"$(STY_RES)"\n"
+MSG_FAILURE		:=	$(MSG_PREFIX)$(STY_BOL)$(STY_ITA)$(STY_RED)"BUILD FAILED!"$(STY_RES)"\n"
 
 
 #	Build modes
 
 MSG_RUN			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_YEL)"~~~~~~~~~~~~~~~~~~~~~~~ RUN MODE ~~~~~~~~~~~~~~~~~~~~~~~"$(STY_RES)"\n"
 ifneq (, $(filter run,$(MAKECMDGOALS) $(MODE)))
-MSG_MODE		:=	$(MSG_MODE)$(MSG_RUN)
+MSG_MODE		:=	$(MSG_PREFIX)$(MSG_MODE)$(MSG_RUN)
 endif
 
 MSG_OPT			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_GRE)"~~~~~~~~~~~~~~~~~~~ OPTIMIZATION MODE ~~~~~~~~~~~~~~~~~~"$(STY_RES)"\n"
 ifneq (, $(filter opt,$(MAKECMDGOALS) $(MODE)))
-MSG_MODE		:=	$(MSG_MODE)$(MSG_OPT)
+MSG_MODE		:=	$(MSG_PREFIX)$(MSG_MODE)$(MSG_OPT)
 endif
 
 MSG_SAN			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_RED)"~~~~~~~~~~~~~~~~~~~~ SANITIZER MODE ~~~~~~~~~~~~~~~~~~~~"$(STY_RES)"\n"
 ifneq (, $(filter san,$(MAKECMDGOALS) $(MODE)))
-MSG_MODE		:=	$(MSG_MODE)$(MSG_SAN)
+MSG_MODE		:=	$(MSG_PREFIX)$(MSG_MODE)$(MSG_SAN)
 endif
 
 MSG_VAL			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_BLU)"~~~~~~~~~~~~~~~~~~~~~ VALGRIND MODE ~~~~~~~~~~~~~~~~~~~~"$(STY_RES)"\n"
 ifneq (, $(filter val,$(MAKECMDGOALS) $(MODE)))
-MSG_MODE		:=	$(MSG_MODE)$(MSG_VAL)
+MSG_MODE		:=	$(MSG_PREFIX)$(MSG_MODE)$(MSG_VAL)
 endif
 
 MSG_VALFD		:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_CYA)"~~~~~~~~~~~~~~~~~~~ VALGRIND FD MODE ~~~~~~~~~~~~~~~~~~~"$(STY_RES)"\n"
 ifneq (, $(filter valfd,$(MAKECMDGOALS) $(MODE)))
-MSG_MODE		:=	$(MSG_MODE)$(MSG_VALFD)
+MSG_MODE		:=	$(MSG_PREFIX)$(MSG_MODE)$(MSG_VALFD)
 endif
 
 MSG_TERM		:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_YEL)"~~~~~~~~~~~~~~~~~~~ NEW TERMINAL MODE ~~~~~~~~~~~~~~~~~~"$(STY_RES)"\n"
 ifneq (, $(filter term,$(MAKECMDGOALS) $(MODE)))
-MSG_MODE		:=	$(MSG_MODE)$(MSG_TERM)
+MSG_MODE		:=	$(MSG_PREFIX)$(MSG_MODE)$(MSG_TERM)
 endif
 
 MSG_CLEAR		:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_GRA)"~~~~~~~~~~~~~~~~~~~~~ CLEAR MODE ~~~~~~~~~~~~~~~~~~~~"$(STY_RES)"\n"
 ifneq (, $(filter clear,$(MAKECMDGOALS) $(MODE)))
-MSG_MODE		:=	$(MSG_MODE)$(MSG_CLEAR)
+MSG_MODE		:=	$(MSG_PREFIX)$(MSG_MODE)$(MSG_CLEAR)
 endif
 
 
 #	Clean messages
 
-MSG_CLEAN		:=	$(STY_ITA)"Cleaning up build artifacts ... "$(STY_RES)"\n"
+MSG_CLEAN		:=	$(MSG_PREFIX)$(STY_ITA)"Cleaning up build artifacts ... "$(STY_RES)"\n"
 
-MSG_FCLEAN		:=	$(STY_ITA)"Cleaning up build artifacts and executable ... "$(STY_RES)"\n"
+MSG_FCLEAN		:=	$(MSG_PREFIX)$(STY_ITA)"Cleaning up build artifacts and executable ... "$(STY_RES)"\n"
 
-MSG_FFCLEAN		:=	$(STY_ITA)"Forcefully cleaning up build artifacts directory, executable and generated documentation ... "$(STY_RES)"\n"
+MSG_FFCLEAN		:=	$(MSG_PREFIX)$(STY_ITA)"Forcefully cleaning up build artifacts directory, executable and generated documentation ... "$(STY_RES)"\n"
 
 endif
 ################################################################################
@@ -643,7 +647,7 @@ endif
 # *************************** MAKEFILE DEBUGGING ***************************** #
 
 print-%			:
-					echo -e $* = $($*)
+					echo -e $(MSG_PREFIX)$* = $($*)
 
 
 # ********************************* NOTES ************************************ #
