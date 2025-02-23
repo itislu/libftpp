@@ -175,8 +175,9 @@ all				:
 						echo -e -n $(MSG_HELP); \
 					else \
 						echo -e -n $(MSG_MODE); \
-						echo -e -n " "$(MSG_INFO); \
-						echo -e -n " "$(MSG_HELP); \
+						echo -e -n $(MSG_MAKE_INFO); \
+						echo -e -n $(MSG_COMP_INFO); \
+						echo -e -n $(MSG_HELP); \
 						echo -e -n $(MSG_START); \
 						if $(MAKE) $(NAME); then \
 							echo; \
@@ -566,10 +567,11 @@ ifeq (0, $(MAKELEVEL))
 
 #	Make status messages
 
-MSG_INFO		:=	$(STY_ITA)$(STY_WHI)"Make version: $(MAKE_VERSION)\n\
-					Compiler version: $(CXX_VERSION)"$(STY_RES)"\n"
+MSG_MAKE_INFO	:=	$(STY_ITA)$(STY_WHI)" Make version: $(MAKE_VERSION)"$(STY_RES)"\n"
 
-MSG_HELP		:=	$(STY_ITA)$(STY_WHI)"Run 'make help' to see all available Makefile targets."$(STY_RES)"\n"
+MSG_COMP_INFO	:=	$(STY_ITA)$(STY_WHI)" Compiler version: $(CXX_VERSION)"$(STY_RES)"\n"
+
+MSG_HELP		:=	$(STY_ITA)$(STY_WHI)" Run 'make help' to see all available Makefile targets."$(STY_RES)"\n"
 
 ifneq (, $(filter $(REBUILD_TARGETS),$(MAKECMDGOALS) $(MODE)))
 MSG_START		:=	$(STY_ITA)"Rebuilding $(NAME) ... "$(STY_RES)
