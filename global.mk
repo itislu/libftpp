@@ -562,6 +562,10 @@ STY_WHI_BRI_BG	:=	"\e[107m"
 
 # **************************** CUSTOM MESSAGES ******************************* #
 
+ifneq (, $(MSG_USAGE))
+MSG_USAGE		:=	"\n"$(MSG_USAGE)
+endif
+
 ########################## Top-level only messages #############################
 ifeq (0, $(MAKELEVEL))
 
