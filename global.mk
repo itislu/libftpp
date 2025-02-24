@@ -38,7 +38,7 @@ DOCKER_DIR		:=	$(REPO_ROOT_REL)/docker
 
 #	Dependencies
 
-BUILDFILES		:=	Makefile $(GLOBAL_MK)
+BUILDFILES		:=	$(MAKEFILE_LIST)
 
 
 #	Flags
