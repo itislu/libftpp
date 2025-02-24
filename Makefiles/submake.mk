@@ -24,4 +24,4 @@ $(MAKECMDGOALS)	:	$(SUBDIRS)
 .PHONY			:	$(SUBDIRS)
 $(SUBDIRS)		:
 					echo -e "──────────────────────────────────────────────────────────────"
-					MSG_PREFIX="[$@] " $(MAKE) -C $@ $(MAKECMDGOALS)
+					MSG_PREFIX="[$@]" $(MAKE) -C $@ $(MAKECMDGOALS)
