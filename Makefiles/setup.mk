@@ -1,3 +1,7 @@
+ifndef SETUP_MK
+SETUP_MK		:=	1
+
+
 # ******************************* MAKE SETUP ********************************* #
 
 MAKEFLAGS		+=	-j -s
@@ -18,3 +22,6 @@ SPACE			:=	$() $()
 
 print-%			:
 					echo -e $* = $($*)
+
+
+endif

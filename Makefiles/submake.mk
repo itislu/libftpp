@@ -1,3 +1,6 @@
+ifndef SUBMAKE_MK
+SUBMAKE_MK		:=	1
+
 include				$(shell git rev-parse --show-toplevel)/Makefiles/setup.mk
 
 
@@ -17,3 +20,6 @@ $(MAKECMDGOALS)	:	$(SUBDIRS)
 $(SUBDIRS)		:
 					echo -e "──────────────────────────────────────────────────────────────"
 					MSG_PREFIX="[$@]" $(MAKE) -C $@ $(MAKECMDGOALS)
+
+
+endif

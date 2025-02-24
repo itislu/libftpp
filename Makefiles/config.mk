@@ -1,3 +1,6 @@
+ifndef CONFIG_MK
+CONFIG_MK		:=	1
+
 include				$(shell git rev-parse --show-toplevel)/Makefiles/setup.mk
 
 
@@ -89,4 +92,7 @@ TERMINALFLAGS	?=	$(if $(filter gnome-terminal,$(TERMINAL)), --title="$(TERMINALT
 
 ifndef NAME
     $(error NAME is not defined)
+endif
+
+
 endif
