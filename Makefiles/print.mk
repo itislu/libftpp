@@ -66,11 +66,11 @@ ifeq (0, $(MAKELEVEL))
 
 #	Make status messages
 
-MSG_MAKE_INFO	:=	$(STY_ITA)$(STY_WHI)" Make version: $(MAKE_VERSION)"$(STY_RES)
+MSG_MAKE_INFO	:=	$(STY_ITA)$(STY_WHI)"Make version: $(MAKE_VERSION)"$(STY_RES)
 
-MSG_COMP_INFO	:=	$(STY_ITA)$(STY_WHI)" Compiler version: $(CXX_VERSION)"$(STY_RES)
+MSG_COMP_INFO	:=	$(STY_ITA)$(STY_WHI)"Compiler version: $(CXX_VERSION)"$(STY_RES)
 
-MSG_HELP		:=	$(STY_ITA)$(STY_WHI)" Run 'make help' to see all available Makefile targets."$(STY_RES)
+MSG_HELP		:=	$(STY_ITA)$(STY_WHI)"Run 'make help' to see all available Makefile targets."$(STY_RES)
 
 ifneq (, $(filter $(REBUILD_TARGETS),$(MAKECMDGOALS) $(MODE)))
 MSG_START		:=	$(STY_ITA)"Rebuilding $(NAME) ... "$(STY_RES)
