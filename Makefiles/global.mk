@@ -572,12 +572,6 @@ fi
 endef
 
 
-#	Special characters for Make
-
-COMMA			=	,
-SPACE			=	$() $()
-
-
 #	Adjustments to dynamic messages
 
 ifneq (, $(MSG_PREFIX))
