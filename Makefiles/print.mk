@@ -36,8 +36,7 @@ STY_WHI_BRI_BG	:=	"\e[107m"
 define PRINT
 if [[ -n "$(shell printf '%b' "$(1)")" ]]; then \
 	echo -e -n "$(1)" \
-		| awk -v prefix="$(shell printf '%b' $(MSG_PREFIX))" '{print (prefix ? prefix " " : "") $$0}' \
-		| tr -d '\n'; \
+		| awk -v prefix="$(shell printf '%b' $(MSG_PREFIX))" '{printf "%s%s", (prefix ? prefix " " : ""), $$0}'; \
 fi
 endef
 
@@ -90,37 +89,37 @@ MSG_FAILURE		:=	$(STY_BOL)$(STY_ITA)$(STY_RED)"BUILD FAILED!"$(STY_RES)
 
 MSG_RUN			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_YEL)"~~~~~~~~~~~~~~~~~~~~~~~ RUN MODE ~~~~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
 ifneq (, $(filter run,$(MAKECMDGOALS) $(MODE)))
-MSG_MODE		:=	$(MSG_MODE)$(MSG_RUN)
+MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE), "\n")$(MSG_RUN)
 endif
 
 MSG_OPT			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_GRE)"~~~~~~~~~~~~~~~~~~~ OPTIMIZATION MODE ~~~~~~~~~~~~~~~~~~"$(STY_RES)
 ifneq (, $(filter opt,$(MAKECMDGOALS) $(MODE)))
-MSG_MODE		:=	$(MSG_MODE)$(MSG_OPT)
+MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE), "\n")$(MSG_OPT)
 endif
 
 MSG_SAN			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_RED)"~~~~~~~~~~~~~~~~~~~~ SANITIZER MODE ~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
 ifneq (, $(filter san,$(MAKECMDGOALS) $(MODE)))
-MSG_MODE		:=	$(MSG_MODE)$(MSG_SAN)
+MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE), "\n")$(MSG_SAN)
 endif
 
 MSG_VAL			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_BLU)"~~~~~~~~~~~~~~~~~~~~~ VALGRIND MODE ~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
 ifneq (, $(filter val,$(MAKECMDGOALS) $(MODE)))
-MSG_MODE		:=	$(MSG_MODE)$(MSG_VAL)
+MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE), "\n")$(MSG_VAL)
 endif
 
 MSG_VALFD		:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_CYA)"~~~~~~~~~~~~~~~~~~~ VALGRIND FD MODE ~~~~~~~~~~~~~~~~~~~"$(STY_RES)
 ifneq (, $(filter valfd,$(MAKECMDGOALS) $(MODE)))
-MSG_MODE		:=	$(MSG_MODE)$(MSG_VALFD)
+MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE), "\n")$(MSG_VALFD)
 endif
 
 MSG_TERM		:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_YEL)"~~~~~~~~~~~~~~~~~~~ NEW TERMINAL MODE ~~~~~~~~~~~~~~~~~~"$(STY_RES)
 ifneq (, $(filter term,$(MAKECMDGOALS) $(MODE)))
-MSG_MODE		:=	$(MSG_MODE)$(MSG_TERM)
+MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE), "\n")$(MSG_TERM)
 endif
 
 MSG_CLEAR		:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_GRA)"~~~~~~~~~~~~~~~~~~~~~ CLEAR MODE ~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
 ifneq (, $(filter clear,$(MAKECMDGOALS) $(MODE)))
-MSG_MODE		:=	$(MSG_MODE)$(MSG_CLEAR)
+MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE), "\n")$(MSG_CLEAR)
 endif
 
 
