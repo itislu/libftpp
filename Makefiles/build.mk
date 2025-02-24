@@ -1,101 +1,20 @@
 include				$(shell git rev-parse --show-toplevel)/Makefiles/setup.mk
 
 
-# ************************* DEFAULT CONFIGURATION **************************** #
+# *************************** BUILD PREPARATION ****************************** #
 
-ifeq ($(words $(MAKEFILE_LIST)), 1)
-    $(error This Makefile can only be included by other Makefiles)
-endif
-
-ifndef NAME
-    $(error NAME is not defined)
-endif
-
-MSG_PROGRESS	?=	"🔨"
-COLOR_MAKE		?=	STY_GRE
+export				CXX CXXFLAGS MAKECMDGOALS MAKEFLAGS
 
 
-# ************************** GLOBAL CONFIGURATION **************************** #
+#	Build artifacts
 
-#	Directories
-
-SRC_DIR			:=	src
-INC_DIRS		:=	inc $(SRC_DIR)
-BUILD_DIR		:=	build
-OBJ_DIR			:=	$(BUILD_DIR)/_obj
-DEP_DIR			:=	$(BUILD_DIR)/_dep
-DOC_DIR			:=	docs
-DOCKER_DIR		:=	$(REPO_ROOT)/docker
-
-
-#	Dependencies
-
-BUILDFILES		:=	$(MAKEFILE_LIST)
-
-
-#	Flags
-
-CXX				:=	c++
-CXX_VERSION		:=	$(shell $(CXX) --version | head -1)
-IS_CLANG		:=	$(if $(findstring clang,$(CXX_VERSION)), true)
-CXXFLAGS_STD	:=	-Wall -Wextra -Werror -Wshadow --std=c++98 -pedantic
-CXXFLAGS_DBG	:=	-ggdb3
-CXXFLAGS_SAN	:=	-fsanitize=address,undefined,bounds,float-divide-by-zero
-CXXFLAGS_OPT	:=	-O3
-CXXFLAGS_CLANG	:=	-Wdocumentation	# Only supported by clang
-CXXFLAGS		?=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG) $(if $(IS_CLANG), $(CXXFLAGS_CLANG))
-CPPFLAGS		+=	$(addprefix -I,$(INC_DIRS))
-DEPFLAGS		=	-M -MP -MF $@ -MT "$(OBJ_DIR)/$*.o $@"
-
-
-#	Valgrind
-
-VALGRIND		:=	$(shell which valgrind)
-
-VALGRINDFLAGS	=	--errors-for-leak-kinds=all \
-					--leak-check=full \
-					--show-error-list=yes \
-					--show-leak-kinds=all \
-					--trace-children=yes \
-					--track-origins=yes
-
-VALGRINDFDFLAGS	:=	--track-fds=all
-
-
-#	Terminal
-
-TERMINAL		?=	$(if $(shell command -v gnome-terminal), gnome-terminal, \
-					$(if $(shell command -v terminator), terminator, \
-					$(if $(shell command -v xterm), xterm, \
-					)))
-
-TERMINALTITLE	:=	$(if $(filter val,$(MAKECMDGOALS)), valgrind $(NAME), \
-					$(if $(filter valfd,$(MAKECMDGOALS)), valgrind-fd $(NAME), \
-					$(NAME)))
-
-TERMINALFLAGS	?=	$(if $(filter gnome-terminal,$(TERMINAL)), --title="$(TERMINALTITLE)" --, \
-					$(if $(filter terminator,$(TERMINAL)), --title="$(TERMINALTITLE)" -x, \
-					$(if $(filter xterm,$(TERMINAL)), -title "$(TERMINALTITLE)" -e, \
-					)))
-
-
-#	Files
-
-SRC_EXTENSION	:=	.cpp
-SRC				:=	$(shell find $(SRC_DIR) -type f -name "*$(SRC_EXTENSION)" -printf "%P\n")
 OBJ				:=	$(SRC:%$(SRC_EXTENSION)=$(OBJ_DIR)/%.o)
 DEP				:=	$(SRC:%$(SRC_EXTENSION)=$(DEP_DIR)/%.d)
-
-
-#	Subdirectories
-
 OBJ_SUBDIRS		:=	$(sort $(dir $(OBJ)))
 DEP_SUBDIRS		:=	$(sort $(dir $(DEP)))
 
 
-# *************************** BUILD PREPARATION ****************************** #
-
-export				CXX CXXFLAGS MAKECMDGOALS MAKEFLAGS
+#	Target categories
 
 BUILD_TARGETS	:=	all run val valfd term clear modes
 REBUILD_TARGETS	:=	opt san re
@@ -107,56 +26,12 @@ HELP_TARGETS	:=	help help-print \
 					$(addprefix help-,$(PHONY_TARGETS) $(ENV_VARIABLES)) \
 					$(addsuffix -help,$(PHONY_TARGETS) $(ENV_VARIABLES))
 HIDDEN_TARGETS	:=	.bear-image .doxygen-image .clang-uml .clang-uml-image .plantuml .plantuml-image
+
+
+#	Phony targets
+
 PHONY_TARGETS	+=	$(HELP_TARGETS) $(HIDDEN_TARGETS)
 export .PHONY	:	$(PHONY_TARGETS)
-
-.DEFAULT		:
-					$(MAKE) help
-
-.DEFAULT_GOAL	:=	all
-
-
-# ********************************* MODES ************************************ #
-
-ENV				:=
-
-ifeq (run, $(filter run,$(MAKECMDGOALS) $(MODE)))
-RUN				:=	true
-endif
-
-ifeq (opt, $(filter opt,$(MAKECMDGOALS) $(MODE)))
-CXXFLAGS		:=	$(CXXFLAGS_STD) $(CXXFLAGS_OPT)
-RECOMPILE		:=	true
-endif
-
-ifeq (san, $(filter san,$(MAKECMDGOALS) $(MODE)))
-CXXFLAGS		+=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG) $(CXXFLAGS_SAN)
-RECOMPILE		:=	true
-endif
-
-ifeq (val, $(filter val,$(MAKECMDGOALS) $(MODE)))
-ENV				+=	$(VALGRIND) $(VALGRINDFLAGS)
-RUN				:=	true
-endif
-
-ifeq (valfd, $(filter valfd,$(MAKECMDGOALS) $(MODE)))
-ENV				+=	$(VALGRIND) $(VALGRINDFLAGS) $(VALGRINDFDFLAGS)
-NEW_TERM		:=	true
-RUN				:=	true
-endif
-
-ifeq (term, $(filter term,$(MAKECMDGOALS) $(MODE)))
-NEW_TERM		:=	true
-RUN				:=	true
-endif
-
-ifeq (clear, $(filter clear,$(MAKECMDGOALS) $(MODE)))
-CLEAR			:=	true
-endif
-
-ifdef ARGS
-RUN				:=	true
-endif
 
 
 # ***************************** BUILD TARGETS ******************************** #
@@ -246,6 +121,49 @@ $(DEP_DIR)/%.d	:	$(SRC_DIR)/%$(SRC_EXTENSION) $(BUILDFILES) | $(DEP_SUBDIRS)
 $(OBJ_SUBDIRS) \
 $(DEP_SUBDIRS)	:
 					mkdir -p $@
+
+
+# ********************************* MODES ************************************ #
+
+ENV				:=
+
+ifeq (run, $(filter run,$(MAKECMDGOALS) $(MODE)))
+RUN				:=	true
+endif
+
+ifeq (opt, $(filter opt,$(MAKECMDGOALS) $(MODE)))
+CXXFLAGS		:=	$(CXXFLAGS_STD) $(CXXFLAGS_OPT)
+RECOMPILE		:=	true
+endif
+
+ifeq (san, $(filter san,$(MAKECMDGOALS) $(MODE)))
+CXXFLAGS		+=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG) $(CXXFLAGS_SAN)
+RECOMPILE		:=	true
+endif
+
+ifeq (val, $(filter val,$(MAKECMDGOALS) $(MODE)))
+ENV				+=	$(VALGRIND) $(VALGRINDFLAGS)
+RUN				:=	true
+endif
+
+ifeq (valfd, $(filter valfd,$(MAKECMDGOALS) $(MODE)))
+ENV				+=	$(VALGRIND) $(VALGRINDFLAGS) $(VALGRINDFDFLAGS)
+NEW_TERM		:=	true
+RUN				:=	true
+endif
+
+ifeq (term, $(filter term,$(MAKECMDGOALS) $(MODE)))
+NEW_TERM		:=	true
+RUN				:=	true
+endif
+
+ifeq (clear, $(filter clear,$(MAKECMDGOALS) $(MODE)))
+CLEAR			:=	true
+endif
+
+ifdef ARGS
+RUN				:=	true
+endif
 
 
 # ************************* DOCUMENTATION TARGETS **************************** #
