@@ -48,7 +48,7 @@ all				:
 						$(call PRINTLN,"$(MSG_MODE)"); \
 						$(call PRINTLN," $(MSG_MAKE_INFO)"); \
 						$(call PRINTLN," $(MSG_COMP_INFO)"); \
-						$(call PRINTLN," $(MSG_HELP)"); \
+						$(call PRINTLN," $(MSG_HELP)"\n); \
 						$(call PRINT,"$(MSG_START)"); \
 						if $(MAKE) $(NAME); then \
 							echo; \
