@@ -4,8 +4,7 @@ MAKEFLAGS		+=	-j -s
 SHELL			:=	/bin/bash
 PWD				:=	$(shell pwd)
 GLOBAL_MK		:=	$(abspath $(lastword $(MAKEFILE_LIST)))
-REPO_ROOT		:=	$(patsubst %/,%,$(dir $(GLOBAL_MK)))
-REPO_ROOT_REL	:=	$(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
+REPO_ROOT		:=	$(abspath $(dir $(abspath $(dir $(GLOBAL_MK)))))
 REPO_SUBDIR		:=	$(patsubst /%,%,$(subst $(REPO_ROOT),,$(PWD)))
 
 
@@ -33,7 +32,7 @@ BUILD_DIR		:=	build
 OBJ_DIR			:=	$(BUILD_DIR)/_obj
 DEP_DIR			:=	$(BUILD_DIR)/_dep
 DOC_DIR			:=	docs
-DOCKER_DIR		:=	$(REPO_ROOT_REL)/docker
+DOCKER_DIR		:=	$(REPO_ROOT)/docker
 
 
 #	Dependencies
@@ -262,8 +261,8 @@ BEAR_IMG		:=	bear
 DOXYGEN_IMG		:=	doxygen
 CLANG_UML_IMG	:=	clang-uml
 PLANTUML_IMG	:=	plantuml
-DOXYFILE		:=	$(REPO_ROOT_REL)/Doxyfile
-CLANG_UML_CFG	:=	$(REPO_ROOT_REL)/.clang-uml
+DOXYFILE		:=	$(REPO_ROOT)/Doxyfile
+CLANG_UML_CFG	:=	$(REPO_ROOT)/.clang-uml
 DOXYGEN_OUTDIR	:=	$(DOC_DIR)/doxygen
 UML_OUTDIR		:=	$(DOC_DIR)/uml
 

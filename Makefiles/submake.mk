@@ -4,8 +4,7 @@ MAKEFLAGS		+=	-j -s
 SHELL			:=	/bin/bash
 PWD				:=	$(shell pwd)
 GLOBAL_MK		:=	$(abspath $(lastword $(MAKEFILE_LIST)))
-REPO_ROOT		:=	$(patsubst %/,%,$(dir $(GLOBAL_MK)))
-REPO_ROOT_REL	:=	$(patsubst %/,%,$(dir $(lastword $(MAKEFILE_LIST))))
+REPO_ROOT		:=	$(abspath $(dir $(abspath $(dir $(GLOBAL_MK)))))
 REPO_SUBDIR		:=	$(patsubst /%,%,$(subst $(REPO_ROOT),,$(PWD)))
 
 
