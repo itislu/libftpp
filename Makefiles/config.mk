@@ -22,7 +22,7 @@ COLOR_MAKE		?=	STY_GRE
 
 #	Dependencies
 
-BUILDFILES		:=	$(MAKEFILE_LIST)
+BUILDFILES		=	$(filter-out %.d,$(MAKEFILE_LIST))
 
 
 #	Directories
