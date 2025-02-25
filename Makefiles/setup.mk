@@ -4,7 +4,7 @@ SETUP_MK		:=	1
 
 # ******************************* MAKE SETUP ********************************* #
 
-MAKEFLAGS		+=	-j -s
+MAKEFLAGS		+=	--jobs --silent
 SHELL			:=	/bin/bash
 PWD				:=	$(shell pwd)
 MAKEFILES_DIR	:=	$(abspath $(dir $(lastword $(MAKEFILE_LIST))))
