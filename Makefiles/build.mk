@@ -16,6 +16,7 @@ OBJ				:=	$(SRC:%$(SRC_EXTENSION)=$(OBJ_DIR)/%.o)
 DEP				:=	$(SRC:%$(SRC_EXTENSION)=$(DEP_DIR)/%.d)
 OBJ_SUBDIRS		:=	$(sort $(dir $(OBJ)))
 DEP_SUBDIRS		:=	$(sort $(dir $(DEP)))
+.SECONDARY		:	$(OBJ) $(DEP) $(OBJ_SUBDIRS) $(DEP_SUBDIRS)
 
 
 #	Target categories
@@ -95,9 +96,7 @@ re				:
 
 #	Include if building or if no target specified
 ifneq (, $(or $(filter $(BUILD_TARGETS),$(MAKECMDGOALS)),$(if $(MAKECMDGOALS),,all)))
-    ifneq (, $(wildcard $(OBJ_DIR)))
-        -include	$(DEP)
-    endif
+    -include	$(DEP)
 endif
 
 
