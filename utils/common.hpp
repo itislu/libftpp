@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstddef>
-#include <fstream>
 #include <ios>
 #include <string>
 
@@ -20,24 +19,11 @@ namespace utils {
 std::string where(const char* file, size_t line, const char* function);
 
 template <typename T>
-void swap(T& a, T& b) throw()
-{
-	T tmp = a;
-	a = b;
-	b = tmp;
-}
+void swap(T& a, T& b) throw();
 
-// NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast)
 template <typename T>
-void rand(T* v, std::streamsize size)
-{
-	std::ifstream urandom;
-
-	urandom.exceptions(std::ifstream::failbit | std::ifstream::badbit);
-	urandom.open("/dev/urandom", std::ios::binary);
-	urandom.read(reinterpret_cast<char*>(v), size);
-	urandom.close();
-}
-// NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
+void rand(T* v, std::streamsize size);
 
 } // namespace utils
+
+#include "common.tpp" // IWYU pragma: export

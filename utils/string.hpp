@@ -1,65 +1,21 @@
 #pragma once
 
-#include <cstddef>
-#include <iostream>
-#include <sstream>
-#include <stdexcept>
 #include <string>
-#include <typeinfo>
 
 namespace utils {
 namespace string {
 
-std::string& trim(std::string& str);
-std::string trim(const std::string& str);
-
 template <typename T>
-T from_string(const std::string& str)
-{
-	T res;
-	if (!(std::istringstream(str) >> res)) {
-		throw std::invalid_argument(std::string("Cannot convert to ")
-		                            + typeid(T).name() + ": " + str);
-	}
-	return res;
-}
-
+T from_string(const std::string& str);
 template <>
-inline bool from_string<bool>(const std::string& str)
-{
-	bool b = false;
-	if (!(std::istringstream(str) >> std::boolalpha >> b)
-	    && !(std::istringstream(str) >> b)) {
-		throw std::invalid_argument(std::string("Cannot convert to ")
-		                            + typeid(bool).name() + ": " + str);
-	}
-	return b;
-}
+inline bool from_string<bool>(const std::string& str);
 
 template <typename T>
-std::string to_string(T v)
-{
-	std::ostringstream oss;
-	oss << v;
-	return oss.str();
-}
-
+std::string to_string(T v);
 template <typename T>
-std::string to_string(T* v)
-{
-	if (v == NULL) {
-		return "(null)";
-	}
-	std::ostringstream oss;
-	oss << v;
-	return oss.str();
-}
-
+std::string to_string(T* v);
 template <>
-inline std::string to_string(bool v)
-{
-	return v ? "true" : "false";
-}
+inline std::string to_string(bool v);
 
 template <typename InputIterator,
           typename OutputIterator,
@@ -67,15 +23,12 @@ template <typename InputIterator,
 OutputIterator transform(InputIterator first,
                          InputIterator last,
                          OutputIterator result,
-                         UnaryOperator op)
-{
-	while (first != last) {
-		*result = op(*first);
-		++result;
-		++first;
-	}
-	return result;
-}
+                         UnaryOperator op);
+
+std::string& trim(std::string& str);
+std::string trim(const std::string& str);
 
 } // namespace string
 } // namespace utils
+
+#include "string.tpp" // IWYU pragma: export
