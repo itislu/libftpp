@@ -21,8 +21,8 @@ DEP_SUBDIRS		:=	$(sort $(dir $(DEP)))
 
 #	Target categories
 
-BUILD_TARGETS	:=	all run val valfd term clear modes
-REBUILD_TARGETS	:=	opt san re
+BUILD_TARGETS	:=	all clear modes run term val valfd
+REBUILD_TARGETS	:=	opt re san
 DOC_TARGETS		:=	bear doxygen uml
 CLEAN_TARGETS	:=	clean fclean ffclean
 PHONY_TARGETS	:=	$(BUILD_TARGETS) $(REBUILD_TARGETS) $(DOC_TARGETS) $(CLEAN_TARGETS)
@@ -62,7 +62,7 @@ all				:
 					fi; \
 					$(call PRINTLN,"$(MSG_USAGE)")
 
-run opt san val valfd term clear: modes
+clear opt run san term val valfd: modes
 
 modes			:
 					if [ "$(RECOMPILE)" = "true" ]; then \
@@ -130,8 +130,8 @@ $(DEP_SUBDIRS)	:
 
 ENV				:=
 
-ifeq (run, $(filter run,$(MAKECMDGOALS) $(MODE)))
-RUN				:=	true
+ifeq (clear, $(filter clear,$(MAKECMDGOALS) $(MODE)))
+CLEAR			:=	true
 endif
 
 ifeq (opt, $(filter opt,$(MAKECMDGOALS) $(MODE)))
@@ -139,9 +139,18 @@ CXXFLAGS		:=	$(CXXFLAGS_STD) $(CXXFLAGS_OPT)
 RECOMPILE		:=	true
 endif
 
+ifeq (run, $(filter run,$(MAKECMDGOALS) $(MODE)))
+RUN				:=	true
+endif
+
 ifeq (san, $(filter san,$(MAKECMDGOALS) $(MODE)))
 CXXFLAGS		+=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG) $(CXXFLAGS_SAN)
 RECOMPILE		:=	true
+endif
+
+ifeq (term, $(filter term,$(MAKECMDGOALS) $(MODE)))
+NEW_TERM		:=	true
+RUN				:=	true
 endif
 
 ifeq (val, $(filter val,$(MAKECMDGOALS) $(MODE)))
@@ -153,15 +162,6 @@ ifeq (valfd, $(filter valfd,$(MAKECMDGOALS) $(MODE)))
 ENV				+=	$(VALGRIND) $(VALGRINDFLAGS) $(VALGRINDFDFLAGS)
 NEW_TERM		:=	true
 RUN				:=	true
-endif
-
-ifeq (term, $(filter term,$(MAKECMDGOALS) $(MODE)))
-NEW_TERM		:=	true
-RUN				:=	true
-endif
-
-ifeq (clear, $(filter clear,$(MAKECMDGOALS) $(MODE)))
-CLEAR			:=	true
 endif
 
 ifdef ARGS
