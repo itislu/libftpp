@@ -1,5 +1,5 @@
 CompileFlags:
-  Add: [-Wall, -Wextra, -Werror, --std=c++98, -pedantic-errors, --language=c++]
+  Add: [-Wall, -Wextra, -Werror, -Wshadow, --std=c++98, -pedantic, --language=c++]
   Compiler: c++
 
 Diagnostics:
@@ -19,6 +19,7 @@ Diagnostics:
       [
         bugprone-easily-swappable-parameters,
         cppcoreguidelines-avoid-magic-numbers,
+        hicpp-avoid-goto,
         hicpp-special-member-functions,
         hicpp-use-nullptr,
         misc-non-private-member-variables-in-classes,
