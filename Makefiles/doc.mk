@@ -36,7 +36,7 @@ doxygen			:	.doxygen-image bear $(DOXYFILE)
 						-w $(PWD) \
 						$(DOXYGEN_IMG) \
 						bash -c '{ cat $(DOXYFILE); \
-							echo PROJECT_NAME="[$(REPO_SUBDIR)] - $(NAME)"; \
+							echo PROJECT_NAME="$(if $(REPO_SUBDIR),[$(REPO_SUBDIR)] - )$(NAME)"; \
 							echo OUTPUT_DIRECTORY=$(DOXYGEN_OUTDIR); \
 							} | doxygen -q -'
 					echo
