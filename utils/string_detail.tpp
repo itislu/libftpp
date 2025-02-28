@@ -24,13 +24,13 @@ static T from_string_floating_point(const std::string& str)
 
 	switch (std::numeric_limits<T>::max_exponent) {
 	case FLT_MAX_EXP:
-		res = strtof(start, &end);
+		res = std::strtof(start, &end);
 		break;
 	case DBL_MAX_EXP:
-		res = strtod(start, &end);
+		res = std::strtod(start, &end);
 		break;
 	default:
-		res = strtold(start, &end);
+		res = std::strtold(start, &end);
 	}
 
 	if (errno == ERANGE) {

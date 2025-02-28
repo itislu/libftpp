@@ -8,7 +8,7 @@ namespace string {
 std::string& trim(std::string& str)
 {
 	std::string::iterator start = str.begin();
-	while (start != str.end() && isspace(*start) != 0) {
+	while (start != str.end() && std::isspace(*start) != 0) {
 		++start;
 	}
 	str.erase(str.begin(), start);
@@ -16,7 +16,7 @@ std::string& trim(std::string& str)
 		return str;
 	}
 	std::string::iterator end = str.end() - 1;
-	while (isspace(*end) != 0) {
+	while (std::isspace(*end) != 0) {
 		--end;
 	}
 	str.erase(end + 1, str.end());
