@@ -40,13 +40,13 @@ DOCKER_DIR		:=	$(REPO_ROOT)/docker
 
 CXX				:=	c++
 CXX_VERSION		:=	$(shell $(CXX) --version | head -1)
-IS_CLANG		:=	$(if $(findstring clang,$(CXX_VERSION)), true)
+IS_CLANG		:=	$(if $(findstring clang,$(CXX_VERSION)),true)
 CXXFLAGS_STD	:=	-Wall -Wextra -Werror -Wshadow --std=c++98 -pedantic
 CXXFLAGS_DBG	:=	-ggdb3
 CXXFLAGS_SAN	:=	-fsanitize=address,undefined,bounds,float-divide-by-zero
 CXXFLAGS_OPT	:=	-O3
 CXXFLAGS_CLANG	:=	-Wdocumentation	# Only supported by clang
-CXXFLAGS		?=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG) $(if $(IS_CLANG), $(CXXFLAGS_CLANG))
+CXXFLAGS		?=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG) $(if $(IS_CLANG),$(CXXFLAGS_CLANG))
 CPPFLAGS		+=	$(addprefix -I,$(INC_DIRS))
 DEPFLAGS		=	-M -MP -MF $@ -MT "$(OBJ_DIR)/$*.o $@"
 
@@ -73,18 +73,18 @@ VALGRINDFDFLAGS	:=	--track-fds=all
 
 #	Terminal
 
-TERMINAL		?=	$(if $(shell command -v gnome-terminal), gnome-terminal, \
-					$(if $(shell command -v terminator), terminator, \
-					$(if $(shell command -v xterm), xterm, \
+TERMINAL		?=	$(if $(shell command -v gnome-terminal),gnome-terminal,\
+					$(if $(shell command -v terminator),terminator,\
+					$(if $(shell command -v xterm),xterm,\
 					)))
 
-TERMINALTITLE	:=	$(if $(filter val,$(MAKECMDGOALS)), valgrind $(NAME), \
-					$(if $(filter valfd,$(MAKECMDGOALS)), valgrind-fd $(NAME), \
+TERMINALTITLE	:=	$(if $(filter val,$(MAKECMDGOALS)),valgrind $(NAME),\
+					$(if $(filter valfd,$(MAKECMDGOALS)),valgrind-fd $(NAME),\
 					$(NAME)))
 
-TERMINALFLAGS	?=	$(if $(filter gnome-terminal,$(TERMINAL)), --title="$(TERMINALTITLE)" --, \
-					$(if $(filter terminator,$(TERMINAL)), --title="$(TERMINALTITLE)" -x, \
-					$(if $(filter xterm,$(TERMINAL)), -title "$(TERMINALTITLE)" -e, \
+TERMINALFLAGS	?=	$(if $(filter gnome-terminal,$(TERMINAL)),--title="$(TERMINALTITLE)" --,\
+					$(if $(filter terminator,$(TERMINAL)),--title="$(TERMINALTITLE)" -x,\
+					$(if $(filter xterm,$(TERMINAL)),-title "$(TERMINALTITLE)" -e,\
 					)))
 
 
