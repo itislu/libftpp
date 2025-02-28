@@ -7,8 +7,6 @@ namespace string {
 
 template <typename T>
 T from_string(const std::string& str);
-template <>
-inline bool from_string<bool>(const std::string& str);
 
 template <typename T>
 std::string to_string(T v);
