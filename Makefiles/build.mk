@@ -36,7 +36,7 @@ HIDDEN_TARGETS	:=	.bear-image .doxygen-image .clang-uml .clang-uml-image .plantu
 #	Phony targets
 
 PHONY_TARGETS	+=	$(HELP_TARGETS) $(HIDDEN_TARGETS)
-export .PHONY	:	$(PHONY_TARGETS)
+.PHONY			:	$(PHONY_TARGETS)
 
 
 # ***************************** BUILD TARGETS ******************************** #
