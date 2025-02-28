@@ -21,15 +21,6 @@ T from_string(const std::string& str)
 {
 	T res;
 
-	/* bool */
-	if (std::numeric_limits<T>::digits == 1) {
-		if (!(std::istringstream(str) >> std::boolalpha >> res)
-		    && !(std::istringstream(str) >> res)) {
-			goto invalid_argument;
-		}
-		return res;
-	}
-
 	/* floating-point */
 	if (std::numeric_limits<T>::is_specialized
 	    && !std::numeric_limits<T>::is_integer) {
@@ -48,10 +39,11 @@ T from_string(const std::string& str)
 			res = strtold(start, &end);
 		}
 		if (errno == ERANGE) {
-			goto out_of_range;
+			throw std::out_of_range(strerror(ERANGE));
 		}
 		if (end == start) {
-			goto invalid_argument;
+			throw std::invalid_argument(std::string("Cannot convert to ")
+			                            + typeid(T).name() + ": " + str);
 		}
 		return res;
 	}
@@ -64,19 +56,26 @@ T from_string(const std::string& str)
 
 			(void)strtol(start, &end, 0);
 			if (end != start) {
-				goto out_of_range;
+				throw std::out_of_range(strerror(ERANGE));
 			}
 		}
-		goto invalid_argument;
+		throw std::invalid_argument(std::string("Cannot convert to ")
+		                            + typeid(T).name() + ": " + str);
 	}
 	return res;
+}
 
-out_of_range:
-	throw std::out_of_range(strerror(ERANGE));
+template <>
+inline bool from_string<bool>(const std::string& str)
+{
+	bool b = false;
 
-invalid_argument:
-	throw std::invalid_argument(std::string("Cannot convert to ")
-	                            + typeid(T).name() + ": " + str);
+	if (!(std::istringstream(str) >> std::boolalpha >> b)
+	    && !(std::istringstream(str) >> b)) {
+		throw std::invalid_argument(std::string("Cannot convert to ")
+		                            + typeid(bool).name() + ": " + str);
+	}
+	return b;
 }
 
 template <typename T>
