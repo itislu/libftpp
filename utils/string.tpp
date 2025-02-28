@@ -2,6 +2,7 @@
 
 #include "string.hpp"
 #include <cerrno>
+#include <cfloat>
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
@@ -20,6 +21,34 @@ T from_string(const std::string& str)
 {
 	T res;
 
+	/* floating-point */
+	if (std::numeric_limits<T>::is_specialized
+	    && !std::numeric_limits<T>::is_integer) {
+		const char* start = str.c_str();
+		char* end = NULL;
+		errno = 0;
+
+		switch (std::numeric_limits<T>::max_exponent) {
+		case FLT_MAX_EXP:
+			res = strtof(start, &end);
+			break;
+		case DBL_MAX_EXP:
+			res = strtod(start, &end);
+			break;
+		default:
+			res = strtold(start, &end);
+		}
+		if (errno == ERANGE) {
+			throw std::out_of_range(strerror(ERANGE));
+		}
+		if (end == start) {
+			throw std::invalid_argument(std::string("Cannot convert to ")
+			                            + typeid(T).name() + ": " + str);
+		}
+		return res;
+	}
+
+	/* every other type */
 	if (!(std::istringstream(str) >> res)) {
 		if (std::numeric_limits<T>::is_integer) {
 			const char* start = str.c_str();
@@ -34,42 +63,6 @@ T from_string(const std::string& str)
 		                            + typeid(T).name() + ": " + str);
 	}
 	return res;
-}
-
-template <>
-float from_string(const std::string& str)
-{
-	const char* start = str.c_str();
-	char* end = NULL;
-	errno = 0;
-
-	const float f = strtof(start, &end);
-	if (errno == ERANGE) {
-		throw std::out_of_range(strerror(ERANGE));
-	}
-	if (end == start) {
-		throw std::invalid_argument(std::string("Cannot convert to ")
-		                            + typeid(float).name() + ": " + str);
-	}
-	return f;
-}
-
-template <>
-double from_string(const std::string& str)
-{
-	const char* start = str.c_str();
-	char* end = NULL;
-	errno = 0;
-
-	const double d = strtod(start, &end);
-	if (errno == ERANGE) {
-		throw std::out_of_range(strerror(ERANGE));
-	}
-	if (end == start) {
-		throw std::invalid_argument(std::string("Cannot convert to ")
-		                            + typeid(double).name() + ": " + str);
-	}
-	return d;
 }
 
 template <>
