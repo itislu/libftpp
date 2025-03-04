@@ -31,6 +31,7 @@ static T from_string_floating_point(const std::string& str)
 		break;
 	default:
 		res = std::strtold(start, &end);
+		break;
 	}
 
 	if (errno == ERANGE) {
