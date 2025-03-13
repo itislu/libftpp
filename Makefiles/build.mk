@@ -121,8 +121,7 @@ $(DEP_DIR)/%.d	:	$(SRC_DIR)/%$(SRC_EXTENSION) $(BUILDFILES) | $(DEP_SUBDIRS)
 
 #	Directory structure mirroring of source files for build artifacts
 
-$(OBJ_SUBDIRS) \
-$(DEP_SUBDIRS)	:
+$(OBJ_SUBDIRS) $(DEP_SUBDIRS):
 					mkdir -p $@
 
 
