@@ -35,6 +35,8 @@ struct enable_if<true, T> {
 		};                                            \
 	};
 
+HAS_METHOD(swap, void (U::*)(U&))
+
 #undef HAS_METHOD
 
 } // namespace utils
