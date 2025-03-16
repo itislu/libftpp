@@ -10,42 +10,35 @@ namespace utils {
 
 template <typename T>
 Optional<T>::Optional() throw()
-    : _value(NULL),
-      _has_value(false)
+    : _value(NULL)
 {}
 
 template <typename T>
 Optional<T>::Optional(nullopt_t /*unused*/) throw()
-    : _value(NULL),
-      _has_value(false)
+    : _value(NULL)
 {}
 
 template <typename T>
 Optional<T>::Optional(const Optional& other)
-    : _value(other._has_value ? new T(*other._value) : NULL),
-      _has_value(other._has_value)
+    : _value(other.has_value() ? new T(*other._value) : NULL)
 {}
 
 template <typename T>
 template <typename U>
 Optional<T>::Optional(const Optional<U>& other)
-    : _value(other.has_value() ? new T(*other) : NULL),
-      _has_value(other.has_value())
+    : _value(other.has_value() ? new T(*other) : NULL)
 {}
 
 template <typename T>
 template <typename U>
 Optional<T>::Optional(const U& value)
-    : _value(new T(static_cast<T>(value))),
-      _has_value(true)
+    : _value(new T(static_cast<T>(value)))
 {}
 
 template <typename T>
 Optional<T>::~Optional()
 {
-	if (_has_value) {
-		delete _value;
-	}
+	delete _value;
 }
 
 template <typename T>
@@ -89,19 +82,19 @@ T& Optional<T>::operator*() throw()
 template <typename T>
 Optional<T>::operator bool() const throw()
 {
-	return _has_value;
+	return _value != NULL;
 }
 
 template <typename T>
 bool Optional<T>::has_value() const throw()
 {
-	return _has_value;
+	return _value != NULL;
 }
 
 template <typename T>
 const T& Optional<T>::value() const
 {
-	if (_has_value) {
+	if (has_value()) {
 		return *_value;
 	}
 	throw BadOptionalAccess();
@@ -110,7 +103,7 @@ const T& Optional<T>::value() const
 template <typename T>
 T& Optional<T>::value()
 {
-	if (_has_value) {
+	if (has_value()) {
 		return *_value;
 	}
 	throw BadOptionalAccess();
@@ -119,7 +112,7 @@ T& Optional<T>::value()
 template <typename T>
 T Optional<T>::value_or(const T& default_value) const
 {
-	if (_has_value) {
+	if (has_value()) {
 		return *_value;
 	}
 	return default_value;
@@ -128,7 +121,7 @@ T Optional<T>::value_or(const T& default_value) const
 template <typename T>
 T& Optional<T>::value_or(T& default_value)
 {
-	if (_has_value) {
+	if (has_value()) {
 		return *_value;
 	}
 	return default_value;
@@ -137,17 +130,15 @@ T& Optional<T>::value_or(T& default_value)
 template <typename T>
 void Optional<T>::swap(Optional& other)
 {
-	if (_has_value && other._has_value) {
+	if (has_value() && other.has_value()) {
 		utils::swap(_value, other._value);
 	}
-	else if (_has_value) {
+	else if (has_value()) {
 		other._value = new T(*_value);
-		other._has_value = true;
 		reset();
 	}
-	else if (other._has_value) {
+	else if (other.has_value()) {
 		_value = new T(*other._value);
-		_has_value = true;
 		other.reset();
 	}
 }
@@ -155,10 +146,9 @@ void Optional<T>::swap(Optional& other)
 template <typename T>
 void Optional<T>::reset() throw()
 {
-	if (_has_value) {
+	if (has_value()) {
 		delete _value;
 		_value = NULL;
-		_has_value = false;
 	}
 }
 

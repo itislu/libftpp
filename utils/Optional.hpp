@@ -46,7 +46,6 @@ public:
 
 private:
 	T* _value;
-	bool _has_value;
 };
 
 template <typename T>
