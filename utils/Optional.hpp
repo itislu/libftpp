@@ -45,10 +45,7 @@ public:
 	void reset() throw();
 
 private:
-	union {
-		T _value;
-		char _dummy;
-	};
+	T* _value;
 	bool _has_value;
 };
 

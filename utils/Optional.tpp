@@ -4,48 +4,39 @@
 
 #include "Optional.hpp"
 #include "common.hpp"
+#include <cstddef>
 
 namespace utils {
 
 template <typename T>
 Optional<T>::Optional() throw()
-    : _dummy(),
+    : _value(NULL),
       _has_value(false)
 {}
 
 template <typename T>
 Optional<T>::Optional(nullopt_t /*unused*/) throw()
-    : _dummy(),
+    : _value(NULL),
       _has_value(false)
 {}
 
 template <typename T>
 Optional<T>::Optional(const Optional& other)
-    : _dummy(),
-      _has_value(false)
-{
-	if (other._has_value) {
-		new (&_value) T(other._value);
-		_has_value = true;
-	}
-}
+    : _value(other._has_value ? new T(*other._value) : NULL),
+      _has_value(other._has_value)
+{}
 
 template <typename T>
 template <typename U>
 Optional<T>::Optional(const Optional<U>& other)
-    : _dummy(),
-      _has_value(false)
-{
-	if (other.has_value()) {
-		new (&_value) T(*other);
-		_has_value = true;
-	}
-}
+    : _value(other.has_value() ? new T(*other) : NULL),
+      _has_value(other.has_value())
+{}
 
 template <typename T>
 template <typename U>
 Optional<T>::Optional(const U& value)
-    : _value(static_cast<T>(value)),
+    : _value(new T(static_cast<T>(value))),
       _has_value(true)
 {}
 
@@ -53,7 +44,7 @@ template <typename T>
 Optional<T>::~Optional()
 {
 	if (_has_value) {
-		_value.~T();
+		delete _value;
 	}
 }
 
@@ -74,25 +65,25 @@ Optional<T>& Optional<T>::operator=(Optional other)
 template <typename T>
 const T* Optional<T>::operator->() const throw()
 {
-	return &_value;
+	return _value;
 }
 
 template <typename T>
 T* Optional<T>::operator->() throw()
 {
-	return &_value;
+	return _value;
 }
 
 template <typename T>
 const T& Optional<T>::operator*() const throw()
 {
-	return _value;
+	return *_value;
 }
 
 template <typename T>
 T& Optional<T>::operator*() throw()
 {
-	return _value;
+	return *_value;
 }
 
 template <typename T>
@@ -111,7 +102,7 @@ template <typename T>
 const T& Optional<T>::value() const
 {
 	if (_has_value) {
-		return _value;
+		return *_value;
 	}
 	throw BadOptionalAccess();
 }
@@ -120,7 +111,7 @@ template <typename T>
 T& Optional<T>::value()
 {
 	if (_has_value) {
-		return _value;
+		return *_value;
 	}
 	throw BadOptionalAccess();
 }
@@ -129,7 +120,7 @@ template <typename T>
 T Optional<T>::value_or(const T& default_value) const
 {
 	if (_has_value) {
-		return _value;
+		return *_value;
 	}
 	return default_value;
 }
@@ -138,7 +129,7 @@ template <typename T>
 T& Optional<T>::value_or(T& default_value)
 {
 	if (_has_value) {
-		return _value;
+		return *_value;
 	}
 	return default_value;
 }
@@ -150,12 +141,12 @@ void Optional<T>::swap(Optional& other)
 		utils::swap(_value, other._value);
 	}
 	else if (_has_value) {
-		new (&other._value) T(_value);
+		other._value = new T(*_value);
 		other._has_value = true;
 		reset();
 	}
 	else if (other._has_value) {
-		new (&_value) T(other._value);
+		_value = new T(*other._value);
 		_has_value = true;
 		other.reset();
 	}
@@ -165,7 +156,8 @@ template <typename T>
 void Optional<T>::reset() throw()
 {
 	if (_has_value) {
-		_value.~T();
+		delete _value;
+		_value = NULL;
 		_has_value = false;
 	}
 }
