@@ -20,13 +20,6 @@ Optional<T>::Optional(nullopt_t /*unused*/) throw()
 {}
 
 template <typename T>
-template <typename U>
-Optional<T>::Optional(const U& value)
-    : _value(static_cast<T>(value)),
-      _has_value(true)
-{}
-
-template <typename T>
 Optional<T>::Optional(const Optional& other)
     : _dummy(),
       _has_value(false)
@@ -50,6 +43,13 @@ Optional<T>::Optional(const Optional<U>& other)
 }
 
 template <typename T>
+template <typename U>
+Optional<T>::Optional(const U& value)
+    : _value(static_cast<T>(value)),
+      _has_value(true)
+{}
+
+template <typename T>
 Optional<T>::~Optional()
 {
 	if (_has_value) {
@@ -69,6 +69,78 @@ Optional<T>& Optional<T>::operator=(Optional other)
 {
 	swap(other);
 	return *this;
+}
+
+template <typename T>
+const T* Optional<T>::operator->() const throw()
+{
+	return &_value;
+}
+
+template <typename T>
+T* Optional<T>::operator->() throw()
+{
+	return &_value;
+}
+
+template <typename T>
+const T& Optional<T>::operator*() const throw()
+{
+	return _value;
+}
+
+template <typename T>
+T& Optional<T>::operator*() throw()
+{
+	return _value;
+}
+
+template <typename T>
+Optional<T>::operator bool() const throw()
+{
+	return _has_value;
+}
+
+template <typename T>
+bool Optional<T>::has_value() const throw()
+{
+	return _has_value;
+}
+
+template <typename T>
+const T& Optional<T>::value() const
+{
+	if (_has_value) {
+		return _value;
+	}
+	throw BadOptionalAccess();
+}
+
+template <typename T>
+T& Optional<T>::value()
+{
+	if (_has_value) {
+		return _value;
+	}
+	throw BadOptionalAccess();
+}
+
+template <typename T>
+T Optional<T>::value_or(const T& default_value) const
+{
+	if (_has_value) {
+		return _value;
+	}
+	return default_value;
+}
+
+template <typename T>
+T& Optional<T>::value_or(T& default_value)
+{
+	if (_has_value) {
+		return _value;
+	}
+	return default_value;
 }
 
 template <typename T>
@@ -96,78 +168,6 @@ void Optional<T>::reset() throw()
 		_value.~T();
 		_has_value = false;
 	}
-}
-
-template <typename T>
-T* Optional<T>::operator->() throw()
-{
-	return &_value;
-}
-
-template <typename T>
-const T* Optional<T>::operator->() const throw()
-{
-	return &_value;
-}
-
-template <typename T>
-T& Optional<T>::operator*() throw()
-{
-	return _value;
-}
-
-template <typename T>
-const T& Optional<T>::operator*() const throw()
-{
-	return _value;
-}
-
-template <typename T>
-Optional<T>::operator bool() const throw()
-{
-	return _has_value;
-}
-
-template <typename T>
-bool Optional<T>::has_value() const throw()
-{
-	return _has_value;
-}
-
-template <typename T>
-T& Optional<T>::value()
-{
-	if (_has_value) {
-		return _value;
-	}
-	throw BadOptionalAccess();
-}
-
-template <typename T>
-const T& Optional<T>::value() const
-{
-	if (_has_value) {
-		return _value;
-	}
-	throw BadOptionalAccess();
-}
-
-template <typename T>
-T& Optional<T>::value_or(T& default_value)
-{
-	if (_has_value) {
-		return _value;
-	}
-	return default_value;
-}
-
-template <typename T>
-T Optional<T>::value_or(const T& default_value) const
-{
-	if (_has_value) {
-		return _value;
-	}
-	return default_value;
 }
 
 template <typename T>

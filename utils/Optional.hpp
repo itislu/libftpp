@@ -20,29 +20,29 @@ class Optional {
 public:
 	Optional() throw();
 	Optional(nullopt_t /*unused*/) throw();
-	template <typename U>
-	Optional(const U& value);
 	Optional(const Optional& other);
 	template <typename U>
 	Optional(const Optional<U>& other);
+	template <typename U>
+	Optional(const U& value);
 	~Optional();
 
 	Optional& operator=(nullopt_t /*unused*/) throw();
 	Optional& operator=(Optional other);
-	void swap(Optional& other);
 
-	void reset() throw();
-
-	T* operator->() throw();
 	const T* operator->() const throw();
-	T& operator*() throw();
+	T* operator->() throw();
 	const T& operator*() const throw();
+	T& operator*() throw();
 	operator bool() const throw();
 	bool has_value() const throw();
-	T& value();
 	const T& value() const;
-	T& value_or(T& default_value);
+	T& value();
 	T value_or(const T& default_value) const;
+	T& value_or(T& default_value);
+
+	void swap(Optional& other);
+	void reset() throw();
 
 private:
 	union {
@@ -54,7 +54,6 @@ private:
 
 template <typename T>
 Optional<T> make_optional(const T& value);
-
 template <typename T>
 void swap(Optional<T>& a, Optional<T>& b);
 
