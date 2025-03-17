@@ -135,6 +135,7 @@ endif
 
 ifeq (opt, $(filter opt,$(MAKECMDGOALS) $(MODE)))
 CXXFLAGS		:=	$(CXXFLAGS_STD) $(CXXFLAGS_OPT)
+CPPFLAGS		+=	$(CPPFLAGS_OPT)
 RECOMPILE		:=	true
 endif
 

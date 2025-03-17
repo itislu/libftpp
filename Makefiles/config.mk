@@ -47,6 +47,7 @@ CXXFLAGS_SAN	:=	-fsanitize=address,undefined,bounds,float-divide-by-zero
 CXXFLAGS_OPT	:=	-O3
 CXXFLAGS_CLANG	:=	-Wdocumentation	# Only supported by clang
 CXXFLAGS		?=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG) $(if $(IS_CLANG),$(CXXFLAGS_CLANG))
+CPPFLAGS_OPT	:=	-D NDEBUG
 CPPFLAGS		+=	$(addprefix -I,$(INC_DIRS))
 DEPFLAGS		=	-M -MP -MF $@ -MT "$(OBJ_DIR)/$*.o $@"
 
