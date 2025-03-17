@@ -4,6 +4,7 @@
 
 #include "Optional.hpp"
 #include "common.hpp"
+#include <cassert>
 #include <cstddef>
 
 namespace utils {
@@ -58,24 +59,28 @@ Optional<T>& Optional<T>::operator=(Optional other)
 template <typename T>
 const T* Optional<T>::operator->() const throw()
 {
+	assert(has_value());
 	return _value;
 }
 
 template <typename T>
 T* Optional<T>::operator->() throw()
 {
+	assert(has_value());
 	return _value;
 }
 
 template <typename T>
 const T& Optional<T>::operator*() const throw()
 {
+	assert(has_value());
 	return *_value;
 }
 
 template <typename T>
 T& Optional<T>::operator*() throw()
 {
+	assert(has_value());
 	return *_value;
 }
 
