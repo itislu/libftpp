@@ -1,5 +1,6 @@
 #pragma once
 
+#include "SafeBool.hpp"
 #include <exception>
 
 namespace utils {
@@ -16,7 +17,7 @@ struct nullopt_t {
 extern const nullopt_t nullopt;
 
 template <typename T>
-class Optional {
+class Optional : public SafeBool<Optional<T> > {
 public:
 	Optional() throw();
 	Optional(nullopt_t /*unused*/) throw();
@@ -34,7 +35,7 @@ public:
 	T* operator->() throw();
 	const T& operator*() const throw();
 	T& operator*() throw();
-	operator bool() const throw();
+	bool boolean_test() const throw();
 	bool has_value() const throw();
 	const T& value() const;
 	T& value();

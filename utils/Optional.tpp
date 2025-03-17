@@ -80,7 +80,7 @@ T& Optional<T>::operator*() throw()
 }
 
 template <typename T>
-Optional<T>::operator bool() const throw()
+bool Optional<T>::boolean_test() const throw()
 {
 	return _value != NULL;
 }
