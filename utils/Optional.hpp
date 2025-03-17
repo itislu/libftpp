@@ -29,7 +29,7 @@ public:
 	~Optional();
 
 	Optional& operator=(nullopt_t /*unused*/) throw();
-	Optional& operator=(Optional other);
+	Optional& operator=(Optional other) throw();
 
 	const T* operator->() const throw();
 	T* operator->() throw();
@@ -42,7 +42,7 @@ public:
 	T value_or(const T& default_value) const;
 	T& value_or(T& default_value);
 
-	void swap(Optional& other);
+	void swap(Optional& other) throw();
 	void reset() throw();
 
 private:
@@ -52,7 +52,7 @@ private:
 template <typename T>
 Optional<T> make_optional(const T& value);
 template <typename T>
-void swap(Optional<T>& a, Optional<T>& b);
+void swap(Optional<T>& lhs, Optional<T>& rhs) throw();
 
 template <typename T, typename U>
 bool operator==(const Optional<T>& lhs, const Optional<U>& rhs);

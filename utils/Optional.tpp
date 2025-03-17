@@ -1,5 +1,3 @@
-// NOLINTBEGIN(cppcoreguidelines-pro-type-union-access)
-
 #pragma once
 
 #include "Optional.hpp"
@@ -50,7 +48,7 @@ Optional<T>& Optional<T>::operator=(nullopt_t /*unused*/) throw()
 }
 
 template <typename T>
-Optional<T>& Optional<T>::operator=(Optional other)
+Optional<T>& Optional<T>::operator=(Optional other) throw()
 {
 	swap(other);
 	return *this;
@@ -133,19 +131,9 @@ T& Optional<T>::value_or(T& default_value)
 }
 
 template <typename T>
-void Optional<T>::swap(Optional& other)
+void Optional<T>::swap(Optional& other) throw()
 {
-	if (has_value() && other.has_value()) {
-		utils::swap(_value, other._value);
-	}
-	else if (has_value()) {
-		other._value = new T(*_value);
-		reset();
-	}
-	else if (other.has_value()) {
-		_value = new T(*other._value);
-		other.reset();
-	}
+	utils::swap(_value, other._value);
 }
 
 template <typename T>
@@ -164,9 +152,9 @@ Optional<T> make_optional(const T& value)
 }
 
 template <typename T>
-void swap(Optional<T>& a, Optional<T>& b)
+void swap(Optional<T>& lhs, Optional<T>& rhs) throw()
 {
-	a.swap(b);
+	lhs.swap(rhs);
 }
 
 template <typename T, typename U>
@@ -362,5 +350,3 @@ bool operator>=(const U& value, const Optional<T>& opt)
 }
 
 } // namespace utils
-
-// NOLINTEND(cppcoreguidelines-pro-type-union-access)
