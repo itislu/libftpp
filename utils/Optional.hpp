@@ -39,8 +39,10 @@ public:
 	bool has_value() const throw();
 	const T& value() const;
 	T& value();
-	T value_or(const T& default_value) const;
-	T& value_or(T& default_value);
+	template <typename U>
+	T value_or(const U& default_value) const;
+	template <typename U>
+	T& value_or(U& default_value);
 
 	void swap(Optional& other) throw();
 	void reset() throw();

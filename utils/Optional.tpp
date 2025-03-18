@@ -31,7 +31,7 @@ Optional<T>::Optional(const Optional<U>& other)
 template <typename T>
 template <typename U>
 Optional<T>::Optional(const U& value)
-    : _value(new T(static_cast<T>(value)))
+    : _value(new T(value))
 {}
 
 template <typename T>
@@ -113,21 +113,23 @@ T& Optional<T>::value()
 }
 
 template <typename T>
-T Optional<T>::value_or(const T& default_value) const
+template <typename U>
+T Optional<T>::value_or(const U& default_value) const
 {
 	if (has_value()) {
 		return *_value;
 	}
-	return default_value;
+	return static_cast<T>(default_value);
 }
 
 template <typename T>
-T& Optional<T>::value_or(T& default_value)
+template <typename U>
+T& Optional<T>::value_or(U& default_value)
 {
 	if (has_value()) {
 		return *_value;
 	}
-	return default_value;
+	return static_cast<T>(default_value);
 }
 
 template <typename T>
