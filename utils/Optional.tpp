@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Optional.hpp"
+#include "SafeBool.hpp"
 #include "common.hpp"
 #include <cassert>
 #include <cstddef>
@@ -19,7 +20,8 @@ Optional<T>::Optional(nullopt_t /*unused*/) throw()
 
 template <typename T>
 Optional<T>::Optional(const Optional& other)
-    : _value(other.has_value() ? new T(*other._value) : NULL)
+    : utils::SafeBool<Optional<T> >(),
+      _value(other.has_value() ? new T(*other._value) : NULL)
 {}
 
 template <typename T>
