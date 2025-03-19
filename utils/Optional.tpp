@@ -125,16 +125,6 @@ T Optional<T>::value_or(const U& default_value) const
 }
 
 template <typename T>
-template <typename U>
-T& Optional<T>::value_or(U& default_value)
-{
-	if (has_value()) {
-		return *_value;
-	}
-	return static_cast<T>(default_value);
-}
-
-template <typename T>
 void Optional<T>::swap(Optional& other) throw()
 {
 	utils::swap(_value, other._value);

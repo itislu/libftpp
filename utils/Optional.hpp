@@ -41,8 +41,6 @@ public:
 	T& value();
 	template <typename U>
 	T value_or(const U& default_value) const;
-	template <typename U>
-	T& value_or(U& default_value);
 
 	void swap(Optional& other) throw();
 	void reset() throw();
