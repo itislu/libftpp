@@ -1,4 +1,4 @@
-#include "Expected.hpp"
+#include "../Expected.hpp"
 
 namespace utils {
 
@@ -19,9 +19,5 @@ BadExpectedAccess<void>::operator=(const BadExpectedAccess& /*unused*/)
 {
 	return *this;
 }
-
-unexpect_t::unexpect_t(int /*unused*/) throw() {}
-
-const unexpect_t unexpect(0);
 
 } // namespace utils

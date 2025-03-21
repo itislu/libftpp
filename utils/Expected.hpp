@@ -179,4 +179,7 @@ bool operator==(const Expected<void, E>& lhs, const Expected<T2, E2>& rhs);
 
 } // namespace utils
 
-#include "Expected.tpp" // IWYU pragma: export
+#include "Expected/BadExpectedAccess.tpp" // IWYU pragma: export
+#include "Expected/Expected.tpp"          // IWYU pragma: export
+#include "Expected/Expected_void.tpp"     // IWYU pragma: export
+#include "Expected/Unexpected.tpp"        // IWYU pragma: export

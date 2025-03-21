@@ -1,11 +1,6 @@
-#include "Optional.hpp"
+#include "../Optional.hpp"
 
 namespace utils {
-
-const char* BadOptionalAccess::what() const throw()
-{
-	return "bad optional access";
-}
 
 nullopt_t::nullopt_t(int /*unused*/) throw() {}
 
