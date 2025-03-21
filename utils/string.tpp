@@ -94,21 +94,5 @@ inline std::string to_string(bool v)
 	return v ? "true" : "false";
 }
 
-template <typename InputIterator,
-          typename OutputIterator,
-          typename UnaryOperator>
-OutputIterator transform(InputIterator first,
-                         InputIterator last,
-                         OutputIterator result,
-                         UnaryOperator op)
-{
-	while (first != last) {
-		*result = op(*first);
-		++result;
-		++first;
-	}
-	return result;
-}
-
 } // namespace string
 } // namespace utils
