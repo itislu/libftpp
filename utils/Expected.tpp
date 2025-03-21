@@ -269,6 +269,66 @@ E Expected<T, E>::error_or(const G& default_value) const
 	return default_value;
 }
 
+/**
+ * The monadic functions are limited in their use compared to the original ones.
+ * The functions passed in the original ones can return different result or
+ * error types, but in this implementation the limits of C++98 and the lack of
+ * the `auto` keyword and `result_of` and `decltype` metaprogramming features
+ * make it very difficult to come close to that.
+ */
+
+/**
+ * f should return an Expected<T, E>
+ */
+template <typename T, typename E>
+template <typename F>
+Expected<T, E> Expected<T, E>::and_then(const F& f) const
+{
+	if (_has_value) {
+		return f(*_value);
+	}
+	return *this;
+}
+
+/**
+ * f should return a value of type T
+ */
+template <typename T, typename E>
+template <typename F>
+Expected<T, E> Expected<T, E>::transform(const F& f) const
+{
+	if (_has_value) {
+		return Expected(f(*_value));
+	}
+	return *this;
+}
+
+/**
+ * f should return an Expected<T, E>
+ */
+template <typename T, typename E>
+template <typename F>
+Expected<T, E> Expected<T, E>::or_else(const F& f) const
+{
+	if (!_has_value) {
+		return f(*_error);
+	}
+	return *this;
+}
+
+/**
+ * f should return an unexpected value of type E
+ */
+template <typename T, typename E>
+template <typename F>
+Expected<T, E> Expected<T, E>::transform_error(const F& f) const
+{
+	if (!_has_value) {
+		return Expected(Unexpected<E>(f(*_error)));
+	}
+	return *this;
+}
+
 template <typename T, typename E>
 void Expected<T, E>::swap(Expected& other) throw()
 {
@@ -436,6 +496,67 @@ E Expected<void, E>::error_or(const G& default_value) const
 		return *_error;
 	}
 	return default_value;
+}
+
+/**
+ * The monadic functions are limited in their use compared to the original ones.
+ * The functions passed in the original ones can return different result or
+ * error types, but in this implementation the limits of C++98 and the lack of
+ * the `auto` keyword and `result_of` and `decltype` metaprogramming features
+ * make it very difficult to come close to that.
+ */
+
+/**
+ * f should return an Expected<void, E>
+ */
+template <typename E>
+template <typename F>
+Expected<void, E> Expected<void, E>::and_then(const F& f) const
+{
+	if (_has_value) {
+		return f();
+	}
+	return *this;
+}
+
+/**
+ * f should return nothing
+ */
+template <typename E>
+template <typename F>
+Expected<void, E> Expected<void, E>::transform(const F& f) const
+{
+	if (_has_value) {
+		f();
+		return Expected();
+	}
+	return *this;
+}
+
+/**
+ * f should return an Expected<void, E>
+ */
+template <typename E>
+template <typename F>
+Expected<void, E> Expected<void, E>::or_else(const F& f) const
+{
+	if (!_has_value) {
+		return f(*_error);
+	}
+	return *this;
+}
+
+/**
+ * f should return an unexpected value of type E
+ */
+template <typename E>
+template <typename F>
+Expected<void, E> Expected<void, E>::transform_error(const F& f) const
+{
+	if (!_has_value) {
+		return Expected(Unexpected<E>(f(*_error)));
+	}
+	return *this;
 }
 
 template <typename E>

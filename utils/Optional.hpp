@@ -42,6 +42,13 @@ public:
 	template <typename U>
 	T value_or(const U& default_value) const;
 
+	template <typename F>
+	Optional and_then(const F& f) const;
+	template <typename F>
+	Optional transform(const F& f) const;
+	template <typename F>
+	Optional or_else(const F& f) const;
+
 	void swap(Optional& other) throw();
 	void reset() throw();
 

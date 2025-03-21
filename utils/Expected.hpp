@@ -103,6 +103,15 @@ public:
 	template <typename G>
 	E error_or(const G& default_value) const;
 
+	template <typename F>
+	Expected and_then(const F& f) const;
+	template <typename F>
+	Expected transform(const F& f) const;
+	template <typename F>
+	Expected or_else(const F& f) const;
+	template <typename F>
+	Expected transform_error(const F& f) const;
+
 	void swap(Expected& other) throw();
 
 private:
@@ -151,6 +160,15 @@ public:
 	E& error() throw();
 	template <typename G>
 	E error_or(const G& default_value) const;
+
+	template <typename F>
+	Expected and_then(const F& f) const;
+	template <typename F>
+	Expected transform(const F& f) const;
+	template <typename F>
+	Expected or_else(const F& f) const;
+	template <typename F>
+	Expected transform_error(const F& f) const;
 
 	void swap(Expected& other) throw();
 

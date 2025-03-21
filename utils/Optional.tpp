@@ -124,6 +124,53 @@ T Optional<T>::value_or(const U& default_value) const
 	return static_cast<T>(default_value);
 }
 
+/**
+ * The monadic functions are limited in their use compared to the original ones.
+ * The functions passed in the original ones can return different result or
+ * error types, but in this implementation the limits of C++98 and the lack of
+ * the `auto` keyword and `result_of` and `decltype` metaprogramming features
+ * make it very difficult to come close to that.
+ */
+
+/**
+ * f should return an Optional<T>
+ */
+template <typename T>
+template <typename F>
+Optional<T> Optional<T>::and_then(const F& f) const
+{
+	if (has_value()) {
+		return f(*_value);
+	}
+	return Optional();
+}
+
+/**
+ * f should return a value of type T
+ */
+template <typename T>
+template <typename F>
+Optional<T> Optional<T>::transform(const F& f) const
+{
+	if (has_value()) {
+		return Optional(f(*_value));
+	}
+	return Optional();
+}
+
+/**
+ * f should return an Optional<T>
+ */
+template <typename T>
+template <typename F>
+Optional<T> Optional<T>::or_else(const F& f) const
+{
+	if (!has_value()) {
+		return f();
+	}
+	return *this;
+}
+
 template <typename T>
 void Optional<T>::swap(Optional& other) throw()
 {
