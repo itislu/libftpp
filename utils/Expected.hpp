@@ -129,6 +129,39 @@ bool operator!=(const Expected<T, E>& lhs, const Unexpected<E2>& unex);
 template <typename T, typename E, typename T2>
 bool operator!=(const Expected<T, E>& lhs, const T2& value);
 
+template <typename E>
+class Expected<void, E> : public SafeBool<Expected<void, E> > {
+public:
+	Expected() throw();
+	Expected(const Expected& other);
+	template <typename U, typename G>
+	Expected(const Expected<U, G>& other);
+	template <typename G>
+	Expected(const Unexpected<G>& unex);
+	explicit Expected(unexpect_t /*unused*/);
+	~Expected();
+
+	Expected& operator=(Expected other) throw();
+
+	void operator*() const throw();
+	bool boolean_test() const throw();
+	bool has_value() const throw();
+	void value() const;
+	const E& error() const throw();
+	E& error() throw();
+	template <typename G>
+	E error_or(const G& default_value) const;
+
+	void swap(Expected& other) throw();
+
+private:
+	E* _error;
+	bool _has_value;
+};
+
+template <typename E, typename T2, typename E2>
+bool operator==(const Expected<void, E>& lhs, const Expected<T2, E2>& rhs);
+
 } // namespace utils
 
 #include "Expected.tpp" // IWYU pragma: export
