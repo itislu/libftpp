@@ -27,7 +27,6 @@ public:
 	template <typename U>
 	Optional(const U& value);
 	~Optional();
-
 	Optional& operator=(nullopt_t /*unused*/) throw();
 	Optional& operator=(Optional other) throw();
 

@@ -44,7 +44,6 @@ public:
 	template <typename Err>
 	explicit Unexpected(const Err& error);
 	~Unexpected();
-
 	Unexpected& operator=(Unexpected other);
 
 	const E& error() const throw();
@@ -85,7 +84,6 @@ public:
 	Expected(const Unexpected<G>& unex);
 	explicit Expected(unexpect_t /*unused*/);
 	~Expected();
-
 	Expected& operator=(Expected other) throw();
 
 	const T* operator->() const throw();
@@ -149,7 +147,6 @@ public:
 	Expected(const Unexpected<G>& unex);
 	explicit Expected(unexpect_t /*unused*/);
 	~Expected();
-
 	Expected& operator=(Expected other) throw();
 
 	void operator*() const throw();

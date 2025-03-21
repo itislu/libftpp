@@ -17,14 +17,13 @@ public:
 	                   const std::string& who = "");
 	Exception(const Exception& other);
 	virtual ~Exception() throw();
-
 	Exception& operator=(Exception other) throw();
-	void swap(Exception& other) throw();
 
 	const char* what() const throw();
+	void swap(Exception& other) throw();
+
 	Exception& set_where(const std::string& where);
 	Exception& set_who(const std::string& who);
-
 	const std::string& msg() const throw();
 	const std::string& where() const throw();
 	const std::string& who() const throw();

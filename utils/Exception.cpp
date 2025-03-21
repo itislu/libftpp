@@ -29,6 +29,8 @@ Exception& Exception::operator=(Exception other) throw()
 	return *this;
 }
 
+const char* Exception::what() const throw() { return _full_msg.c_str(); }
+
 void Exception::swap(Exception& other) throw()
 {
 	_msg.swap(other._msg);
@@ -36,8 +38,6 @@ void Exception::swap(Exception& other) throw()
 	_who.swap(other._who);
 	_full_msg.swap(other._full_msg);
 }
-
-const char* Exception::what() const throw() { return _full_msg.c_str(); }
 
 Exception& Exception::set_where(const std::string& where)
 {
