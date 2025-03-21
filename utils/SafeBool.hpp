@@ -8,7 +8,7 @@ namespace _detail {
 
 class SafeBoolBase {
 public:
-	typedef void (SafeBoolBase::*safe_bool)() const;
+	typedef void (SafeBoolBase::*safe_bool_t)() const;
 	void this_type_does_not_support_comparisons() const {}
 
 protected:
@@ -37,7 +37,7 @@ private:
 template <typename Derived = void>
 class SafeBool : private _detail::SafeBoolBase {
 public:
-	operator safe_bool() const
+	operator safe_bool_t() const
 	{
 		return (static_cast<const Derived*>(this))->boolean_test()
 		           ? &SafeBoolBase::this_type_does_not_support_comparisons
@@ -71,7 +71,7 @@ template <>
 class SafeBool<void> // NOLINT(cppcoreguidelines-virtual-class-destructor)
     : private _detail::SafeBoolBase {
 public:
-	operator safe_bool() const
+	operator safe_bool_t() const
 	{
 		return boolean_test()
 		           ? &SafeBoolBase::this_type_does_not_support_comparisons
