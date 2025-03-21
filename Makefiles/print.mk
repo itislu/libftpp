@@ -6,33 +6,34 @@ include				$(shell git rev-parse --show-toplevel)/Makefiles/setup.mk
 
 # ********************************* COLORS *********************************** #
 
-STY_RES			:=	"\e[0m"
-STY_BOL			:=	"\e[1m"
-STY_ITA			:=	"\e[3m"
-STY_UND			:=	"\e[4m"
-STY_RED			:=	"\e[31m"
-STY_GRE			:=	"\e[32m"
-STY_YEL			:=	"\e[33m"
-STY_BLU			:=	"\e[34m"
-STY_MAG			:=	"\e[35m"
-STY_CYA			:=	"\e[36m"
-STY_WHI			:=	"\e[37m"
-STY_GRA			:=	"\e[90m"
-STY_WHI_BRI		:=	"\e[97m"
-STY_BLA_BG		:=	"\e[40m"
-STY_RED_BG		:=	"\e[41m"
-STY_GRE_BG		:=	"\e[42m"
-STY_YEL_BG		:=	"\e[43m"
-STY_BLU_BG		:=	"\e[44m"
-STY_MAG_BG		:=	"\e[45m"
-STY_CYA_BG		:=	"\e[46m"
-STY_WHI_BG		:=	"\e[47m"
-STY_GRA_BG		:=	"\e[100m"
-STY_WHI_BRI_BG	:=	"\e[107m"
+STY_RES			:=	"\033[0m"
+STY_BOL			:=	"\033[1m"
+STY_ITA			:=	"\033[3m"
+STY_UND			:=	"\033[4m"
+STY_RED			:=	"\033[31m"
+STY_GRE			:=	"\033[32m"
+STY_YEL			:=	"\033[33m"
+STY_BLU			:=	"\033[34m"
+STY_MAG			:=	"\033[35m"
+STY_CYA			:=	"\033[36m"
+STY_WHI			:=	"\033[37m"
+STY_GRA			:=	"\033[90m"
+STY_WHI_BRI		:=	"\033[97m"
+STY_BLA_BG		:=	"\033[40m"
+STY_RED_BG		:=	"\033[41m"
+STY_GRE_BG		:=	"\033[42m"
+STY_YEL_BG		:=	"\033[43m"
+STY_BLU_BG		:=	"\033[44m"
+STY_MAG_BG		:=	"\033[45m"
+STY_CYA_BG		:=	"\033[46m"
+STY_WHI_BG		:=	"\033[47m"
+STY_GRA_BG		:=	"\033[100m"
+STY_WHI_BRI_BG	:=	"\033[107m"
 
 
 # **************************** PRINT FUNCTIONS ******************************* #
 
+# Print argument with no newline added, with optional prefix from $(MSG_PREFIX)
 define PRINT
 if [[ -n "$(shell printf '%b' "$(1)")" ]]; then \
 	echo -e -n "$(1)" \
@@ -40,6 +41,7 @@ if [[ -n "$(shell printf '%b' "$(1)")" ]]; then \
 fi
 endef
 
+# Print argument with newline added, with optional prefix from $(MSG_PREFIX)
 define PRINTLN
 if [[ -n "$(shell printf '%b' "$(1)")" ]]; then \
 	echo -e "$(1)" \
@@ -87,37 +89,37 @@ MSG_FAILURE		:=	$(STY_BOL)$(STY_ITA)$(STY_RED)"BUILD FAILED!"$(STY_RES)
 
 #	Build modes
 
-MSG_CLEAR		:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_GRA)"~~~~~~~~~~~~~~~~~~~~~ CLEAR MODE ~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
+MSG_CLEAR		:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_GRA)"~~~~~~~~~~~~~~~~~~~~~ CLEAR MODE ~~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
 ifneq (, $(filter clear,$(MAKECMDGOALS) $(MODE)))
 MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE),"\n")$(MSG_CLEAR)
 endif
 
-MSG_OPT			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_GRE)"~~~~~~~~~~~~~~~~~~~ OPTIMIZATION MODE ~~~~~~~~~~~~~~~~~~"$(STY_RES)
+MSG_OPT			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_GRE)"~~~~~~~~~~~~~~~~~~~ OPTIMIZATION MODE ~~~~~~~~~~~~~~~~~~~"$(STY_RES)
 ifneq (, $(filter opt,$(MAKECMDGOALS) $(MODE)))
 MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE),"\n")$(MSG_OPT)
 endif
 
-MSG_RUN			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_YEL)"~~~~~~~~~~~~~~~~~~~~~~~ RUN MODE ~~~~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
+MSG_RUN			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_YEL)"~~~~~~~~~~~~~~~~~~~~~~~ RUN MODE ~~~~~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
 ifneq (, $(filter run,$(MAKECMDGOALS) $(MODE)))
 MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE),"\n")$(MSG_RUN)
 endif
 
-MSG_SAN			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_RED)"~~~~~~~~~~~~~~~~~~~~ SANITIZER MODE ~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
+MSG_SAN			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_RED)"~~~~~~~~~~~~~~~~~~~~ SANITIZER MODE ~~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
 ifneq (, $(filter san,$(MAKECMDGOALS) $(MODE)))
 MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE),"\n")$(MSG_SAN)
 endif
 
-MSG_TERM		:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_YEL)"~~~~~~~~~~~~~~~~~~~ NEW TERMINAL MODE ~~~~~~~~~~~~~~~~~~"$(STY_RES)
+MSG_TERM		:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_YEL)"~~~~~~~~~~~~~~~~~~~ NEW TERMINAL MODE ~~~~~~~~~~~~~~~~~~~"$(STY_RES)
 ifneq (, $(filter term,$(MAKECMDGOALS) $(MODE)))
 MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE),"\n")$(MSG_TERM)
 endif
 
-MSG_VAL			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_BLU)"~~~~~~~~~~~~~~~~~~~~~ VALGRIND MODE ~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
+MSG_VAL			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_BLU)"~~~~~~~~~~~~~~~~~~~~~ VALGRIND MODE ~~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
 ifneq (, $(filter val,$(MAKECMDGOALS) $(MODE)))
 MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE),"\n")$(MSG_VAL)
 endif
 
-MSG_VALFD		:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_CYA)"~~~~~~~~~~~~~~~~~~~ VALGRIND FD MODE ~~~~~~~~~~~~~~~~~~~"$(STY_RES)
+MSG_VALFD		:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_CYA)"~~~~~~~~~~~~~~~~~~~ VALGRIND FD MODE ~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
 ifneq (, $(filter valfd,$(MAKECMDGOALS) $(MODE)))
 MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE),"\n")$(MSG_VALFD)
 endif
@@ -138,7 +140,7 @@ endif
 # *************************** MAKEFILE DEBUGGING ***************************** #
 
 print-%			:
-					$(call PRINTLN,$* = $(shell echo -e -n $($*)))
+					$(call PRINTLN,$* = $(shell echo -n $($*)))
 
 
 endif

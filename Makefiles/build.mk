@@ -30,7 +30,7 @@ ENV_VARIABLES	:=	MODE ARGS TERMINAL
 HELP_TARGETS	:=	help help-print \
 					$(addprefix help-,$(PHONY_TARGETS) $(ENV_VARIABLES)) \
 					$(addsuffix -help,$(PHONY_TARGETS) $(ENV_VARIABLES))
-HIDDEN_TARGETS	:=	.bear-image .doxygen-image .clang-uml .clang-uml-image .plantuml .plantuml-image
+HIDDEN_TARGETS	:=	.bear-image .clang-uml .clang-uml-image .doxygen-image .plantuml .plantuml-image
 
 
 #	Phony targets
@@ -96,7 +96,7 @@ re				:
 
 #	Include if building or if no target specified
 ifneq (, $(or $(filter $(BUILD_TARGETS),$(MAKECMDGOALS)),$(if $(MAKECMDGOALS),,all)))
-    -include	$(DEP)
+    -include		$(DEP)
 endif
 
 
