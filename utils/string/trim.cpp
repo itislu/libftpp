@@ -1,9 +1,8 @@
-#include "string.hpp"
+#include "../string.hpp"
 #include <cctype>
 #include <string>
 
 namespace utils {
-namespace string {
 
 std::string& trim(std::string& str)
 {
@@ -29,7 +28,6 @@ std::string trim(const std::string& str)
 	return trim(new_str);
 }
 
-} // namespace string
 } // namespace utils
 
 #ifdef TEST_STRING
@@ -49,7 +47,7 @@ int main()
 	                       "Hey there"};
 
 	for (unsigned int i = 0; i < ARRAY_SIZE(tests); ++i) {
-		std::cout << "'" << utils::string::trim(tests[i]) << "'" << '\n';
+		std::cout << "'" << utils::trim(tests[i]) << "'" << '\n';
 	}
 }
 #endif

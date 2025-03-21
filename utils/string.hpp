@@ -3,7 +3,6 @@
 #include <string>
 
 namespace utils {
-namespace string {
 
 template <typename T>
 T from_string(const std::string& str);
@@ -26,7 +25,7 @@ inline std::string to_string(bool v);
 std::string& trim(std::string& str);
 std::string trim(const std::string& str);
 
-} // namespace string
 } // namespace utils
 
-#include "string.tpp" // IWYU pragma: export
+#include "string/from_string.tpp" // IWYU pragma: export
+#include "string/to_string.tpp"   // IWYU pragma: export
