@@ -74,11 +74,7 @@ MSG_COMP_INFO	:=	$(STY_ITA)$(STY_WHI)"Compiler version: $(CXX_VERSION)"$(STY_RES
 
 MSG_HELP		:=	$(STY_ITA)$(STY_WHI)"Run 'make help' to see all available Makefile targets."$(STY_RES)
 
-ifneq (, $(filter $(REBUILD_TARGETS),$(MAKECMDGOALS) $(MODE)))
-MSG_START		:=	$(STY_ITA)"Rebuilding $(NAME) ... "$(STY_RES)
-else
-MSG_START		:=	$(STY_ITA)"Building $(NAME) ... "$(STY_RES)
-endif
+MSG_START		=	$(STY_ITA)$(if $(RECOMPILE),"Rebuilding","Building")" $(NAME) ... "$(STY_RES)
 
 MSG_SUCCESS		?=	$(STY_BOL)$(STY_ITA)$($(COLOR_MAKE))"DONE!"$(STY_RES)
 
