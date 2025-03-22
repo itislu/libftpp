@@ -60,7 +60,7 @@ all				:
 							$(call PRINTLN,"$(MSG_SUCCESS)"); \
 						else \
 							$(call PRINTLN,"$(MSG_FAILURE)"); \
-							exit 42; \
+							exit 2; \
 						fi; \
 					fi; \
 					$(call PRINTLN,"$(MSG_USAGE)")
