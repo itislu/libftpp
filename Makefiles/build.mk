@@ -180,6 +180,10 @@ CPPFLAGS		+=	$(CPPFLAGS_OPT)
 RECOMPILE		:=	true
 endif
 
+ifeq (re, $(filter re,$(MAKECMDGOALS) $(MODE)))
+RECOMPILE		:=	true
+endif
+
 ifeq (run, $(filter run,$(MAKECMDGOALS) $(MODE)))
 RUN				:=	true
 endif
