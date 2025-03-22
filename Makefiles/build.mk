@@ -51,11 +51,14 @@ all				:
 						$(call PRINTLN," $(MSG_COMP_INFO)"); \
 						$(call PRINTLN," $(MSG_HELP)"\n); \
 						$(call PRINT,"$(MSG_START)"); \
-						if $(MAKE) .build; then \
+						$(MAKE) .build; \
+						result=$$?; \
+						if [ $(MAKELEVEL) -eq 0 ]; then \
 							echo; \
+						fi; \
+						if [ $$result -eq 0 ]; then \
 							$(call PRINTLN,"$(MSG_SUCCESS)"); \
 						else \
-							echo; \
 							$(call PRINTLN,"$(MSG_FAILURE)"); \
 							exit 42; \
 						fi; \
@@ -121,7 +124,11 @@ else
 					$(MAKE) $(NAME)
 endif
 
-libs			:	$(LIBRARIES)
+libs			:
+					if ! $(LIBS_READY); then \
+						$(MAKE) $(LIBRARIES); \
+						echo; \
+					fi
 
 $(LIBRARIES)	:
 					$(MAKE) --directory=$@
