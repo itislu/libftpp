@@ -4,7 +4,7 @@
 
 namespace utils {
 
-namespace _detail {
+namespace _safe_bool {
 
 class SafeBoolBase {
 public:
@@ -20,7 +20,7 @@ private:
 	SafeBoolBase& operator=(const SafeBoolBase& /*unused*/);
 };
 
-} // namespace _detail
+} // namespace _safe_bool
 
 /**
  * Class to provide boolean tests for derived class but restricting it from
@@ -35,7 +35,7 @@ private:
  * 2. Implement `bool boolean_test() const throw();`
  */
 template <typename Derived = void>
-class SafeBool : private _detail::SafeBoolBase {
+class SafeBool : private _safe_bool::SafeBoolBase {
 public:
 	operator safe_bool_t() const
 	{
@@ -69,7 +69,7 @@ private:
  */
 template <>
 class SafeBool<void> // NOLINT(cppcoreguidelines-virtual-class-destructor)
-    : private _detail::SafeBoolBase {
+    : private _safe_bool::SafeBoolBase {
 public:
 	operator safe_bool_t() const
 	{

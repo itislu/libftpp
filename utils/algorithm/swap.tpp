@@ -4,7 +4,7 @@
 #include <cstddef>
 
 namespace utils {
-namespace _detail {
+namespace _swap {
 
 /**
  * Use the type's swap method.
@@ -32,12 +32,12 @@ swap(T& a,
 	b = tmp;
 }
 
-} // namespace _detail
+} // namespace _swap
 
 template <typename T>
 void swap(T& a, T& b)
 {
-	_detail::swap(a, b);
+	_swap::swap(a, b);
 }
 
 } // namespace utils
