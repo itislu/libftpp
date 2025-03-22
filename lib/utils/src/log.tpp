@@ -1,7 +1,7 @@
 #pragma once
 
-#include "common.hpp"
-#include "log.hpp"
+#include "../common.hpp"
+#include "../log.hpp"
 #include <iomanip>
 #include <ios>
 #include <sstream>

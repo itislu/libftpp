@@ -27,4 +27,4 @@ std::string line(const T& msg);
 } // namespace log
 } // namespace utils
 
-#include "log.tpp" // IWYU pragma: export
+#include "src/log.tpp" // IWYU pragma: export

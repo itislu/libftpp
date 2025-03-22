@@ -25,24 +25,24 @@ BUILD_TARGETS	:=	all clear modes run term val valfd
 REBUILD_TARGETS	:=	opt re san
 DOC_TARGETS		:=	bear doxygen uml
 CLEAN_TARGETS	:=	clean fclean ffclean
-PHONY_TARGETS	:=	$(BUILD_TARGETS) $(REBUILD_TARGETS) $(DOC_TARGETS) $(CLEAN_TARGETS)
+PHONY_TARGETS	:=	$(BUILD_TARGETS) $(REBUILD_TARGETS) $(DOC_TARGETS) $(CLEAN_TARGETS) libs
 ENV_VARIABLES	:=	MODE ARGS TERMINAL
 HELP_TARGETS	:=	help help-print \
 					$(addprefix help-,$(PHONY_TARGETS) $(ENV_VARIABLES)) \
 					$(addsuffix -help,$(PHONY_TARGETS) $(ENV_VARIABLES))
-HIDDEN_TARGETS	:=	.bear-image .clang-uml .clang-uml-image .doxygen-image .plantuml .plantuml-image
+HIDDEN_TARGETS	:=	.bear-image .build .clang-uml .clang-uml-image .doxygen-image .plantuml .plantuml-image
 
 
 #	Phony targets
 
-PHONY_TARGETS	+=	$(HELP_TARGETS) $(HIDDEN_TARGETS)
+PHONY_TARGETS	+=	$(HELP_TARGETS) $(HIDDEN_TARGETS) $(LIBRARIES)
 .PHONY			:	$(PHONY_TARGETS)
 
 
 # ***************************** BUILD TARGETS ******************************** #
 
 all				:
-					if $(MAKE) --question $(NAME); then \
+					if $(READY); then \
 						$(call PRINTLN,"$(MSG_NO_CHANGE)"); \
 						$(call PRINTLN,"$(MSG_HELP)"); \
 					else \
@@ -51,7 +51,7 @@ all				:
 						$(call PRINTLN," $(MSG_COMP_INFO)"); \
 						$(call PRINTLN," $(MSG_HELP)"\n); \
 						$(call PRINT,"$(MSG_START)"); \
-						if $(MAKE) $(NAME); then \
+						if $(MAKE) .build; then \
 							echo; \
 							$(call PRINTLN,"$(MSG_SUCCESS)"); \
 						else \
@@ -100,10 +100,44 @@ ifneq (, $(or $(filter $(BUILD_TARGETS),$(MAKECMDGOALS)),$(if $(MAKECMDGOALS),,a
 endif
 
 
-#	Executable linkage
+#	Dependency management
 
+define READY
+$(NAME_READY) && $(LIBS_READY)
+endef
+
+define NAME_READY
+$(MAKE) --question $(NAME) &>/dev/null
+endef
+
+define LIBS_READY
+$(foreach lib,$(LIBRARIES),$(MAKE) --question --directory=$(lib) &>/dev/null && ) true
+endef
+
+ifeq (4.4, $(firstword $(sort $(MAKE_VERSION) 4.4)))
+.build			:	$(LIBRARIES) .WAIT $(NAME)
+else
+.build			:	$(LIBRARIES)
+					$(MAKE) $(NAME)
+endif
+
+libs			:	$(LIBRARIES)
+
+$(LIBRARIES)	:
+					$(MAKE) --directory=$@
+
+
+#	Linkage
+
+ifneq (, $(IS_LIB))
+#	Library
 $(NAME)			:	$(OBJ)
-					$(CXX) $(CXXFLAGS) $(OBJ) -o $(NAME)
+					ar rcs $(NAME) $(OBJ)
+else
+#	Executable
+$(NAME)			:	$(OBJ)
+					$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJ) $(LDLIBS) -o $(NAME)
+endif
 
 
 #	Source file compilation
@@ -173,6 +207,9 @@ endif
 
 clean			:
 					$(call PRINTLN,"$(MSG_CLEAN)")
+					for dir in $(LIBRARIES); do \
+						$(MAKE) clean --directory=$$dir; \
+					done
 					rm -f $(OBJ) $(DEP)
                     ifneq (, $(wildcard $(OBJ_DIR)))
 						-find $(OBJ_DIR) -type d -empty -delete
@@ -185,12 +222,18 @@ clean			:
 fclean			:
 					$(call PRINTLN,"$(MSG_FCLEAN)")
 					$(MAKE) clean
+					for dir in $(LIBRARIES); do \
+						$(MAKE) fclean --directory=$$dir; \
+					done
 					rm -f $(NAME)
 					$(call PRINTLN,"$(MSG_SUCCESS)")
 
 ffclean			:
 					$(call PRINTLN,"$(MSG_FFCLEAN)")
 					$(MAKE) fclean
+					for dir in $(LIBRARIES); do \
+						$(MAKE) ffclean --directory=$$dir; \
+					done
 					rm -rf $(OBJ_DIR) $(DEP_DIR) $(DOXYGEN_OUTDIR) $(UML_OUTDIR)
 					$(call PRINTLN,"$(MSG_SUCCESS)")
 

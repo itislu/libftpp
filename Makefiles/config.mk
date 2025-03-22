@@ -8,6 +8,9 @@ include				$(shell git rev-parse --show-toplevel)/Makefiles/setup.mk
 
 MSG_PROGRESS	?=	"🔨"
 COLOR_MAKE		?=	STY_GRE
+IS_LIB			?=	$(if $(filter %.a,$(NAME)),true)
+LIBRARIES		?=	
+CPPFLAGS		?=	
 
 
 # ************************** BUILD CONFIGURATION ***************************** #
@@ -28,7 +31,8 @@ BUILDFILES		=	$(filter-out %.d,$(MAKEFILE_LIST))
 #	Directories
 
 SRC_DIR			:=	src
-INC_DIRS		:=	inc $(SRC_DIR)
+LIB_DIR			:=	../lib
+INC_DIRS		:=	inc $(SRC_DIR) $(LIB_DIR)
 BUILD_DIR		:=	build
 OBJ_DIR			:=	$(BUILD_DIR)/_obj
 DEP_DIR			:=	$(BUILD_DIR)/_dep
@@ -50,6 +54,8 @@ CXXFLAGS		?=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG) $(if $(IS_CLANG),$(CXXFLAGS_CLANG))
 CPPFLAGS_OPT	:=	-D NDEBUG
 CPPFLAGS		+=	$(addprefix -I,$(INC_DIRS))
 DEPFLAGS		=	-M -MP -MF $@ -MT "$(OBJ_DIR)/$*.o $@"
+LDFLAGS			:=	$(addprefix -L,$(LIBRARIES))
+LDLIBS			:=	$(addprefix -l,$(patsubst lib%,%,$(notdir $(LIBRARIES))))
 
 
 #	Files

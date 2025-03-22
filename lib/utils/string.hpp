@@ -27,5 +27,5 @@ std::string trim(const std::string& str);
 
 } // namespace utils
 
-#include "string/from_string.tpp" // IWYU pragma: export
-#include "string/to_string.tpp"   // IWYU pragma: export
+#include "src/string/from_string.tpp" // IWYU pragma: export
+#include "src/string/to_string.tpp"   // IWYU pragma: export

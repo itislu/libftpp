@@ -17,6 +17,6 @@ transform(InputIt first, InputIt last, OutputIt d_result, UnaryOp unary_op);
 
 } // namespace utils
 
-#include "algorithm/count.tpp"     // IWYU pragma: export
-#include "algorithm/swap.tpp"      // IWYU pragma: export
-#include "algorithm/transform.tpp" // IWYU pragma: export
+#include "src/algorithm/count.tpp"     // IWYU pragma: export
+#include "src/algorithm/swap.tpp"      // IWYU pragma: export
+#include "src/algorithm/transform.tpp" // IWYU pragma: export
