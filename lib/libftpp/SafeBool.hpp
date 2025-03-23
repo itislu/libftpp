@@ -126,9 +126,23 @@ bool operator==(const SafeBool<T>& lhs, const U& /*rhs*/)
 }
 
 template <typename T, typename U>
+bool operator==(const U& /*lhs*/, const SafeBool<T>& rhs)
+{
+	rhs.this_type_does_not_support_comparisons();
+	return false;
+}
+
+template <typename T, typename U>
 bool operator!=(const SafeBool<T>& lhs, const U& /*rhs*/)
 {
 	lhs.this_type_does_not_support_comparisons();
+	return false;
+}
+
+template <typename T, typename U>
+bool operator!=(const U& /*lhs*/, const SafeBool<T>& rhs)
+{
+	rhs.this_type_does_not_support_comparisons();
 	return false;
 }
 
