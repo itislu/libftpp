@@ -7,7 +7,7 @@ include				$(shell git rev-parse --show-toplevel)/Makefiles/setup.mk
 # ************************* DEFAULT CONFIGURATION **************************** #
 
 MSG_PROGRESS	?=	"🔨"
-COLOR_MAKE		?=	STY_GRE
+COLOR_MAKE		?=	$(STY_GRE)
 IS_LIB			?=	$(if $(filter %.a,$(NAME)),true)
 LIBRARIES		?=	
 CPPFLAGS		?=	
