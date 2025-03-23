@@ -52,6 +52,7 @@ SpaceAfterTemplateKeyword: true
 SpaceBeforeAssignmentOperators: true
 SpaceBeforeParens: ControlStatements
 SpaceBeforeRangeBasedForLoopColon: true
+SpacesInAngles: Never
 SpacesInSquareBrackets: false
 Standard: Auto
 TabWidth: 4
