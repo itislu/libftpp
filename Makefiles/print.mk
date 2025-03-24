@@ -89,37 +89,37 @@ MSG_FAILURE		:=	$(STY_BOL)$(STY_ITA)$(STY_RED)"BUILD FAILED!"$(STY_RES)
 #	Build modes
 
 MSG_CLEAR		:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_GRA)"~~~~~~~~~~~~~~~~~~~~~ CLEAR MODE ~~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
-ifneq (, $(filter clear,$(MAKECMDGOALS) $(MODE)))
+ifneq (, $(filter clear,$(MAKECMDGOALS) $(subst $(COMMA),$(SPACE),$(MODE))))
 MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE),"\n")$(MSG_CLEAR)
 endif
 
 MSG_OPT			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_GRE)"~~~~~~~~~~~~~~~~~~~ OPTIMIZATION MODE ~~~~~~~~~~~~~~~~~~~"$(STY_RES)
-ifneq (, $(filter opt,$(MAKECMDGOALS) $(MODE)))
+ifneq (, $(filter opt,$(MAKECMDGOALS) $(subst $(COMMA),$(SPACE),$(MODE))))
 MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE),"\n")$(MSG_OPT)
 endif
 
 MSG_RUN			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_YEL)"~~~~~~~~~~~~~~~~~~~~~~~ RUN MODE ~~~~~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
-ifneq (, $(filter run,$(MAKECMDGOALS) $(MODE)))
+ifneq (, $(filter run,$(MAKECMDGOALS) $(subst $(COMMA),$(SPACE),$(MODE))))
 MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE),"\n")$(MSG_RUN)
 endif
 
 MSG_SAN			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_RED)"~~~~~~~~~~~~~~~~~~~~ SANITIZER MODE ~~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
-ifneq (, $(filter san,$(MAKECMDGOALS) $(MODE)))
+ifneq (, $(filter san,$(MAKECMDGOALS) $(subst $(COMMA),$(SPACE),$(MODE))))
 MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE),"\n")$(MSG_SAN)
 endif
 
 MSG_TERM		:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_YEL)"~~~~~~~~~~~~~~~~~~~ NEW TERMINAL MODE ~~~~~~~~~~~~~~~~~~~"$(STY_RES)
-ifneq (, $(filter term,$(MAKECMDGOALS) $(MODE)))
+ifneq (, $(filter term,$(MAKECMDGOALS) $(subst $(COMMA),$(SPACE),$(MODE))))
 MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE),"\n")$(MSG_TERM)
 endif
 
 MSG_VAL			:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_BLU)"~~~~~~~~~~~~~~~~~~~~~ VALGRIND MODE ~~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
-ifneq (, $(filter val,$(MAKECMDGOALS) $(MODE)))
+ifneq (, $(filter val,$(MAKECMDGOALS) $(subst $(COMMA),$(SPACE),$(MODE))))
 MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE),"\n")$(MSG_VAL)
 endif
 
 MSG_VALFD		:=	$(STY_BOL)$(STY_ITA)$(STY_UND)$(STY_CYA)"~~~~~~~~~~~~~~~~~~~ VALGRIND FD MODE ~~~~~~~~~~~~~~~~~~~~"$(STY_RES)
-ifneq (, $(filter valfd,$(MAKECMDGOALS) $(MODE)))
+ifneq (, $(filter valfd,$(MAKECMDGOALS) $(subst $(COMMA),$(SPACE),$(MODE))))
 MSG_MODE		:=	$(MSG_MODE)$(if $(MSG_MODE),"\n")$(MSG_VALFD)
 endif
 

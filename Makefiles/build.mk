@@ -168,42 +168,43 @@ $(OBJ_SUBDIRS) $(DEP_SUBDIRS):
 
 # ********************************* MODES ************************************ #
 
+MODE			:=	$(subst $(COMMA),$(SPACE),$(MODE))
 ENV				:=
 
-ifeq (clear, $(filter clear,$(MAKECMDGOALS) $(MODE)))
+ifeq (clear, $(filter clear,$(MAKECMDGOALS) $(subst $(COMMA),$(SPACE),$(MODE))))
 CLEAR			:=	true
 endif
 
-ifeq (opt, $(filter opt,$(MAKECMDGOALS) $(MODE)))
+ifeq (opt, $(filter opt,$(MAKECMDGOALS) $(subst $(COMMA),$(SPACE),$(MODE))))
 CXXFLAGS		:=	$(CXXFLAGS_STD) $(CXXFLAGS_OPT)
 CPPFLAGS		+=	$(CPPFLAGS_OPT)
 RECOMPILE		:=	true
 endif
 
-ifeq (re, $(filter re,$(MAKECMDGOALS) $(MODE)))
+ifeq (re, $(filter re,$(MAKECMDGOALS) $(subst $(COMMA),$(SPACE),$(MODE))))
 RECOMPILE		:=	true
 endif
 
-ifeq (run, $(filter run,$(MAKECMDGOALS) $(MODE)))
+ifeq (run, $(filter run,$(MAKECMDGOALS) $(subst $(COMMA),$(SPACE),$(MODE))))
 RUN				:=	true
 endif
 
-ifeq (san, $(filter san,$(MAKECMDGOALS) $(MODE)))
+ifeq (san, $(filter san,$(MAKECMDGOALS) $(subst $(COMMA),$(SPACE),$(MODE))))
 CXXFLAGS		+=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG) $(CXXFLAGS_SAN)
 RECOMPILE		:=	true
 endif
 
-ifeq (term, $(filter term,$(MAKECMDGOALS) $(MODE)))
+ifeq (term, $(filter term,$(MAKECMDGOALS) $(subst $(COMMA),$(SPACE),$(MODE))))
 NEW_TERM		:=	true
 RUN				:=	true
 endif
 
-ifeq (val, $(filter val,$(MAKECMDGOALS) $(MODE)))
+ifeq (val, $(filter val,$(MAKECMDGOALS) $(subst $(COMMA),$(SPACE),$(MODE))))
 ENV				+=	$(VALGRIND) $(VALGRINDFLAGS)
 RUN				:=	true
 endif
 
-ifeq (valfd, $(filter valfd,$(MAKECMDGOALS) $(MODE)))
+ifeq (valfd, $(filter valfd,$(MAKECMDGOALS) $(subst $(COMMA),$(SPACE),$(MODE))))
 ENV				+=	$(VALGRIND) $(VALGRINDFLAGS) $(VALGRINDFDFLAGS)
 NEW_TERM		:=	true
 RUN				:=	true
