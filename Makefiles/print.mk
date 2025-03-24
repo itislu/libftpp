@@ -139,7 +139,8 @@ endif
 # *************************** MAKEFILE DEBUGGING ***************************** #
 
 print-%			:
-					$(call PRINTLN,$* = $(shell echo -n $($*)))
+					$(if $(filter undefined,$(flavor $*)),$(call PRINTLN,(undefined)),\
+					$(call PRINTLN,$* $(if $(filter simple,$(flavor $*)),:=,=) $(shell echo -n $($*))))
 
 
 endif

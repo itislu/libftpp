@@ -21,7 +21,8 @@ SPACE			:=	$() $()
 # *************************** MAKEFILE DEBUGGING ***************************** #
 
 print-%			:
-					echo -e $* = $($*)
+					$(if $(filter undefined,$(flavor $*)),echo -e (undefined),\
+					echo -e $* $(if $(filter simple,$(flavor $*)),:=,=) "$(shell echo -n $($*))")
 
 
 endif
