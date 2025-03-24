@@ -2,6 +2,7 @@ ifndef CONFIG_MK
 CONFIG_MK		:=	1
 
 include				$(shell git rev-parse --show-toplevel)/Makefiles/setup.mk
+include				$(MAKEFILES_DIR)/print.mk
 
 
 # ************************* DEFAULT CONFIGURATION **************************** #
@@ -18,6 +19,8 @@ CPPFLAGS		?=
 #	Default targets
 
 %				:
+					$(call PRINTLN,"$(MSG_UNKNOWN)")
+					echo
 					$(MAKE) help
 
 .DEFAULT_GOAL	:=	all

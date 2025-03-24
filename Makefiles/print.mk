@@ -52,6 +52,9 @@ endef
 
 # **************************** CUSTOM MESSAGES ******************************* #
 
+MSG_UNKNOWN		=	$(STY_ITA)"Unknown target: "$(STY_BOL)$(STY_RED)"$@"$(STY_RES)
+
+
 #	Adjustments to dynamic messages
 
 ifneq (, $(MSG_PREFIX))
@@ -70,7 +73,7 @@ ifeq (0, $(MAKELEVEL))
 
 MSG_MAKE_INFO	:=	$(STY_ITA)$(STY_WHI)"Make version: $(MAKE_VERSION)"$(STY_RES)
 
-MSG_COMP_INFO	:=	$(STY_ITA)$(STY_WHI)"Compiler version: $(CXX_VERSION)"$(STY_RES)
+MSG_COMP_INFO	=	$(STY_ITA)$(STY_WHI)"Compiler version: $(CXX_VERSION)"$(STY_RES)
 
 MSG_HELP		:=	$(STY_ITA)$(STY_WHI)"Run 'make help' to see all available Makefile targets."$(STY_RES)
 
