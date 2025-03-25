@@ -60,6 +60,8 @@ CPPFLAGS		+=	$(addprefix -I,$(INC_DIRS))
 DEPFLAGS		=	-M -MP -MF $@ -MT "$(OBJ_DIR)/$*.o $@"
 LDFLAGS			:=	$(addprefix -L,$(LIBRARIES))
 LDLIBS			:=	$(addprefix -l,$(patsubst lib%,%,$(notdir $(LIBRARIES))))
+AR				:=	ar
+ARFLAGS			:=	rcs
 
 
 #	Files

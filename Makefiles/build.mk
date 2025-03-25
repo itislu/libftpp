@@ -139,7 +139,7 @@ $(LIBRARIES)	:
 ifneq (, $(IS_LIB))
 #	Library
 $(NAME)			:	$(OBJ)
-					ar rcs $(NAME) $(OBJ)
+					$(AR) $(ARFLAGS) $(NAME) $(OBJ)
 else
 #	Executable
 $(NAME)			:	$(OBJ)
