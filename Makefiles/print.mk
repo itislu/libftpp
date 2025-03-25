@@ -52,6 +52,8 @@ endef
 
 # **************************** CUSTOM MESSAGES ******************************* #
 
+MSG_LINK		:=	"🔗"
+MSG_ARCHIVE		:=	"🔒"
 MSG_UNKNOWN		=	$(STY_ITA)"Unknown target: "$(STY_BOL)$(STY_RED)"$@"$(STY_RES)
 
 
@@ -72,17 +74,11 @@ ifeq (0, $(MAKELEVEL))
 #	Make status messages
 
 MSG_MAKE_INFO	:=	$(STY_ITA)$(STY_WHI)"Make version: $(MAKE_VERSION)"$(STY_RES)
-
 MSG_COMP_INFO	=	$(STY_ITA)$(STY_WHI)"Compiler version: $(CXX_VERSION)"$(STY_RES)
-
 MSG_HELP		:=	$(STY_ITA)$(STY_WHI)"Run 'make help' to see all available Makefile targets."$(STY_RES)
-
 MSG_START		=	$(STY_ITA)$(if $(RECOMPILE),"Rebuilding","Building")" $(NAME) ... "$(STY_RES)
-
 MSG_SUCCESS		?=	$(STY_BOL)$(STY_ITA)$(COLOR_MAKE)"DONE!"$(STY_RES)
-
 MSG_NO_CHANGE	:=	$(STY_ITA)$(STY_WHI)"Everything up-to-date!"$(STY_RES)
-
 MSG_FAILURE		:=	$(STY_BOL)$(STY_ITA)$(STY_RED)"BUILD FAILED!"$(STY_RES)
 
 
@@ -127,10 +123,9 @@ endif
 #	Clean messages
 
 MSG_CLEAN		:=	$(STY_ITA)"Cleaning up build artifacts ... "$(STY_RES)
-
 MSG_FCLEAN		:=	$(STY_ITA)"Cleaning up build artifacts and executable ... "$(STY_RES)
-
 MSG_FFCLEAN		:=	$(STY_ITA)"Forcefully cleaning up build artifacts directory, executable and generated documentation ... "$(STY_RES)
+
 
 endif
 ################################################################################

@@ -139,11 +139,13 @@ $(LIBRARIES)	:
 ifneq (, $(IS_LIB))
 #	Library
 $(NAME)			:	$(OBJ)
-					$(AR) $(ARFLAGS) $(NAME) $(OBJ)
+					$(AR) $(ARFLAGS) $(NAME) $(OBJ) \
+						&& echo -e -n $(MSG_ARCHIVE)
 else
 #	Executable
 $(NAME)			:	$(OBJ)
-					$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJ) $(LDLIBS) -o $(NAME)
+					$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJ) $(LDLIBS) -o $(NAME) \
+						&& echo -e -n $(MSG_LINK)
 endif
 
 
