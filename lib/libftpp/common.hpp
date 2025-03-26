@@ -12,7 +12,17 @@
 #define GRAY(msg)   (std::string("\033[37m") + msg + "\033[0m")
 
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
-#define WHERE             (ft::where(__FILE__, __LINE__, __FUNCTION__))
+
+#if defined(__GNUC__) // GCC, Clang, ICC
+#	define UNREACHABLE() (__builtin_unreachable())
+#elif defined(_MSC_VER) // MSVC
+#	define UNREACHABLE() (__assume(false))
+#else
+#	include <exception>
+#	define UNREACHABLE() (std::terminate())
+#endif
+
+#define WHERE (ft::where(__FILE__, __LINE__, __FUNCTION__))
 
 namespace ft {
 
