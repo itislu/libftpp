@@ -8,7 +8,7 @@ namespace ft {
 
 // NOLINTBEGIN(cppcoreguidelines-pro-type-reinterpret-cast)
 template <typename T>
-void rand(T* v, std::streamsize size)
+void urandom(T* v, std::streamsize size)
 {
 	std::ifstream urandom;
 
@@ -18,5 +18,13 @@ void rand(T* v, std::streamsize size)
 	urandom.close();
 }
 // NOLINTEND(cppcoreguidelines-pro-type-reinterpret-cast)
+
+template <typename T>
+T urandom()
+{
+	T t;
+	urandom(&t, sizeof(t));
+	return t;
+}
 
 } // namespace ft

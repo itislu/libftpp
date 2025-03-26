@@ -19,7 +19,9 @@ namespace ft {
 std::string where(const char* file, size_t line, const char* function);
 
 template <typename T>
-void rand(T* v, std::streamsize size);
+void urandom(T* v, std::streamsize size);
+template <typename T>
+T urandom();
 
 } // namespace ft
 
