@@ -16,8 +16,6 @@
 namespace ft {
 namespace _string {
 template <typename T>
-static T from_string_character(const std::string& str);
-template <typename T>
 static T from_string_floating_point(const std::string& str);
 } // namespace _string
 
@@ -35,8 +33,9 @@ template <typename T>
 T from_string(const std::string& str)
 {
 	T res;
+	std::istringstream iss(str);
 
-	if (!(std::istringstream(str) >> res)) {
+	if (!(iss >> res)) {
 		if (std::numeric_limits<T>::is_integer) {
 			const char* start = str.c_str();
 			char* end = NULL;
@@ -66,7 +65,7 @@ T from_string(const std::string& str)
 template <>
 inline bool from_string<bool>(const std::string& str)
 {
-	bool b = false;
+	bool b; // NOLINT(cppcoreguidelines-init-variables)
 
 	if (!(std::istringstream(str) >> std::boolalpha >> b)
 	    && !(std::istringstream(str) >> b)) {
@@ -74,34 +73,6 @@ inline bool from_string<bool>(const std::string& str)
 		                            + typeid(bool).name() + ": " + str);
 	}
 	return b;
-}
-
-/**
- * @brief Extracts the first character of a string
- *
- * @param str The string to convert
- * @return char The first character of the string
- *
- * @throws std::invalid_argument When the string is empty
- */
-template <>
-inline char from_string<char>(const std::string& str)
-{
-	return _string::from_string_character<char>(str);
-}
-
-/**
- * @brief Extracts the first character of a string
- *
- * @param str The string to convert
- * @return unsigned char The first character of the string
- *
- * @throws std::invalid_argument When the string is empty
- */
-template <>
-inline unsigned char from_string<unsigned char>(const std::string& str)
-{
-	return _string::from_string_character<unsigned char>(str);
 }
 
 /**
@@ -152,16 +123,10 @@ inline long double from_string<long double>(const std::string& str)
 
 namespace _string {
 
-template <typename T>
-static T from_string_character(const std::string& str)
-{
-	if (str.empty()) {
-		throw std::invalid_argument(std::string("Cannot convert to ")
-		                            + typeid(T).name() + ": empty");
-	}
-	return str[0];
-}
-
+/**
+ * Uses strto* functions for floating-point types because stringstream does not
+ * support nan or inf.
+ */
 template <typename T>
 static T from_string_floating_point(const std::string& str)
 {

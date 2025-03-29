@@ -17,10 +17,6 @@ T from_string(const std::string& str);
 template <>
 inline bool from_string<bool>(const std::string& str);
 template <>
-inline char from_string<char>(const std::string& str);
-template <>
-inline unsigned char from_string<unsigned char>(const std::string& str);
-template <>
 inline float from_string<float>(const std::string& str);
 template <>
 inline double from_string<double>(const std::string& str);
