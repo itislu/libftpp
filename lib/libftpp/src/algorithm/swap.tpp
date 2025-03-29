@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../algorithm.hpp"
 #include "../../type_traits.hpp"
 #include <cstddef>
 
