@@ -14,6 +14,8 @@ bool ends_with(const std::string& str, unsigned char suffix);
 
 template <typename T>
 T from_string(const std::string& str);
+template <typename T>
+T from_string(const std::string& str, std::ios::fmtflags fmt);
 template <>
 inline bool from_string<bool>(const std::string& str);
 template <>

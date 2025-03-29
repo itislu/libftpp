@@ -32,8 +32,27 @@ static T from_string_floating_point(const std::string& str);
 template <typename T>
 T from_string(const std::string& str)
 {
+	return from_string<T>(str, std::ios::fmtflags());
+}
+
+/**
+ * @brief Converts a string to a specified type
+ *
+ * @tparam T The type to convert to
+ * @param str The string to convert
+ * @param fmt Stream formatting flags that determine how the string is
+ * interpreted
+ * @return T The converted value
+ *
+ * @throws std::out_of_range When the value is out of the representable range
+ * @throws std::invalid_argument When the string cannot be converted to the type
+ */
+template <typename T>
+T from_string(const std::string& str, std::ios::fmtflags fmt)
+{
 	T res;
 	std::istringstream iss(str);
+	iss.flags(fmt);
 
 	if (!(iss >> res)) {
 		if (std::numeric_limits<T>::is_integer) {
