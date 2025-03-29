@@ -17,6 +17,16 @@ namespace ft {
 namespace _string {
 
 template <typename T>
+static T from_string_character(const std::string& str)
+{
+	if (str.empty()) {
+		throw std::invalid_argument(std::string("Cannot convert to ")
+		                            + typeid(T).name() + ": empty");
+	}
+	return str[0];
+}
+
+template <typename T>
 static T from_string_floating_point(const std::string& str)
 {
 	T res;
@@ -58,7 +68,7 @@ T from_string(const std::string& str)
 			const char* start = str.c_str();
 			char* end = NULL;
 
-			(void)strtol(start, &end, 0);
+			(void)std::strtol(start, &end, 0);
 			if (end != start) {
 				throw std::out_of_range(strerror(ERANGE));
 			}
@@ -83,19 +93,31 @@ inline bool from_string<bool>(const std::string& str)
 }
 
 template <>
-float from_string<float>(const std::string& str)
+inline char from_string<char>(const std::string& str)
+{
+	return _string::from_string_character<char>(str);
+}
+
+template <>
+inline unsigned char from_string<unsigned char>(const std::string& str)
+{
+	return _string::from_string_character<unsigned char>(str);
+}
+
+template <>
+inline float from_string<float>(const std::string& str)
 {
 	return _string::from_string_floating_point<float>(str);
 }
 
 template <>
-double from_string<double>(const std::string& str)
+inline double from_string<double>(const std::string& str)
 {
 	return _string::from_string_floating_point<double>(str);
 }
 
 template <>
-long double from_string<long double>(const std::string& str)
+inline long double from_string<long double>(const std::string& str)
 {
 	return _string::from_string_floating_point<long double>(str);
 }
