@@ -1,5 +1,6 @@
 #pragma once
 
+#include <ios>
 #include <string>
 
 namespace ft {
@@ -27,11 +28,10 @@ template <>
 inline long double from_string<long double>(const std::string& str);
 
 template <typename T>
-std::string to_string(T v);
+std::string to_string(T v, std::ios::fmtflags fmt = std::ios::fmtflags());
 template <typename T>
-std::string to_string(T* v);
-template <>
-inline std::string to_string(bool v);
+std::string to_string(T* v, std::ios::fmtflags fmt = std::ios::fmtflags());
+std::string to_string(bool v, std::ios::fmtflags fmt = std::ios::boolalpha);
 
 std::string& trim(std::string& str);
 std::string trim(const std::string& str);

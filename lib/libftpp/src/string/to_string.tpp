@@ -1,39 +1,29 @@
 #pragma once
 
 #include "../../string.hpp"
-#include <cerrno>
-#include <cfloat>
 #include <cstddef>
-#include <cstdlib>
-#include <cstring>
+#include <ios>
 #include <sstream>
 #include <string>
 
 namespace ft {
 
 template <typename T>
-std::string to_string(T v)
+std::string to_string(T v, std::ios::fmtflags fmt)
 {
 	std::ostringstream oss;
+	oss.flags(fmt);
 	oss << v;
 	return oss.str();
 }
 
 template <typename T>
-std::string to_string(T* v)
+std::string to_string(T* v, std::ios::fmtflags fmt)
 {
-	if (v == NULL) {
-		return "(null)";
-	}
 	std::ostringstream oss;
-	oss << v;
+	oss.flags(fmt);
+	oss << (v == NULL ? "(null)" : v);
 	return oss.str();
-}
-
-template <>
-inline std::string to_string(bool v)
-{
-	return v ? "true" : "false";
 }
 
 } // namespace ft
