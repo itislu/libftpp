@@ -58,6 +58,16 @@ static T from_string_floating_point(const std::string& str)
 
 } // namespace _string
 
+/**
+ * @brief Converts a string to a specified type
+ *
+ * @tparam T The type to convert to
+ * @param str The string to convert
+ * @return T The converted value
+ *
+ * @throws std::out_of_range When the value is out of the representable range
+ * @throws std::invalid_argument When the string cannot be converted to the type
+ */
 template <typename T>
 T from_string(const std::string& str)
 {
@@ -79,6 +89,17 @@ T from_string(const std::string& str)
 	return res;
 }
 
+/**
+ * @brief Converts a string to a boolean.
+ *
+ * Accepts both alpha (true/false) and numeric (1/0) formats.
+ *
+ * @param str The string to convert
+ * @return bool The converted boolean value
+ *
+ * @throws std::invalid_argument When the string neither starts with true/false
+ * nor 1/0
+ */
 template <>
 inline bool from_string<bool>(const std::string& str)
 {
@@ -92,30 +113,74 @@ inline bool from_string<bool>(const std::string& str)
 	return b;
 }
 
+/**
+ * @brief Extracts the first character of a string
+ *
+ * @param str The string to convert
+ * @return char The first character of the string
+ *
+ * @throws std::invalid_argument When the string is empty
+ */
 template <>
 inline char from_string<char>(const std::string& str)
 {
 	return _string::from_string_character<char>(str);
 }
 
+/**
+ * @brief Extracts the first character of a string
+ *
+ * @param str The string to convert
+ * @return unsigned char The first character of the string
+ *
+ * @throws std::invalid_argument When the string is empty
+ */
 template <>
 inline unsigned char from_string<unsigned char>(const std::string& str)
 {
 	return _string::from_string_character<unsigned char>(str);
 }
 
+/**
+ * @brief Converts a string to a float
+ *
+ * @param str The string to convert
+ * @return float The converted floating-point value
+ *
+ * @throws std::out_of_range When the value is out of the representable range
+ * @throws std::invalid_argument When the string cannot be converted to a float
+ */
 template <>
 inline float from_string<float>(const std::string& str)
 {
 	return _string::from_string_floating_point<float>(str);
 }
 
+/**
+ * @brief Converts a string to a double
+ *
+ * @param str The string to convert
+ * @return double The converted floating-point value
+ *
+ * @throws std::out_of_range When the value is out of the representable range
+ * @throws std::invalid_argument When the string cannot be converted to a double
+ */
 template <>
 inline double from_string<double>(const std::string& str)
 {
 	return _string::from_string_floating_point<double>(str);
 }
 
+/**
+ * @brief Converts a string to a long double
+ *
+ * @param str The string to convert
+ * @return long double The converted floating-point value
+ *
+ * @throws std::out_of_range When the value is out of the representable range
+ * @throws std::invalid_argument When the string cannot be converted to a long
+ * double
+ */
 template <>
 inline long double from_string<long double>(const std::string& str)
 {
