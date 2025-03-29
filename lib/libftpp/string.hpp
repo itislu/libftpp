@@ -4,6 +4,13 @@
 
 namespace ft {
 
+bool starts_with(const std::string& str, const std::string& prefix);
+bool starts_with(const std::string& str, char prefix);
+bool starts_with(const std::string& str, unsigned char prefix);
+bool ends_with(const std::string& str, const std::string& suffix);
+bool ends_with(const std::string& str, char suffix);
+bool ends_with(const std::string& str, unsigned char suffix);
+
 template <typename T>
 T from_string(const std::string& str);
 template <>
