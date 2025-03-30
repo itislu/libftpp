@@ -35,7 +35,7 @@ HIDDEN_TARGETS	:=	.bear-image .build .clang-uml .clang-uml-image .doxygen-image 
 
 #	Phony targets
 
-PHONY_TARGETS	+=	$(HELP_TARGETS) $(HIDDEN_TARGETS) $(LIBRARIES)
+PHONY_TARGETS	+=	$(HELP_TARGETS) $(HIDDEN_TARGETS) $(LIB_DIRS)
 .PHONY			:	$(PHONY_TARGETS)
 
 
@@ -114,23 +114,23 @@ $(MAKE) --question $(NAME) &>/dev/null
 endef
 
 define LIBS_READY
-$(foreach lib,$(LIBRARIES),$(MAKE) --question --directory=$(lib) &>/dev/null && ) true
+$(foreach lib,$(LIB_DIRS),$(MAKE) --question --directory=$(lib) &>/dev/null && ) true
 endef
 
 ifeq (4.4, $(firstword $(sort $(MAKE_VERSION) 4.4)))
-.build			:	$(LIBRARIES) .WAIT $(NAME)
+.build			:	$(LIB_DIRS) .WAIT $(NAME)
 else
-.build			:	$(LIBRARIES)
+.build			:	$(LIB_DIRS)
 					$(MAKE) $(NAME)
 endif
 
 libs			:
 					if ! $(LIBS_READY); then \
-						$(MAKE) $(LIBRARIES); \
+						$(MAKE) $(LIB_DIRS); \
 						echo; \
 					fi
 
-$(LIBRARIES)	:
+$(LIB_DIRS)		:
 					$(MAKE) --directory=$@
 
 
@@ -143,7 +143,7 @@ $(NAME)			:	$(OBJ)
 						&& echo -e -n $(MSG_ARCHIVE)
 else
 #	Executable
-$(NAME)			:	$(OBJ)
+$(NAME)			:	$(LIBRARIES) $(OBJ)
 					$(CXX) $(CXXFLAGS) $(LDFLAGS) $(OBJ) $(LDLIBS) -o $(NAME) \
 						&& echo -e -n $(MSG_LINK)
 endif
@@ -221,7 +221,7 @@ endif
 
 clean			:
 					$(call PRINTLN,"$(MSG_CLEAN)")
-					for dir in $(LIBRARIES); do \
+					for dir in $(LIB_DIRS); do \
 						$(MAKE) clean --directory=$$dir; \
 					done
 					rm -f $(OBJ) $(DEP)
@@ -236,7 +236,7 @@ clean			:
 fclean			:
 					$(call PRINTLN,"$(MSG_FCLEAN)")
 					$(MAKE) clean
-					for dir in $(LIBRARIES); do \
+					for dir in $(LIB_DIRS); do \
 						$(MAKE) fclean --directory=$$dir; \
 					done
 					rm -f $(NAME)
@@ -245,7 +245,7 @@ fclean			:
 ffclean			:
 					$(call PRINTLN,"$(MSG_FFCLEAN)")
 					$(MAKE) fclean
-					for dir in $(LIBRARIES); do \
+					for dir in $(LIB_DIRS); do \
 						$(MAKE) ffclean --directory=$$dir; \
 					done
 					rm -rf $(OBJ_DIR) $(DEP_DIR) $(DOXYGEN_OUTDIR) $(UML_OUTDIR)

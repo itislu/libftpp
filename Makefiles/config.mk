@@ -34,8 +34,9 @@ BUILDFILES		=	$(filter-out %.d,$(MAKEFILE_LIST))
 #	Directories
 
 SRC_DIR			:=	src
-LIB_DIR			:=	../lib
-INC_DIRS		:=	inc $(SRC_DIR) $(LIB_DIR)
+LIB_ROOT_DIR	:=	../lib
+LIB_DIRS		:=	$(dir $(LIBRARIES))
+INC_DIRS		:=	inc $(SRC_DIR) $(LIB_ROOT_DIR)
 BUILD_DIR		:=	build
 OBJ_DIR			:=	$(BUILD_DIR)/_obj
 DEP_DIR			:=	$(BUILD_DIR)/_dep
@@ -58,8 +59,8 @@ CXXFLAGS		?=	$(CXXFLAGS_STD) $(CXXFLAGS_DBG) $(if $(IS_CLANG),$(CXXFLAGS_CLANG))
 CPPFLAGS_OPT	:=	-D NDEBUG
 CPPFLAGS		+=	$(addprefix -I,$(INC_DIRS))
 DEPFLAGS		=	-M -MP -MF $@ -MT "$(OBJ_DIR)/$*.o $@"
-LDFLAGS			:=	$(addprefix -L,$(LIBRARIES))
-LDLIBS			:=	$(addprefix -l,$(patsubst lib%,%,$(notdir $(LIBRARIES))))
+LDFLAGS			:=	$(addprefix -L,$(LIB_DIRS))
+LDLIBS			:=	$(addprefix -l,$(patsubst lib%,%,$(notdir $(basename $(LIBRARIES)))))
 AR				:=	ar
 ARFLAGS			:=	rcs
 
