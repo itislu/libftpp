@@ -1,9 +1,11 @@
 #pragma once
 
+#include "../../Optional.hpp"
 #include "../../numeric.hpp"
 #include <cmath>
 #include <ios>
 #include <limits>
+#include <new>
 #include <sstream>
 
 namespace ft {
@@ -36,6 +38,17 @@ To numeric_cast(From from)
 		return _numeric_cast::int_to_fp<To>(from);
 	}
 	return _numeric_cast::fp_to_fp<To>(from);
+}
+
+template <typename To, typename From>
+ft::Optional<To> numeric_cast(From from, std::nothrow_t /*unused*/)
+{
+	try {
+		return numeric_cast<To>(from);
+	}
+	catch (const BadNumericCast&) {
+		return ft::nullopt;
+	}
 }
 
 namespace _numeric_cast {
