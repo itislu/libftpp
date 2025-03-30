@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../Optional.hpp"
 #include "../../string.hpp"
 #include <cerrno>
 #include <cfloat>
@@ -8,6 +9,7 @@
 #include <cstring>
 #include <iostream>
 #include <limits>
+#include <new>
 #include <sstream>
 #include <stdexcept>
 #include <string>
@@ -33,6 +35,26 @@ template <typename T>
 T from_string(const std::string& str)
 {
 	return from_string<T>(str, std::ios::fmtflags());
+}
+
+/**
+ * @brief Converts a string to a specified type without throwing exceptions
+ *
+ * This is the non-throwing version of the `from_string` function.
+ * Instead of throwing exceptions on failure, it returns an empty
+ * `ft::Optional`.
+ * To use it, pass a tag (f.e. `std::nothrow`) to indicate the non-throwing
+ * behavior.
+ *
+ * @tparam T The type to convert to
+ * @param str The string to convert
+ * @return ft::Optional<T> The converted value wrapped in an `ft::Optional`, or
+ * an empty `ft::Optional` if the conversion fails
+ */
+template <typename T>
+ft::Optional<T> from_string(const std::string& str, std::nothrow_t /*unused*/)
+{
+	return from_string<T>(str, std::ios::fmtflags(), std::nothrow);
 }
 
 /**
@@ -69,6 +91,35 @@ T from_string(const std::string& str, std::ios::fmtflags fmt)
 		                            + typeid(T).name() + ": " + str);
 	}
 	return res;
+}
+
+/**
+ * @brief Converts a string to a specified type without throwing exceptions
+ *
+ * This is the non-throwing version of the `from_string` function.
+ * Instead of throwing exceptions on failure, it returns an empty
+ * `ft::Optional`.
+ * To use it, pass a tag (f.e. `std::nothrow`) to indicate the non-throwing
+ * behavior.
+ *
+ * @tparam T The type to convert to
+ * @param str The string to convert
+ * @param fmt Stream formatting flags that determine how the string is
+ * interpreted
+ * @return ft::Optional<T> The converted value wrapped in an `ft::Optional`, or
+ * an empty `ft::Optional` if the conversion fails
+ */
+template <typename T>
+ft::Optional<T> from_string(const std::string& str,
+                            std::ios::fmtflags fmt,
+                            std::nothrow_t /*unused*/)
+{
+	try {
+		return from_string<T>(str, fmt);
+	}
+	catch (const std::logic_error&) {
+		return ft::nullopt;
+	}
 }
 
 /**

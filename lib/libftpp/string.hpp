@@ -1,6 +1,8 @@
 #pragma once
 
+#include "Optional.hpp"
 #include <ios>
+#include <new>
 #include <string>
 
 namespace ft {
@@ -15,7 +17,13 @@ bool ends_with(const std::string& str, unsigned char suffix);
 template <typename T>
 T from_string(const std::string& str);
 template <typename T>
+ft::Optional<T> from_string(const std::string& str, std::nothrow_t /*unused*/);
+template <typename T>
 T from_string(const std::string& str, std::ios::fmtflags fmt);
+template <typename T>
+ft::Optional<T> from_string(const std::string& str,
+                            std::ios::fmtflags fmt,
+                            std::nothrow_t /*unused*/);
 template <>
 inline bool from_string<bool>(const std::string& str);
 template <>
