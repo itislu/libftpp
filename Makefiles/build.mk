@@ -80,10 +80,10 @@ modes			:
 					if [ "$(NEW_TERM)" = "true" ] && [ -n "$(TERMINAL)" ]; then \
 						$(TERMINAL) $(TERMINALFLAGS) bash -c \
 							"trap '' SIGINT; \
-							$(ENV) ./$(NAME) $(ARGS); \
+							$(ENV) ./$(NAME) $(value ARGS); \
 							exec $(shell echo $$SHELL)"; \
 					elif [ "$(RUN)" = "true" ]; then \
-						$(ENV) "./$(NAME)" $(ARGS); \
+						$(ENV) "./$(NAME)" $(value ARGS); \
 					else \
 						$(call PRINTLN,"$(MSG_USAGE)"); \
 					fi

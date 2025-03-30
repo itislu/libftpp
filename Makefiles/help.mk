@@ -31,10 +31,10 @@ help			:
 					echo
 					echo -e "Environment Variables:"
 					echo -e "  MODE             Build mode to combine multiple targets"
-					echo -e "  ARGS             If specified, the program will run with those arguments after compilation."
+					echo -e "  ARGS             If specified, the program will run with these arguments after compilation."
 					echo -e "  TERMINAL         Terminal emulator to use for targets opening a new terminal window"
 					echo
-					echo -e "Usage: make [\\$(STY_UND)target\\$(STY_RES)] [MODE=<\\$(STY_UND)mode1\\$(STY_RES)>,[\\$(STY_UND)mode2\\$(STY_RES)],[...]] [ARGS=\"<\\$(STY_UND)arg1\\$(STY_RES)> [\\$(STY_UND)arg2\\$(STY_RES)] [...]\"] [TERMINAL=<\\$(STY_UND)terminal\\$(STY_RES)>]"
+					echo -e "Usage: make [\\$(STY_UND)target\\$(STY_RES)] [MODE=<\\$(STY_UND)mode1\\$(STY_RES)>,[\\$(STY_UND)mode2\\$(STY_RES)],[...]] [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' [...]\"] [TERMINAL=<\\$(STY_UND)terminal\\$(STY_RES)>]"
 
 help-all all-help:
 					echo -e "Build the project."
@@ -44,7 +44,7 @@ help-run run-help:
 					echo -e "Build the project and run the executable."
 					echo -e "Arguments to the program can be passed via the ARGS variable."
 					echo
-					echo -e "Usage: make run [ARGS=\"<\\$(STY_UND)arg1\\$(STY_RES)> [\\$(STY_UND)arg2\\$(STY_RES)] [...]\"]"
+					echo -e "Usage: make run [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' [...]\"]"
 
 help-opt opt-help:
 					echo -e "Rebuild the project with the following compiler optimization flags:"
@@ -61,7 +61,7 @@ help-val val-help:
 					echo -e "The following valgrind flags are used:"
 					echo -e "$(VALGRINDFLAGS)" | tr ' ' '\n' | sed 's/^/  /'
 					echo
-					echo -e "Usage: make val [ARGS=\"<\\$(STY_UND)arg1\\$(STY_RES)> [\\$(STY_UND)arg2\\$(STY_RES)] [...]\"]"
+					echo -e "Usage: make val [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' [...]\"]"
 
 help-valfd valfd-help:
 					echo -e "Build the project and run the executable with valgrind and file descriptor tracking."
@@ -73,7 +73,7 @@ help-valfd valfd-help:
 					echo -e "File descriptor specific flags:"
 					echo -e "$(VALGRINDFDFLAGS)" | tr ' ' '\n' | sed 's/^/  /'
 					echo
-					echo -e "Usage: make valfd [ARGS=\"<\\$(STY_UND)arg1\\$(STY_RES)> [\\$(STY_UND)arg2\\$(STY_RES)] [...]\"]"
+					echo -e "Usage: make valfd [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' [...]\"]"
 
 help-term term-help:
 					echo -e "Build the project and run the executable in a new terminal window."
@@ -83,7 +83,7 @@ help-term term-help:
 					echo -e "The following terminal emulator is used by default:"
 					echo -e "  $(TERMINAL)"
 					echo
-					echo -e "Usage: make term [TERMINAL=<\\$(STY_UND)terminal\\$(STY_RES)>] [ARGS=\"<\\$(STY_UND)arg1\\$(STY_RES)> [\\$(STY_UND)arg2\\$(STY_RES)] [...]\"]"
+					echo -e "Usage: make term [TERMINAL=<\\$(STY_UND)terminal\\$(STY_RES)>] [ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' [...]\"]"
 
 help-clear clear-help:
 					echo -e "Build the project and clear the terminal."
@@ -152,9 +152,11 @@ help-MODE MODE-help:
 					echo -e "Usage: make <\\$(STY_UND)target\\$(STY_RES)> MODE=<\\$(STY_UND)mode1\\$(STY_RES)>,[\\$(STY_UND)mode2\\$(STY_RES)],[...]"
 
 help-ARGS ARGS-help:
-					echo -e "If specified, the program will run with those arguments after compilation."
+					echo -e "If specified, the program will run with these arguments after compilation."
+					echo -e "The string from the ARGS variable undergoes shell expansion."
+					echo -e "To pass special characters like $$, *, ~, etc. literally, they must be properly escaped."
 					echo
-					echo -e "Usage: make <\\$(STY_UND)target\\$(STY_RES)> ARGS=\"<\\$(STY_UND)arg1\\$(STY_RES)> [\\$(STY_UND)arg2\\$(STY_RES)] [...]\""
+					echo -e "Usage: make <\\$(STY_UND)target\\$(STY_RES)> ARGS=\"'<\\$(STY_UND)arg1\\$(STY_RES)>' '[\\$(STY_UND)arg2\\$(STY_RES)]' [...]\""
 
 help-TERMINAL TERMINAL-help:
 					echo -e "Override the default terminal emulator for targets opening a new terminal window."
