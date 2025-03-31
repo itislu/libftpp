@@ -24,7 +24,7 @@ BUILDFILES		=	$(filter-out %.d,$(MAKEFILE_LIST))
 #	Directories
 
 SRC_DIR			:=	src
-LIB_ROOT_DIR	:=	../lib
+LIB_ROOT_DIR	:=	$(REPO_ROOT)/lib
 LIB_DIRS		:=	$(dir $(LIBRARIES))
 INC_DIRS		:=	inc $(SRC_DIR) $(LIB_ROOT_DIR)
 BUILD_DIR		:=	build
