@@ -33,6 +33,7 @@ Diagnostics:
         hicpp-use-nullptr, # alias
       ]
     CheckOptions:
+      modernize-deprecated-headers.CheckHeaderFile: true
       readability-magic-numbers.IgnoredIntegerValues: "1;2;3;4;10"
       readability-magic-numbers.IgnorePowersOf2IntegerValues: Yes
       readability-magic-numbers.IgnoredFloatingPointValues: "0.1"
