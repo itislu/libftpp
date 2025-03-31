@@ -4,12 +4,16 @@
 #include <ios>
 #include <string>
 
-#define BOLD(msg)   (std::string("\033[1m") + msg + "\033[0m")
-#define RED(msg)    (std::string("\033[31m") + msg + "\033[0m")
-#define GREEN(msg)  (std::string("\033[32m") + msg + "\033[0m")
-#define YELLOW(msg) (std::string("\033[33m") + msg + "\033[0m")
-#define BLUE(msg)   (std::string("\033[34m") + msg + "\033[0m")
-#define GRAY(msg)   (std::string("\033[37m") + msg + "\033[0m")
+#define BOLD(msg)      (std::string("\033[1m") + msg + "\033[0m")
+#define ITALIC(msg)    (std::string("\033[3m") + msg + "\033[0m")
+#define UNDERLINE(msg) (std::string("\033[4m") + msg + "\033[0m")
+#define RED(msg)       (std::string("\033[31m") + msg + "\033[0m")
+#define GREEN(msg)     (std::string("\033[32m") + msg + "\033[0m")
+#define YELLOW(msg)    (std::string("\033[33m") + msg + "\033[0m")
+#define BLUE(msg)      (std::string("\033[34m") + msg + "\033[0m")
+#define MAGENTA(msg)   (std::string("\033[35m") + msg + "\033[0m")
+#define CYAN(msg)      (std::string("\033[36m") + msg + "\033[0m")
+#define GRAY(msg)      (std::string("\033[37m") + msg + "\033[0m")
 
 #define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
 
