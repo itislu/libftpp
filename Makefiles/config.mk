@@ -16,16 +16,6 @@ CPPFLAGS		?=
 
 # ************************** BUILD CONFIGURATION ***************************** #
 
-#	Default targets
-
-%				:
-					$(call PRINTLN,"$(MSG_UNKNOWN)")
-					echo
-					$(MAKE) help
-
-.DEFAULT_GOAL	:=	all
-
-
 #	Dependencies
 
 BUILDFILES		=	$(filter-out %.d,$(MAKEFILE_LIST))
@@ -107,6 +97,16 @@ TERMINALFLAGS	?=	$(if $(filter gnome-terminal,$(TERMINAL)),--title="$(TERMINALTI
 ifndef NAME
     $(error NAME is not defined)
 endif
+
+
+#	Default targets
+
+.DEFAULT_GOAL	:=	all
+
+%				:
+					$(call PRINTLN,"$(MSG_UNKNOWN)")
+					echo
+					$(MAKE) help
 
 
 endif
