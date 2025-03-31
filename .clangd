@@ -1,5 +1,6 @@
 CompileFlags:
-  Add: [-Wall, -Wextra, -Werror, -Wshadow, --std=c++98, -pedantic, --language=c++]
+  Add:
+    [-Wall, -Wextra, -Werror, -Wshadow, --std=c++98, -pedantic, --language=c++]
   Compiler: c++
 
 Diagnostics:
@@ -15,16 +16,21 @@ Diagnostics:
         "performance-*",
         "readability-*",
       ]
-    Remove:
-      [
+    Remove: [
         bugprone-easily-swappable-parameters,
-        cppcoreguidelines-avoid-magic-numbers,
-        hicpp-avoid-goto,
-        hicpp-special-member-functions,
-        hicpp-use-nullptr,
-        misc-non-private-member-variables-in-classes,
         misc-use-anonymous-namespace,
         readability-identifier-length,
+        cert-oop54-cpp, # alias
+        cppcoreguidelines-avoid-magic-numbers, # alias
+        cppcoreguidelines-non-private-member-variables-in-classes, # alias
+        hicpp-avoid-goto, # alias
+        hicpp-deprecated-headers, # alias
+        hicpp-explicit-conversions, # alias
+        hicpp-no-array-decay, # alias
+        hicpp-special-member-functions, # alias
+        hicpp-use-auto, # alias
+        hicpp-use-equals-delete, # alias
+        hicpp-use-nullptr, # alias
       ]
     CheckOptions:
       readability-magic-numbers.IgnoredIntegerValues: "1;2;3;4;10"
