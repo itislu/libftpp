@@ -5,8 +5,8 @@
 namespace ft {
 
 Exception::Exception(const std::string& msg,
-                     const std::string& where,
-                     const std::string& who)
+                     const std::string& where /*= ""*/,
+                     const std::string& who /*= ""*/)
     : _msg(msg),
       _where(where),
       _who(who)

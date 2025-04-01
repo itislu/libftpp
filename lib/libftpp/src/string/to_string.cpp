@@ -5,7 +5,7 @@
 
 namespace ft {
 
-std::string to_string(bool v, std::ios::fmtflags fmt)
+std::string to_string(bool v, std::ios::fmtflags fmt /*= std::ios::boolalpha*/)
 {
 	std::ostringstream oss;
 	oss.flags(fmt);
