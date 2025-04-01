@@ -226,10 +226,10 @@ clean			:
 					done
 					rm -f $(OBJ) $(DEP)
                     ifneq (, $(wildcard $(OBJ_DIR)))
-						-find $(OBJ_DIR) -type d -empty -delete
+						-find $(OBJ_DIR) -type d -empty -delete 2>/dev/null
                     endif
                     ifneq (, $(wildcard $(DEP_DIR)))
-						-find $(DEP_DIR) -type d -empty -delete
+						-find $(DEP_DIR) -type d -empty -delete 2>/dev/null
                     endif
 					$(call PRINTLN,"$(MSG_SUCCESS)")
 
