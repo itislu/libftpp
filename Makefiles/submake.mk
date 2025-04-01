@@ -10,8 +10,8 @@ include				$(MAKEFILES_DIR)/print.mk
 MAKEFLAGS		+=	--output-sync=recurse
 MAKECMDGOALS	?=	all
 
-#	Find all immediate subdirectories containing Makefiles
-SUBDIRS			:=	$(patsubst %/,%,$(dir $(wildcard */Makefile)))
+#	Find all subdirectories containing Makefiles
+SUBDIRS			:=	$(patsubst $(PWD)/%,%,$(patsubst %/,%,$(dir $(shell find $(PWD) -mindepth 2 -type f -name Makefile))))
 
 .PHONY			:	$(MAKECMDGOALS)
 $(MAKECMDGOALS)	:	$(SUBDIRS)
