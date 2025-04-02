@@ -12,8 +12,8 @@ export				CXX CXXFLAGS MAKECMDGOALS MAKEFLAGS
 
 #	Build artifacts
 
-OBJ				:=	$(SRC:%$(SRC_EXTENSION)=$(OBJ_DIR)/%.o)
-DEP				:=	$(SRC:%$(SRC_EXTENSION)=$(DEP_DIR)/%.d)
+OBJ				:=	$(SRC:$(SRC_DIR)/%$(SRC_EXTENSION)=$(OBJ_DIR)/%.o)
+DEP				:=	$(SRC:$(SRC_DIR)/%$(SRC_EXTENSION)=$(DEP_DIR)/%.d)
 OBJ_SUBDIRS		:=	$(sort $(dir $(OBJ)))
 DEP_SUBDIRS		:=	$(sort $(dir $(DEP)))
 .SECONDARY		:	$(OBJ) $(DEP) $(OBJ_SUBDIRS) $(DEP_SUBDIRS)
