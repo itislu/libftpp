@@ -12,8 +12,8 @@ export				CXX CXXFLAGS MAKECMDGOALS MAKEFLAGS
 
 #	Build artifacts
 
-OBJ				:=	$(SRC:$(SRC_DIR)/%$(SRC_EXTENSION)=$(OBJ_DIR)/%.o)
-DEP				:=	$(SRC:$(SRC_DIR)/%$(SRC_EXTENSION)=$(DEP_DIR)/%.d)
+OBJ				:=	$(SRC:$(SRC_DIR)/%=$(OBJ_DIR)/%.o)
+DEP				:=	$(SRC:$(SRC_DIR)/%=$(DEP_DIR)/%.d)
 OBJ_SUBDIRS		:=	$(sort $(dir $(OBJ)))
 DEP_SUBDIRS		:=	$(sort $(dir $(DEP)))
 .SECONDARY		:	$(OBJ) $(DEP) $(OBJ_SUBDIRS) $(DEP_SUBDIRS)
@@ -151,14 +151,14 @@ endif
 
 #	Source file compilation
 
-$(OBJ_DIR)/%.o	:	$(SRC_DIR)/%$(SRC_EXTENSION) $(BUILDFILES) | $(OBJ_SUBDIRS)
+$(OBJ_DIR)/%.o	:	$(SRC_DIR)/% $(BUILDFILES) | $(OBJ_SUBDIRS)
 					$(CXX) $(CPPFLAGS) $(CXXFLAGS) -c $< -o $@ \
 						&& echo -e -n $(MSG_PROGRESS)
 
 
 #	Pre-processing and dependency file creation
 
-$(DEP_DIR)/%.d	:	$(SRC_DIR)/%$(SRC_EXTENSION) $(BUILDFILES) | $(DEP_SUBDIRS)
+$(DEP_DIR)/%.d	:	$(SRC_DIR)/% $(BUILDFILES) | $(DEP_SUBDIRS)
 					$(CXX) $(CPPFLAGS) $(DEPFLAGS) $(CXXFLAGS) $<
 
 
