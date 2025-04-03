@@ -2,21 +2,16 @@
 
 #include "../../algorithm.hpp"
 #include "../../type_traits.hpp"
-#include <cstddef>
 
 namespace ft {
 
 namespace _swap {
 template <typename T>
-static void
-swap(T& a,
-     T& b,
-     typename enable_if<has_swap<T>::value>::type* /*unused*/ = NULL);
+static typename enable_if<has_swap<T>::value>::type /*void*/
+swap(T& a, T& b);
 template <typename T>
-static void
-swap(T& a,
-     T& b,
-     typename enable_if<!has_swap<T>::value>::type* /*unused*/ = NULL);
+static typename enable_if<!has_swap<T>::value>::type /*void*/
+swap(T& a, T& b);
 } // namespace _swap
 
 template <typename T>
@@ -31,8 +26,8 @@ namespace _swap {
  * Use the type's swap method.
  */
 template <typename T>
-static void
-swap(T& a, T& b, typename enable_if<has_swap<T>::value>::type* /*unused*/)
+static typename enable_if<has_swap<T>::value>::type /*void*/
+swap(T& a, T& b)
 {
 	a.swap(b);
 }
@@ -41,8 +36,8 @@ swap(T& a, T& b, typename enable_if<has_swap<T>::value>::type* /*unused*/)
  * Manual swap implementation for types that do not have a swap method.
  */
 template <typename T>
-static void
-swap(T& a, T& b, typename enable_if<!has_swap<T>::value>::type* /*unused*/)
+static typename enable_if<!has_swap<T>::value>::type /*void*/
+swap(T& a, T& b)
 {
 	T tmp = a;
 	a = b;
