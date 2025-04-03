@@ -16,18 +16,18 @@ struct enable_if<true, T> {
  * Generates type traits that check if a class has a specific method.
  * The generated type traits are named has_<method_name>.
  */
-#define HAS_METHOD(name, signature)                      \
+#define HAS_METHOD(NAME, SIGNATURE)                      \
 	template <typename T>                                \
-	struct has_##name {                                  \
+	struct has_##NAME {                                  \
 	private:                                             \
-		template <typename U, signature>                 \
-		struct SFINAE {};                                \
+		template <typename U, SIGNATURE>                 \
+		struct Sfinae {};                                \
                                                          \
 		typedef char yes[1];                             \
 		typedef char no[2];                              \
                                                          \
 		template <typename U>                            \
-		static yes& test(SFINAE<U, &U::name>*);          \
+		static yes& test(Sfinae<U, &U::NAME>*);          \
 		template <typename U>                            \
 		static no& test(...);                            \
                                                          \

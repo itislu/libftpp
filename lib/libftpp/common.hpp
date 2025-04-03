@@ -4,18 +4,18 @@
 #include <ios>
 #include <string>
 
-#define BOLD(msg)      (std::string("\033[1m") + msg + "\033[0m")
-#define ITALIC(msg)    (std::string("\033[3m") + msg + "\033[0m")
-#define UNDERLINE(msg) (std::string("\033[4m") + msg + "\033[0m")
-#define RED(msg)       (std::string("\033[31m") + msg + "\033[0m")
-#define GREEN(msg)     (std::string("\033[32m") + msg + "\033[0m")
-#define YELLOW(msg)    (std::string("\033[33m") + msg + "\033[0m")
-#define BLUE(msg)      (std::string("\033[34m") + msg + "\033[0m")
-#define MAGENTA(msg)   (std::string("\033[35m") + msg + "\033[0m")
-#define CYAN(msg)      (std::string("\033[36m") + msg + "\033[0m")
-#define GRAY(msg)      (std::string("\033[37m") + msg + "\033[0m")
+#define BOLD(MSG)      (std::string("\033[1m") + MSG + "\033[0m")
+#define ITALIC(MSG)    (std::string("\033[3m") + MSG + "\033[0m")
+#define UNDERLINE(MSG) (std::string("\033[4m") + MSG + "\033[0m")
+#define RED(MSG)       (std::string("\033[31m") + MSG + "\033[0m")
+#define GREEN(MSG)     (std::string("\033[32m") + MSG + "\033[0m")
+#define YELLOW(MSG)    (std::string("\033[33m") + MSG + "\033[0m")
+#define BLUE(MSG)      (std::string("\033[34m") + MSG + "\033[0m")
+#define MAGENTA(MSG)   (std::string("\033[35m") + MSG + "\033[0m")
+#define CYAN(MSG)      (std::string("\033[36m") + MSG + "\033[0m")
+#define GRAY(MSG)      (std::string("\033[37m") + MSG + "\033[0m")
 
-#define ARRAY_SIZE(array) (sizeof(array) / sizeof(array[0]))
+#define ARRAY_SIZE(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
 
 #if defined(__GNUC__) // GCC, Clang, ICC
 #	define UNREACHABLE() (__builtin_unreachable())
