@@ -16,6 +16,7 @@
 #include <typeinfo>
 
 namespace ft {
+
 namespace _string {
 template <typename T>
 static T from_string_floating_point(const std::string& str);

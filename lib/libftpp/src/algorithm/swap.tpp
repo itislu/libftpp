@@ -5,6 +5,7 @@
 #include <cstddef>
 
 namespace ft {
+
 namespace _swap {
 template <typename T>
 static void
