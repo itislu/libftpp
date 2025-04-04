@@ -17,6 +17,9 @@
 
 #define ARRAY_SIZE(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
 
+/**
+ * https://en.cppreference.com/w/cpp/utility/unreachable
+ */
 #if defined(__GNUC__) // GCC, Clang, ICC
 #	define UNREACHABLE() (__builtin_unreachable())
 #elif defined(_MSC_VER) // MSVC

@@ -5,17 +5,29 @@
 
 namespace ft {
 
+/**
+ * https://en.cppreference.com/w/cpp/utility/optional/bad_optional_access
+ */
 class BadOptionalAccess : public std::exception {
 public:
 	const char* what() const throw();
 };
 
+/**
+ * https://en.cppreference.com/w/cpp/utility/optional/nullopt_t
+ */
 struct nullopt_t {
 	explicit nullopt_t(int /*unused*/) throw();
 };
 
+/**
+ * https://en.cppreference.com/w/cpp/utility/optional/nullopt
+ */
 extern const nullopt_t nullopt;
 
+/**
+ * https://en.cppreference.com/w/cpp/utility/optional
+ */
 template <typename T>
 class Optional : public SafeBool<Optional<T> > {
 public:

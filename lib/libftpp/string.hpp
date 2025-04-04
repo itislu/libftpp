@@ -9,12 +9,18 @@ namespace ft {
 
 /* starts_with */
 
+/**
+ * https://en.cppreference.com/w/cpp/string/basic_string/starts_with
+ */
 bool starts_with(const std::string& str, const std::string& prefix);
 bool starts_with(const std::string& str, char prefix);
 bool starts_with(const std::string& str, unsigned char prefix);
 
 /* ends_with */
 
+/**
+ * https://en.cppreference.com/w/cpp/string/basic_string/ends_with
+ */
 bool ends_with(const std::string& str, const std::string& suffix);
 bool ends_with(const std::string& str, char suffix);
 bool ends_with(const std::string& str, unsigned char suffix);
@@ -140,6 +146,9 @@ inline long double from_string<long double>(const std::string& str);
 
 /* to_string */
 
+/**
+ * https://en.cppreference.com/w/cpp/string/basic_string/to_string
+ */
 template <typename T>
 std::string to_string(T v, std::ios::fmtflags fmt = std::ios::fmtflags());
 template <typename T>
