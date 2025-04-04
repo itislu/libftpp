@@ -26,7 +26,13 @@
 #	define UNREACHABLE() (std::terminate())
 #endif
 
-#define WHERE (ft::where(__FILE__, __LINE__, __FUNCTION__))
+#if defined(__GNUC__) // GCC, Clang, ICC
+#	define WHERE (ft::where(__FILE__, __LINE__, __PRETTY_FUNCTION__))
+#elif defined(_MSC_VER) // MSVC
+#	define WHERE (ft::where(__FILE__, __LINE__, __FUNCSIG__))
+#else
+#	define WHERE (ft::where(__FILE__, __LINE__, __func__))
+#endif
 
 namespace ft {
 
