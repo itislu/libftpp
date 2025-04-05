@@ -20,9 +20,7 @@ static To fp_to_fp(From from);
 template <typename To, typename From>
 static To int_to_fp(From from);
 template <typename To, typename From>
-static To try_cast(From from);
-template <typename To, typename From>
-struct TryCast;
+struct Impl;
 } // namespace _numeric_cast
 
 template <typename To, typename From>
@@ -59,7 +57,7 @@ static To int_to_int(From from)
 	if (!std::numeric_limits<To>::is_signed && from < 0) {
 		throw NegativeOverflow();
 	}
-	return TryCast<To, From>::cast(from);
+	return Impl<To, From>::try_cast(from);
 }
 
 template <typename To, typename From>
@@ -71,7 +69,7 @@ static To fp_to_int(From from)
 	if (!std::numeric_limits<To>::is_signed && from < 0) {
 		throw NegativeOverflow();
 	}
-	return TryCast<To, From>::cast(from);
+	return Impl<To, From>::try_cast(from);
 }
 
 template <typename To, typename From>
@@ -80,18 +78,18 @@ static To fp_to_fp(From from)
 	if (std::isinf(from) || std::isnan(from)) {
 		return static_cast<To>(from);
 	}
-	return TryCast<To, From>::cast(from);
+	return Impl<To, From>::try_cast(from);
 }
 
 template <typename To, typename From>
 static To int_to_fp(From from)
 {
-	return TryCast<To, From>::cast(from);
+	return Impl<To, From>::try_cast(from);
 }
 
 template <typename To, typename From>
-struct TryCast {
-	static To cast(From from)
+struct Impl {
+	static To try_cast(From from)
 	{
 		To to;
 		std::stringstream ss;
@@ -110,8 +108,8 @@ struct TryCast {
  */
 
 template <typename From>
-struct TryCast<char, From> {
-	static char cast(From from)
+struct Impl<char, From> {
+	static char try_cast(From from)
 	{
 		int to; // NOLINT(cppcoreguidelines-init-variables)
 		std::stringstream ss;
@@ -130,8 +128,8 @@ struct TryCast<char, From> {
 };
 
 template <typename From>
-struct TryCast<unsigned char, From> {
-	static unsigned char cast(From from)
+struct Impl<unsigned char, From> {
+	static unsigned char try_cast(From from)
 	{
 		unsigned int to; // NOLINT(cppcoreguidelines-init-variables)
 		std::stringstream ss;
@@ -147,8 +145,8 @@ struct TryCast<unsigned char, From> {
 };
 
 template <typename To>
-struct TryCast<To, char> {
-	static To cast(char from)
+struct Impl<To, char> {
+	static To try_cast(char from)
 	{
 		To to;
 		std::stringstream ss;
@@ -161,8 +159,8 @@ struct TryCast<To, char> {
 };
 
 template <typename To>
-struct TryCast<To, unsigned char> {
-	static To cast(unsigned char from)
+struct Impl<To, unsigned char> {
+	static To try_cast(unsigned char from)
 	{
 		To to;
 		std::stringstream ss;
