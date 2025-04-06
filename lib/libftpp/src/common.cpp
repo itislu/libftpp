@@ -5,7 +5,7 @@
 
 namespace ft {
 
-std::string where(const char* file, size_t line, const char* function)
+std::string where(const char* file, std::size_t line, const char* function)
 {
 	std::ostringstream os;
 

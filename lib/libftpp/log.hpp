@@ -6,8 +6,8 @@
 namespace ft {
 namespace log {
 
-const size_t label_width_text = 8;
-const size_t label_width_colored = 25;
+const std::size_t label_width_text = 8;
+const std::size_t label_width_colored = 25;
 
 template <typename T>
 std::string ok(const T& msg);
