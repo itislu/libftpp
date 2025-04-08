@@ -1,26 +1,8 @@
 #pragma once
 
-#include <cstddef>
+#include "src/SafeBool/SafeBoolBase.hpp"
 
 namespace ft {
-
-namespace _safe_bool {
-
-class SafeBoolBase {
-public:
-	typedef void (SafeBoolBase::*safe_bool_t)() const;
-	void this_type_does_not_support_comparisons() const {}
-
-protected:
-	SafeBoolBase() {}
-	~SafeBoolBase() {}
-
-private:
-	SafeBoolBase(const SafeBoolBase& /*unused*/);
-	SafeBoolBase& operator=(const SafeBoolBase& /*unused*/);
-};
-
-} // namespace _safe_bool
 
 /**
  * Class to provide boolean tests for derived class but restricting it from
@@ -37,16 +19,11 @@ private:
 template <typename Derived = void>
 class SafeBool : private _safe_bool::SafeBoolBase {
 public:
-	operator safe_bool_t() const
-	{
-		return (static_cast<const Derived*>(this))->boolean_test()
-		           ? &SafeBoolBase::this_type_does_not_support_comparisons
-		           : NULL;
-	}
+	operator safe_bool_t() const;
 
 protected:
-	SafeBool() {}
-	~SafeBool() {}
+	SafeBool();
+	~SafeBool();
 
 private:
 	SafeBool(const SafeBool& /*unused*/);
@@ -71,16 +48,11 @@ template <>
 class SafeBool<void> // NOLINT(cppcoreguidelines-virtual-class-destructor)
     : private _safe_bool::SafeBoolBase {
 public:
-	operator safe_bool_t() const
-	{
-		return boolean_test()
-		           ? &SafeBoolBase::this_type_does_not_support_comparisons
-		           : NULL;
-	}
+	operator safe_bool_t() const;
 
 protected:
-	SafeBool() {}
-	virtual ~SafeBool() {}
+	SafeBool();
+	virtual ~SafeBool();
 	virtual bool boolean_test() const = 0;
 
 private:
@@ -92,58 +64,27 @@ private:
  * To allow explicit comparison with bool.
  */
 template <typename T>
-bool operator==(const SafeBool<T>& lhs, bool b)
-{
-	return b == static_cast<bool>(lhs);
-}
-
+bool operator==(const SafeBool<T>& lhs, bool b);
 template <typename T>
-bool operator==(bool b, const SafeBool<T>& rhs)
-{
-	return b == static_cast<bool>(rhs);
-}
-
+bool operator==(bool b, const SafeBool<T>& rhs);
 template <typename T>
-bool operator!=(const SafeBool<T>& lhs, bool b)
-{
-	return b != static_cast<bool>(lhs);
-}
-
+bool operator!=(const SafeBool<T>& lhs, bool b);
 template <typename T>
-bool operator!=(bool b, const SafeBool<T>& rhs)
-{
-	return b != static_cast<bool>(rhs);
-}
+bool operator!=(bool b, const SafeBool<T>& rhs);
 
 /**
  * To avoid unwanted comparisons with other types.
  */
 template <typename T, typename U>
-bool operator==(const SafeBool<T>& lhs, const U& /*rhs*/)
-{
-	lhs.this_type_does_not_support_comparisons();
-	return false;
-}
-
+bool operator==(const SafeBool<T>& lhs, const U& /*rhs*/);
 template <typename T, typename U>
-bool operator==(const U& /*lhs*/, const SafeBool<T>& rhs)
-{
-	rhs.this_type_does_not_support_comparisons();
-	return false;
-}
-
+bool operator==(const U& /*lhs*/, const SafeBool<T>& rhs);
 template <typename T, typename U>
-bool operator!=(const SafeBool<T>& lhs, const U& /*rhs*/)
-{
-	lhs.this_type_does_not_support_comparisons();
-	return false;
-}
-
+bool operator!=(const SafeBool<T>& lhs, const U& /*rhs*/);
 template <typename T, typename U>
-bool operator!=(const U& /*lhs*/, const SafeBool<T>& rhs)
-{
-	rhs.this_type_does_not_support_comparisons();
-	return false;
-}
+bool operator!=(const U& /*lhs*/, const SafeBool<T>& rhs);
 
 } // namespace ft
+
+#include "src/SafeBool/SafeBool.tpp"      // IWYU pragma: export
+#include "src/SafeBool/SafeBool_void.tpp" // IWYU pragma: export
