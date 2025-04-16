@@ -19,10 +19,14 @@ UML_OUTDIR		:=	$(DOC_DIR)/uml
 
 bear			:	.bear-image
 					docker run --rm \
+						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
 						-w $(PWD) \
 						$(BEAR_IMG) \
-						bash -c '{ bear -- make re; make fclean; } >/dev/null'
+						bash -c '{ \
+							bear -- make re; \
+							make fclean; \
+						} >/dev/null'
 					echo
 					$(call PRINTLN,"Generated compile_commands.json.")
 
@@ -32,19 +36,22 @@ bear			:	.bear-image
 doxygen			:	.doxygen-image bear $(DOXYFILE)
 					mkdir -p $(DOXYGEN_OUTDIR)
 					docker run --rm \
+						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
 						-w $(PWD) \
 						$(DOXYGEN_IMG) \
-						bash -c '{ cat $(DOXYFILE); \
+						bash -c '{ \
+							cat $(DOXYFILE); \
 							echo PROJECT_NAME="$(if $(REPO_SUBDIR),[$(REPO_SUBDIR)] - )$(NAME)"; \
 							echo OUTPUT_DIRECTORY=$(DOXYGEN_OUTDIR); \
-							} | doxygen -q -'
+						} | doxygen -q -'
 					echo
 					$(call PRINTLN,"Generated Doxygen documentation in $(DOXYGEN_OUTDIR).")
 					open $(DOXYGEN_OUTDIR)/html/index.html
 
 $(DOXYFILE)		:	| .doxygen-image
 					docker run --rm \
+						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
 						-w $(PWD) \
 						$(DOXYGEN_IMG) \
@@ -62,6 +69,7 @@ uml				:	.clang-uml .plantuml-image
 .clang-uml		:	.clang-uml-image bear $(CLANG_UML_CFG)
 					mkdir -p $(UML_OUTDIR)
 					docker run --rm \
+						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
 						-w $(PWD) \
 						$(CLANG_UML_IMG) \
@@ -71,6 +79,7 @@ uml				:	.clang-uml .plantuml-image
 
 $(CLANG_UML_CFG):	| .clang-uml-image
 					docker run --rm \
+						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
 						-w $(PWD) \
 						$(CLANG_UML_IMG) \
@@ -87,6 +96,7 @@ $(CLANG_UML_CFG):	| .clang-uml-image
 					$(call PRINTLN,"Converting PlantUML files to PNG and SVG ...")
 					mkdir -p $(UML_OUTDIR)
 					docker run --rm \
+						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
 						-w $(PWD) \
 						$(PLANTUML_IMG) \
@@ -95,6 +105,7 @@ $(CLANG_UML_CFG):	| .clang-uml-image
 					open $(UML_OUTDIR)
 					$(call PRINTLN,"Converting PlantUML files to PDF '('this may take a moment')' ...")
 					docker run --rm \
+						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
 						-w $(PWD) \
 						$(PLANTUML_IMG) \
