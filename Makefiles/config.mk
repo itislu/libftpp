@@ -63,7 +63,7 @@ SRC				:=	$(shell find $(SRC_DIR) -type f -name "*$(SRC_EXTENSION)")
 
 #	Valgrind
 
-VALGRIND		:=	$(shell which valgrind)
+VALGRIND		:=	$(shell which valgrind 2>/dev/null || echo "valgrind")
 
 VALGRINDFLAGS	=	--errors-for-leak-kinds=all \
 					--leak-check=full \
