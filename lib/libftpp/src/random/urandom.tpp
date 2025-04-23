@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../common.hpp"
+#include "../../random.hpp"
 #include <fstream>
 #include <ios>
 

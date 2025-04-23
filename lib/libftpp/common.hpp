@@ -1,7 +1,6 @@
 #pragma once
 
 #include <cstddef>
-#include <ios>
 #include <string>
 
 #define BOLD(MSG)      (std::string("\033[1m") + MSG + "\033[0m")
@@ -29,11 +28,4 @@ namespace ft {
 
 std::string where(const char* file, std::size_t line, const char* function);
 
-template <typename T>
-void urandom(T* v, std::streamsize size);
-template <typename T>
-T urandom();
-
 } // namespace ft
-
-#include "src/common.tpp" // IWYU pragma: export
