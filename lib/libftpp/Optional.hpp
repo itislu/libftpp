@@ -29,7 +29,7 @@ extern const nullopt_t nullopt;
  * https://en.cppreference.com/w/cpp/utility/optional
  */
 template <typename T>
-class Optional : public SafeBool<Optional<T> > {
+class Optional : public ft::SafeBool<Optional<T> > {
 public:
 	Optional() throw();
 	Optional(nullopt_t /*unused*/) throw();

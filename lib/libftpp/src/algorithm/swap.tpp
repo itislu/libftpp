@@ -13,7 +13,7 @@ struct Impl;
 template <typename T>
 void swap(T& a, T& b)
 {
-	_swap::Impl<T, has_swap<T>::value>::swap(a, b);
+	_swap::Impl<T, ft::has_swap<T>::value>::swap(a, b);
 }
 
 namespace _swap {

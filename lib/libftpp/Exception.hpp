@@ -37,6 +37,6 @@ private:
 	std::string _full_msg;
 };
 
-void swap(ft::Exception& a, ft::Exception& b);
+void swap(Exception& a, Exception& b);
 
 } // namespace ft

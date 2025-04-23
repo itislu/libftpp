@@ -48,8 +48,9 @@ T from_string(const std::string& str, std::ios::fmtflags fmt)
 
 			(void)std::strtol(start, &end, 0);
 			if (end != start) {
-				throw std::out_of_range(std::string(strerror(ERANGE)) + " ("
-				                        + typeid(T).name() + "): " + str);
+				throw std::out_of_range(std::string(std::strerror(ERANGE))
+				                        + " (" + typeid(T).name()
+				                        + "): " + str);
 			}
 		}
 		throw std::invalid_argument(std::string("Cannot convert to ")
@@ -129,7 +130,7 @@ static T from_string_floating_point(const std::string& str)
 	}
 
 	if (errno == ERANGE) {
-		throw std::out_of_range(std::string(strerror(ERANGE)) + " ("
+		throw std::out_of_range(std::string(std::strerror(ERANGE)) + " ("
 		                        + typeid(T).name() + "): " + str);
 	}
 	if (end == start) {

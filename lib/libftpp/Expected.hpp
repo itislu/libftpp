@@ -90,7 +90,7 @@ extern const unexpect_t unexpect;
  * https://en.cppreference.com/w/cpp/utility/expected
  */
 template <typename T, typename E>
-class Expected : public SafeBool<Expected<T, E> > {
+class Expected : public ft::SafeBool<Expected<T, E> > {
 public:
 	Expected();
 	Expected(const Expected& other);
@@ -158,7 +158,7 @@ bool operator!=(const Expected<T, E>& lhs, const T2& value);
  * https://en.cppreference.com/w/cpp/utility/expected
  */
 template <typename E>
-class Expected<void, E> : public SafeBool<Expected<void, E> > {
+class Expected<void, E> : public ft::SafeBool<Expected<void, E> > {
 public:
 	Expected() throw();
 	Expected(const Expected& other);
