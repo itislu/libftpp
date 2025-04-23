@@ -2,6 +2,13 @@
 
 #include <iterator>
 
+#ifndef MIN
+#	define MIN(a, b) ((b) < (a) ? (b) : (a))
+#endif
+#ifndef MAX
+#	define MAX(a, b) ((b) > (a) ? (b) : (a))
+#endif
+
 namespace ft {
 
 /**
