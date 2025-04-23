@@ -55,10 +55,25 @@ bool lexicographical_compare(InputIt1 first1,
                              Compare comp);
 
 /**
+ * Generic swap implementation which always uses the type's internal swap, if
+ * possible, otherwise falls back to copy-and-swap.
+ *
  * https://en.cppreference.com/w/cpp/algorithm/swap
  */
 template <typename T>
 void swap(T& a, T& b);
+
+/**
+ * https://en.cppreference.com/w/cpp/algorithm/iter_swap
+ */
+template <typename ForwardIt1, typename ForwardIt2>
+void iter_swap(ForwardIt1 a, ForwardIt2 b);
+
+/**
+ * https://en.cppreference.com/w/cpp/algorithm/swap_ranges
+ */
+template <typename ForwardIt1, typename ForwardIt2>
+ForwardIt2 swap_ranges(ForwardIt1 first1, ForwardIt1 last1, ForwardIt2 first2);
 
 /**
  * https://en.cppreference.com/w/cpp/algorithm/transform
