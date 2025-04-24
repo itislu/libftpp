@@ -1,7 +1,6 @@
 #pragma once
 
-#include "../format.hpp"
-#include "../log.hpp"
+#include "../../format.hpp"
 #include <iomanip>
 #include <ios>
 #include <sstream>
