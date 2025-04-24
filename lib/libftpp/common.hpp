@@ -10,5 +10,3 @@
 #define MAGENTA(MSG)   (std::string("\033[35m") + MSG + "\033[0m")
 #define CYAN(MSG)      (std::string("\033[36m") + MSG + "\033[0m")
 #define GRAY(MSG)      (std::string("\033[37m") + MSG + "\033[0m")
-
-#define ARRAY_SIZE(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))

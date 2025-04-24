@@ -31,7 +31,7 @@ std::string trim(const std::string& str)
 } // namespace ft
 
 #ifdef TEST_STRING
-#	include "common.hpp"
+#	include "../../utility.hpp"
 #	include <iostream>
 
 int main()
@@ -46,7 +46,7 @@ int main()
 	                       " ",
 	                       "Hey there"};
 
-	for (unsigned int i = 0; i < ARRAY_SIZE(tests); ++i) {
+	for (unsigned int i = 0; i < COUNTOF(tests); ++i) {
 		std::cout << "'" << ft::trim(tests[i]) << "'" << '\n';
 	}
 }
