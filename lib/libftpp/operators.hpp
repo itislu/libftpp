@@ -40,4 +40,4 @@ bool operator>=(const T& lhs, const U& rhs);
 } // namespace operators
 } // namespace ft
 
-#include "src/operators.tpp" // IWYU pragma: export
+#include "src/operators/operators.tpp" // IWYU pragma: export

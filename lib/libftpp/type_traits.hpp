@@ -187,4 +187,4 @@ HAS_METHOD(void, swap, ToCheck&)
 
 } // namespace ft
 
-#include "src/type_traits.tpp" // IWYU pragma: export
+#include "src/type_traits/type_traits.tpp" // IWYU pragma: export
