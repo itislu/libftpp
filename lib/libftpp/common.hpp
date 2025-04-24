@@ -16,7 +16,7 @@
 
 #define ARRAY_SIZE(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
 
-#if defined(__GNUC__) // GCC, Clang, ICC
+#if defined(__GNUC__) || defined(__clang__) // GCC, Clang, ICC
 #	define WHERE (ft::where(__FILE__, __LINE__, __PRETTY_FUNCTION__))
 #elif defined(_MSC_VER) // MSVC
 #	define WHERE (ft::where(__FILE__, __LINE__, __FUNCSIG__))
