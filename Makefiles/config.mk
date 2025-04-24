@@ -103,7 +103,7 @@ endif
 
 .DEFAULT_GOAL	:=	all
 
-%				:
+.DEFAULT		:
 					$(call PRINTLN,"$(MSG_UNKNOWN)")
 					echo
 					$(MAKE) help
