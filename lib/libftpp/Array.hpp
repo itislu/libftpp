@@ -1,6 +1,13 @@
 #pragma once
 
 #include "algorithm.hpp"
+#include "src/iterator/begin.tpp"  // IWYU pragma: export
+#include "src/iterator/data.tpp"   // IWYU pragma: export
+#include "src/iterator/empty.tpp"  // IWYU pragma: export
+#include "src/iterator/end.tpp"    // IWYU pragma: export
+#include "src/iterator/rbegin.tpp" // IWYU pragma: export
+#include "src/iterator/rend.tpp"   // IWYU pragma: export
+#include "src/iterator/size.tpp"   // IWYU pragma: export
 #include "type_traits.hpp"
 #include <cstddef>
 #include <iterator>
