@@ -1,8 +1,5 @@
 #pragma once
 
-#include <cstddef>
-#include <string>
-
 #define BOLD(MSG)      (std::string("\033[1m") + MSG + "\033[0m")
 #define ITALIC(MSG)    (std::string("\033[3m") + MSG + "\033[0m")
 #define UNDERLINE(MSG) (std::string("\033[4m") + MSG + "\033[0m")
@@ -15,17 +12,3 @@
 #define GRAY(MSG)      (std::string("\033[37m") + MSG + "\033[0m")
 
 #define ARRAY_SIZE(ARRAY) (sizeof(ARRAY) / sizeof(ARRAY[0]))
-
-#if defined(__GNUC__) || defined(__clang__) // GCC, Clang, ICC
-#	define WHERE (ft::where(__FILE__, __LINE__, __PRETTY_FUNCTION__))
-#elif defined(_MSC_VER) // MSVC
-#	define WHERE (ft::where(__FILE__, __LINE__, __FUNCSIG__))
-#else
-#	define WHERE (ft::where(__FILE__, __LINE__, __func__))
-#endif
-
-namespace ft {
-
-std::string where(const char* file, std::size_t line, const char* function);
-
-} // namespace ft
