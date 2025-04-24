@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../common.hpp"
+#include "../format.hpp"
 #include "../log.hpp"
 #include <iomanip>
 #include <ios>
