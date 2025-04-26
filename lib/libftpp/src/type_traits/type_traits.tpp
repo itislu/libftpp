@@ -51,6 +51,20 @@ struct is_volatile : false_type {};
 template <typename T>
 struct is_volatile<volatile T> : true_type {};
 
+/* is_bounded_array */
+template <typename>
+struct is_bounded_array : false_type {};
+
+template <typename T, std::size_t N>
+struct is_bounded_array<T[N]> : true_type {};
+
+/* is_unbounded_array */
+template <typename>
+struct is_unbounded_array : false_type {};
+
+template <typename T>
+struct is_unbounded_array<T[]> : true_type {};
+
 /* Property queries */
 
 /* rank */
@@ -119,6 +133,16 @@ struct add_const : type_identity<const T> {};
 /* add_cv */
 template <typename T>
 struct add_volatile : type_identity<volatile T> {};
+
+/* remove_extent */
+template <typename T>
+struct remove_extent : type_identity<T> {};
+
+template <typename T>
+struct remove_extent<T[]> : type_identity<T> {};
+
+template <typename T, std::size_t N>
+struct remove_extent<T[N]> : type_identity<T> {};
 
 /* remove_all_extents */
 template <typename T>

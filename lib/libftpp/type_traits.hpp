@@ -71,6 +71,18 @@ struct is_const;
 template <typename>
 struct is_volatile;
 
+/**
+ * https://en.cppreference.com/w/cpp/types/is_bounded_array
+ */
+template <typename>
+struct is_bounded_array;
+
+/**
+ * https://en.cppreference.com/w/cpp/types/is_unbounded_array
+ */
+template <typename>
+struct is_unbounded_array;
+
 /* Property queries */
 
 /**
@@ -130,6 +142,12 @@ struct add_const;
  */
 template <typename>
 struct add_volatile;
+
+/**
+ * https://en.cppreference.com/w/cpp/types/remove_extent
+ */
+template <typename>
+struct remove_extent;
 
 /**
  * https://en.cppreference.com/w/cpp/types/remove_all_extents
