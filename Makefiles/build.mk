@@ -68,6 +68,9 @@ all				:
 clear opt run san term val valfd: modes
 
 modes			:
+					if [ "$(CLEAR)" = "true" ]; then \
+						clear; \
+					fi
 					if [ "$(RECOMPILE)" = "true" ]; then \
 						MAKELEVEL=$$(( $(MAKELEVEL) - 1 )) MSG_SUCCESS="" MSG_USAGE="" $(MAKE) re; \
 						MAKELEVEL=$$(( $(MAKELEVEL) - 1 )) $(MAKE) clean; \

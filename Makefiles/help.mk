@@ -16,7 +16,7 @@ help			:
 					echo -e "  val              Build and run the project with valgrind"
 					echo -e "  valfd            Build and run the project with valgrind and file descriptor tracking"
 					echo -e "  term             Build and run the project in a new terminal window"
-					echo -e "  clear            Build the project and clear the terminal"
+					echo -e "  clear            Clear the terminal, build the project and clear again"
 					echo -e "  re               Rebuild the project"
 					echo -e "  libs             Build all libraries the project depends on"
 					echo -e "  bear             Generate compilation database using Bear"
@@ -86,7 +86,7 @@ help-term term-help:
 					echo -e "Usage: make term [TERMINAL=<\\$(STY_UND)terminal\\$(STY_RES)>] [ARGS=\"'<\\$(STY_UND)arg\\$(STY_RES)>' [...]\"]"
 
 help-clear clear-help:
-					echo -e "Build the project and clear the terminal."
+					echo -e "Clear the terminal, build the project and if successful, clear the terminal again."
 
 help-re re-help	:
 					echo -e "Rebuild the project."
