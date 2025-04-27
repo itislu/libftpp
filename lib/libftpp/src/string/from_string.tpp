@@ -2,6 +2,7 @@
 
 #include "../../Optional.hpp"
 #include "../../string.hpp"
+#include "../../utility.hpp"
 #include <cerrno>
 #include <cfloat>
 #include <cstddef>
@@ -41,22 +42,23 @@ T from_string(const std::string& str, std::ios::fmtflags fmt)
 	std::istringstream iss(str);
 	iss.flags(fmt);
 
-	if (!(iss >> res)) {
-		if (std::numeric_limits<T>::is_integer) {
-			const char* start = str.c_str();
-			char* end = NULL;
-
-			(void)std::strtol(start, &end, 0);
-			if (end != start) {
-				throw std::out_of_range(std::string(std::strerror(ERANGE))
-				                        + " (" + typeid(T).name()
-				                        + "): " + str);
-			}
-		}
-		throw std::invalid_argument(std::string("Cannot convert to ")
-		                            + typeid(T).name() + ": " + str);
+	if (iss >> res) {
+		return res;
 	}
-	return res;
+
+	if (std::numeric_limits<T>::is_integer) {
+		const char* start = str.c_str();
+		char* end = NULL;
+
+		(void)std::strtol(start, &end, 0);
+		if (end != start) {
+			throw std::out_of_range(std::string(std::strerror(ERANGE)) + " ("
+			                        + ft::demangle(typeid(T).name())
+			                        + "): " + str);
+		}
+	}
+	throw std::invalid_argument(std::string("Cannot convert to ")
+	                            + ft::demangle(typeid(T).name()) + ": " + str);
 }
 
 template <typename T>
@@ -77,12 +79,14 @@ inline bool from_string<bool>(const std::string& str)
 {
 	bool b; // NOLINT(cppcoreguidelines-init-variables)
 
-	if (!(std::istringstream(str) >> std::boolalpha >> b)
-	    && !(std::istringstream(str) >> b)) {
-		throw std::invalid_argument(std::string("Cannot convert to ")
-		                            + typeid(bool).name() + ": " + str);
+	if ((std::istringstream(str) >> std::boolalpha >> b).good()
+	    || (std::istringstream(str) >> b).good()) {
+		return b;
 	}
-	return b;
+
+	throw std::invalid_argument(std::string("Cannot convert to ")
+	                            + ft::demangle(typeid(bool).name()) + ": "
+	                            + str);
 }
 
 template <>
@@ -131,11 +135,12 @@ static T from_string_floating_point(const std::string& str)
 
 	if (errno == ERANGE) {
 		throw std::out_of_range(std::string(std::strerror(ERANGE)) + " ("
-		                        + typeid(T).name() + "): " + str);
+		                        + ft::demangle(typeid(T).name()) + "): " + str);
 	}
 	if (end == start) {
 		throw std::invalid_argument(std::string("Cannot convert to ")
-		                            + typeid(T).name() + ": " + str);
+		                            + ft::demangle(typeid(T).name()) + ": "
+		                            + str);
 	}
 	return res;
 }
