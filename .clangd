@@ -27,6 +27,7 @@ Diagnostics:
         hicpp-deprecated-headers, # alias
         hicpp-explicit-conversions, # alias
         hicpp-no-array-decay, # alias
+        hicpp-no-malloc, # alias
         hicpp-special-member-functions, # alias
         hicpp-use-auto, # alias
         hicpp-use-equals-delete, # alias

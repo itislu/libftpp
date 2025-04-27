@@ -1,5 +1,19 @@
 #pragma once
 
+#include <string>
+
+/**
+ * https://en.cppreference.com/w/cpp/utility/unreachable
+ */
+#if defined(__GNUC__) || defined(__clang__) // GCC, Clang, ICC
+#	define UNREACHABLE() (__builtin_unreachable())
+#elif defined(_MSC_VER) // MSVC
+#	define UNREACHABLE() (__assume(false))
+#else
+#	include <exception>
+#	define UNREACHABLE() (std::terminate())
+#endif
+
 /**
  * Macro to get the length of a C-array at compile time in a type-safe manner.
  * https://drdobbs.com/cpp/counting-array-elements-at-compile-time/197800525?pgno=6
@@ -29,14 +43,8 @@ public:
 } // namespace _countof
 } // namespace ft
 
-/**
- * https://en.cppreference.com/w/cpp/utility/unreachable
- */
-#if defined(__GNUC__) || defined(__clang__) // GCC, Clang, ICC
-#	define UNREACHABLE() (__builtin_unreachable())
-#elif defined(_MSC_VER) // MSVC
-#	define UNREACHABLE() (__assume(false))
-#else
-#	include <exception>
-#	define UNREACHABLE() (std::terminate())
-#endif
+namespace ft {
+
+std::string demangle(const char* mangled_name);
+
+} // namespace ft
