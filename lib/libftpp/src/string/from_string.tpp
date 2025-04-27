@@ -3,6 +3,7 @@
 #include "../../Optional.hpp"
 #include "../../string.hpp"
 #include "../../utility.hpp"
+#include <cctype>
 #include <cerrno>
 #include <cfloat>
 #include <cmath>
@@ -59,12 +60,25 @@ T from_string(const std::string& str, std::ios::fmtflags fmt)
 		return res;
 	}
 
+	/* Error handling */
+
+	if (!(fmt & std::ios::skipws) && std::isspace(*str.c_str())) {
+		throw _from_string::invalid_argument<T>(str);
+	}
+
+	// Check if integer type out of range
 	if (std::numeric_limits<T>::is_integer) {
-		const char* start = str.c_str();
+		const char* const start = str.c_str();
 		char* end = NULL;
 
-		(void)std::strtol(start, &end, 0);
-		if (end != start) {
+		// strtol works even for unsigned long since valid numbers between
+		// LONG_MAX and ULONG_MAX would not get here
+		errno = 0;
+		const long test = std::strtol(start, &end, 0);
+		if (errno == ERANGE
+		    || test < static_cast<long>(std::numeric_limits<T>::min())
+		    || static_cast<unsigned long>(test) > static_cast<unsigned long>(
+		           std::numeric_limits<T>::max())) {
 			throw _from_string::out_of_range<T>(str);
 		}
 	}

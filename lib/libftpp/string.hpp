@@ -30,6 +30,8 @@ bool ends_with(const std::string& str, unsigned char suffix);
 /**
  * @brief Converts a string to a specified type
  *
+ * Does not skip whitespace by default.
+ *
  * @tparam T The type to convert to
  * @param str The string to convert
  * @return T The converted value
@@ -46,6 +48,8 @@ T from_string(const std::string& str);
  * This is the non-throwing version of the `from_string` function.
  * Instead of throwing exceptions on failure, it returns an empty
  * `ft::Optional`.
+ *
+ * Does not skip whitespace by default.
  *
  * @tparam T The type to convert to
  * @param str The string to convert
