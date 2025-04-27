@@ -19,14 +19,14 @@
 
 namespace ft {
 
-namespace _string {
+namespace _from_string {
 template <typename T>
 static T from_string_floating_point(const std::string& str);
 template <typename T>
 static std::out_of_range out_of_range(const std::string& str);
 template <typename T>
 static std::invalid_argument invalid_argument(const std::string& str);
-} // namespace _string
+} // namespace _from_string
 
 template <typename T>
 T from_string(const std::string& str)
@@ -53,7 +53,7 @@ T from_string(const std::string& str, std::ios::fmtflags fmt)
 		    && std::numeric_limits<T>::min() == 0) {
 			if (std::signbit(
 			        from_string<float>(str, fmt, std::nothrow).value_or(-1))) {
-				throw _string::out_of_range<T>(str);
+				throw _from_string::out_of_range<T>(str);
 			}
 		}
 		return res;
@@ -65,10 +65,10 @@ T from_string(const std::string& str, std::ios::fmtflags fmt)
 
 		(void)std::strtol(start, &end, 0);
 		if (end != start) {
-			throw _string::out_of_range<T>(str);
+			throw _from_string::out_of_range<T>(str);
 		}
 	}
-	throw _string::invalid_argument<T>(str);
+	throw _from_string::invalid_argument<T>(str);
 }
 
 template <typename T>
@@ -93,28 +93,28 @@ inline bool from_string<bool>(const std::string& str)
 	    || (std::istringstream(str) >> b).good()) {
 		return b;
 	}
-	throw _string::invalid_argument<bool>(str);
+	throw _from_string::invalid_argument<bool>(str);
 }
 
 template <>
 inline float from_string<float>(const std::string& str)
 {
-	return _string::from_string_floating_point<float>(str);
+	return _from_string::from_string_floating_point<float>(str);
 }
 
 template <>
 inline double from_string<double>(const std::string& str)
 {
-	return _string::from_string_floating_point<double>(str);
+	return _from_string::from_string_floating_point<double>(str);
 }
 
 template <>
 inline long double from_string<long double>(const std::string& str)
 {
-	return _string::from_string_floating_point<long double>(str);
+	return _from_string::from_string_floating_point<long double>(str);
 }
 
-namespace _string {
+namespace _from_string {
 
 /**
  * Uses strto* functions for floating-point types because stringstream does not
@@ -141,10 +141,10 @@ static T from_string_floating_point(const std::string& str)
 	}
 
 	if (errno == ERANGE) {
-		throw _string::out_of_range<T>(str);
+		throw _from_string::out_of_range<T>(str);
 	}
 	if (end == start) {
-		throw _string::invalid_argument<T>(str);
+		throw _from_string::invalid_argument<T>(str);
 	}
 	return res;
 }
@@ -165,6 +165,6 @@ static std::invalid_argument invalid_argument(const std::string& str)
 	                             + "\"");
 }
 
-} // namespace _string
+} // namespace _from_string
 
 } // namespace ft
