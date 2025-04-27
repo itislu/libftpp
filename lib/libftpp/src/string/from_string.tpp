@@ -5,6 +5,7 @@
 #include "../../utility.hpp"
 #include <cerrno>
 #include <cfloat>
+#include <cmath>
 #include <cstddef>
 #include <cstdlib>
 #include <cstring>
@@ -47,6 +48,14 @@ T from_string(const std::string& str, std::ios::fmtflags fmt)
 	iss.flags(fmt);
 
 	if (iss >> res) {
+		// Check for negative value for unsigned integer types
+		if (std::numeric_limits<T>::is_integer
+		    && std::numeric_limits<T>::min() == 0) {
+			if (std::signbit(
+			        from_string<float>(str, fmt, std::nothrow).value_or(-1))) {
+				throw _string::out_of_range<T>(str);
+			}
+		}
 		return res;
 	}
 
