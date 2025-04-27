@@ -2,6 +2,7 @@
 
 #include "../../Optional.hpp"
 #include "../../string.hpp"
+#include "../../type_traits.hpp"
 #include "../../utility.hpp"
 #include <cctype>
 #include <cerrno>
@@ -21,8 +22,6 @@
 namespace ft {
 
 namespace _from_string {
-template <typename T>
-static T from_string_floating_point(const std::string& str);
 template <typename T>
 static std::out_of_range out_of_range(const std::string& str);
 template <typename T>
@@ -82,6 +81,30 @@ T from_string(const std::string& str, std::ios::fmtflags fmt)
 			throw _from_string::out_of_range<T>(str);
 		}
 	}
+	// Check if floating point type out of range
+	else if (std::numeric_limits<T>::is_iec559) {
+		const char* const start = str.c_str();
+		char* end = NULL;
+
+		errno = 0;
+		if (ft::is_same<T, float>::value) {
+			res = std::strtof(start, &end);
+		}
+		else if (ft::is_same<T, double>::value) {
+			res = std::strtod(start, &end);
+		}
+		else {
+			res = std::strtold(start, &end);
+		}
+		if (errno == ERANGE) {
+			throw _from_string::out_of_range<T>(str);
+		}
+		// stringstream does not detect special floating point values
+		if (std::isinf(res) || std::isnan(res)) {
+			return res;
+		}
+	}
+	// Invalid string
 	throw _from_string::invalid_argument<T>(str);
 }
 
@@ -110,58 +133,7 @@ inline bool from_string<bool>(const std::string& str)
 	throw _from_string::invalid_argument<bool>(str);
 }
 
-template <>
-inline float from_string<float>(const std::string& str)
-{
-	return _from_string::from_string_floating_point<float>(str);
-}
-
-template <>
-inline double from_string<double>(const std::string& str)
-{
-	return _from_string::from_string_floating_point<double>(str);
-}
-
-template <>
-inline long double from_string<long double>(const std::string& str)
-{
-	return _from_string::from_string_floating_point<long double>(str);
-}
-
 namespace _from_string {
-
-/**
- * Uses strto* functions for floating-point types because stringstream does not
- * support nan or inf.
- */
-template <typename T>
-static T from_string_floating_point(const std::string& str)
-{
-	T res;
-	const char* start = str.c_str();
-	char* end = NULL;
-	errno = 0;
-
-	switch (std::numeric_limits<T>::max_exponent) {
-	case FLT_MAX_EXP:
-		res = std::strtof(start, &end);
-		break;
-	case DBL_MAX_EXP:
-		res = std::strtod(start, &end);
-		break;
-	default:
-		res = std::strtold(start, &end);
-		break;
-	}
-
-	if (errno == ERANGE) {
-		throw _from_string::out_of_range<T>(str);
-	}
-	if (end == start) {
-		throw _from_string::invalid_argument<T>(str);
-	}
-	return res;
-}
 
 template <typename T>
 static std::out_of_range out_of_range(const std::string& str)

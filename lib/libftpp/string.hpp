@@ -111,43 +111,6 @@ ft::Optional<T> from_string(const std::string& str,
 template <>
 inline bool from_string<bool>(const std::string& str);
 
-/**
- * @brief Converts a string to a float
- *
- * @param str The string to convert
- * @return float The converted floating-point value
- *
- * @throws std::out_of_range When the value is out of the representable range
- * @throws std::invalid_argument When the string cannot be converted to a float
- */
-template <>
-inline float from_string<float>(const std::string& str);
-
-/**
- * @brief Converts a string to a double
- *
- * @param str The string to convert
- * @return double The converted floating-point value
- *
- * @throws std::out_of_range When the value is out of the representable range
- * @throws std::invalid_argument When the string cannot be converted to a double
- */
-template <>
-inline double from_string<double>(const std::string& str);
-
-/**
- * @brief Converts a string to a long double
- *
- * @param str The string to convert
- * @return long double The converted floating-point value
- *
- * @throws std::out_of_range When the value is out of the representable range
- * @throws std::invalid_argument When the string cannot be converted to a long
- * double
- */
-template <>
-inline long double from_string<long double>(const std::string& str);
-
 /* to_string */
 
 /**
