@@ -21,6 +21,10 @@ namespace ft {
 namespace _string {
 template <typename T>
 static T from_string_floating_point(const std::string& str);
+template <typename T>
+static std::out_of_range out_of_range(const std::string& str);
+template <typename T>
+static std::invalid_argument invalid_argument(const std::string& str);
 } // namespace _string
 
 template <typename T>
@@ -52,13 +56,10 @@ T from_string(const std::string& str, std::ios::fmtflags fmt)
 
 		(void)std::strtol(start, &end, 0);
 		if (end != start) {
-			throw std::out_of_range(std::string(std::strerror(ERANGE)) + " ("
-			                        + ft::demangle(typeid(T).name())
-			                        + "): " + str);
+			throw _string::out_of_range<T>(str);
 		}
 	}
-	throw std::invalid_argument(std::string("Cannot convert to ")
-	                            + ft::demangle(typeid(T).name()) + ": " + str);
+	throw _string::invalid_argument<T>(str);
 }
 
 template <typename T>
@@ -83,10 +84,7 @@ inline bool from_string<bool>(const std::string& str)
 	    || (std::istringstream(str) >> b).good()) {
 		return b;
 	}
-
-	throw std::invalid_argument(std::string("Cannot convert to ")
-	                            + ft::demangle(typeid(bool).name()) + ": "
-	                            + str);
+	throw _string::invalid_argument<bool>(str);
 }
 
 template <>
@@ -134,15 +132,28 @@ static T from_string_floating_point(const std::string& str)
 	}
 
 	if (errno == ERANGE) {
-		throw std::out_of_range(std::string(std::strerror(ERANGE)) + " ("
-		                        + ft::demangle(typeid(T).name()) + "): " + str);
+		throw _string::out_of_range<T>(str);
 	}
 	if (end == start) {
-		throw std::invalid_argument(std::string("Cannot convert to ")
-		                            + ft::demangle(typeid(T).name()) + ": "
-		                            + str);
+		throw _string::invalid_argument<T>(str);
 	}
 	return res;
+}
+
+template <typename T>
+static std::out_of_range out_of_range(const std::string& str)
+{
+	return std::out_of_range(std::string(std::strerror(ERANGE)) + " ("
+	                         + ft::demangle(typeid(T).name()) + "): \"" + str
+	                         + "\"");
+}
+
+template <typename T>
+static std::invalid_argument invalid_argument(const std::string& str)
+{
+	return std::invalid_argument(std::string("Cannot convert to ")
+	                             + ft::demangle(typeid(T).name()) + ": \"" + str
+	                             + "\"");
 }
 
 } // namespace _string
