@@ -34,10 +34,26 @@ T from_string(const std::string& str)
 	return from_string<T>(str, std::ios::fmtflags());
 }
 
+template <>
+inline bool from_string<bool>(const std::string& str)
+{
+	try {
+		return from_string<bool>(str, std::ios::boolalpha);
+	}
+	catch (const std::logic_error&) {
+		return from_string<bool>(str, std::ios::fmtflags());
+	}
+}
+
 template <typename T>
 ft::Optional<T> from_string(const std::string& str, std::nothrow_t /*nothrow*/)
 {
-	return from_string<T>(str, std::ios::fmtflags(), std::nothrow);
+	try {
+		return from_string<T>(str);
+	}
+	catch (const std::logic_error&) {
+		return ft::nullopt;
+	}
 }
 
 template <typename T>
@@ -49,7 +65,7 @@ T from_string(const std::string& str, std::ios::fmtflags fmt)
 
 	if (iss >> res) {
 		// Check for negative value for unsigned integer types
-		if (std::numeric_limits<T>::is_integer
+		if (std::numeric_limits<T>::is_integer && !ft::is_same<T, bool>::value
 		    && std::numeric_limits<T>::min() == 0) {
 			if (std::signbit(
 			        from_string<float>(str, fmt, std::nothrow).value_or(-1))) {
@@ -119,18 +135,6 @@ ft::Optional<T> from_string(const std::string& str,
 	catch (const std::logic_error&) {
 		return ft::nullopt;
 	}
-}
-
-template <>
-inline bool from_string<bool>(const std::string& str)
-{
-	bool b; // NOLINT(cppcoreguidelines-init-variables)
-
-	if ((std::istringstream(str) >> std::boolalpha >> b).good()
-	    || (std::istringstream(str) >> b).good()) {
-		return b;
-	}
-	throw _from_string::invalid_argument<bool>(str);
 }
 
 namespace _from_string {

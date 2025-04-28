@@ -43,6 +43,22 @@ template <typename T>
 T from_string(const std::string& str);
 
 /**
+ * @brief Converts a string to a boolean.
+ *
+ * Accepts both alpha (true/false) and numeric (1/0) formats.
+ * Does not skip whitespace by default.
+ *
+ * @param str The string to convert
+ * @return bool The converted boolean value
+ *
+ * @throws std::out_of_range When the value is numeric but not 1 or 0
+ * @throws std::invalid_argument When the string is neither numeric nor starts
+ * with true/false
+ */
+template <>
+inline bool from_string<bool>(const std::string& str);
+
+/**
  * @brief Converts a string to a specified type without throwing exceptions
  *
  * This is the non-throwing version of the `from_string` function.
@@ -96,20 +112,6 @@ template <typename T>
 ft::Optional<T> from_string(const std::string& str,
                             std::ios::fmtflags fmt,
                             std::nothrow_t nothrow);
-
-/**
- * @brief Converts a string to a boolean.
- *
- * Accepts both alpha (true/false) and numeric (1/0) formats.
- *
- * @param str The string to convert
- * @return bool The converted boolean value
- *
- * @throws std::invalid_argument When the string neither starts with true/false
- * nor 1/0
- */
-template <>
-inline bool from_string<bool>(const std::string& str);
 
 /* to_string */
 
