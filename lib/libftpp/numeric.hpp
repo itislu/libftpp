@@ -8,6 +8,15 @@
 
 namespace ft {
 
+/* abs_diff */
+
+unsigned char abs_diff(char a, char b) throw();
+unsigned short abs_diff(short a, short b) throw();
+unsigned int abs_diff(int a, int b) throw();
+unsigned long abs_diff(long a, long b) throw();
+
+/* numeric_cast */
+
 class BadNumericCast : public std::bad_cast {
 public:
 	const char* what() const throw();
@@ -22,8 +31,6 @@ class PositiveOverflow : public BadNumericCast {
 public:
 	const char* what() const throw();
 };
-
-/* numeric_cast */
 
 /**
  * @brief Safely converts numeric values between different types
