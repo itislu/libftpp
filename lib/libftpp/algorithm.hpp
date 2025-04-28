@@ -47,6 +47,12 @@ template <typename OutputIt, typename Size, typename T>
 OutputIt fill_n(OutputIt first, Size count, const T& value);
 
 /**
+ * https://en.cppreference.com/w/cpp/algorithm/iota
+ */
+template <typename ForwardIt, typename T>
+void iota(ForwardIt first, ForwardIt last, T value);
+
+/**
  * https://en.cppreference.com/w/cpp/algorithm/lexicographical_compare
  */
 template <typename InputIt1, typename InputIt2>
@@ -94,6 +100,7 @@ transform(InputIt first, InputIt last, OutputIt d_result, UnaryOp unary_op);
 #include "src/algorithm/count.tpp"                   // IWYU pragma: export
 #include "src/algorithm/equal.tpp"                   // IWYU pragma: export
 #include "src/algorithm/fill.tpp"                    // IWYU pragma: export
+#include "src/algorithm/iota.tpp"                    // IWYU pragma: export
 #include "src/algorithm/lexicographical_compare.tpp" // IWYU pragma: export
 #include "src/algorithm/swap.tpp"                    // IWYU pragma: export
 #include "src/algorithm/transform.tpp"               // IWYU pragma: export
