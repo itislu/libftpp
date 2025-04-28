@@ -1,6 +1,8 @@
 #pragma once
 
 #include "Optional.hpp"
+#include "type_traits.hpp"
+#include <limits>
 #include <new>
 #include <typeinfo>
 
@@ -71,6 +73,37 @@ To numeric_cast(From from);
 template <typename To, typename From>
 ft::Optional<To> numeric_cast(From from, std::nothrow_t /*nothrow*/);
 
+/* Saturation arithmetic */
+
+/**
+ * https://en.cppreference.com/w/cpp/numeric/add_sat
+ */
+template <class T>
+typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
+add_sat(T x, T y) throw();
+
+/**
+ * https://en.cppreference.com/w/cpp/numeric/sub_sat
+ */
+template <class T>
+typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
+sub_sat(T x, T y) throw();
+
+/**
+ * https://en.cppreference.com/w/cpp/numeric/mul_sat
+ */
+template <class T>
+typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
+mul_sat(T x, T y) throw();
+
+/**
+ * https://en.cppreference.com/w/cpp/numeric/div_sat
+ */
+template <class T>
+typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
+div_sat(T x, T y) throw();
+
 } // namespace ft
 
-#include "src/numeric/numeric_cast.tpp" // IWYU pragma: export
+#include "src/numeric/numeric_cast.tpp"          // IWYU pragma: export
+#include "src/numeric/saturation_arithmetic.tpp" // IWYU pragma: export
