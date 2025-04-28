@@ -39,9 +39,8 @@ public:
  *
  * @throws ft::BadNumericCast When the conversion is invalid (e.g., NaN to
  * integer)
- * @throws ft::NegativeOverflow When a negative value cannot be represented in
- * the target type
- * @throws ft::PositiveOverflow When a value is too large for the target type
+ * @throws ft::NegativeOverflow When a value is too low for the target type
+ * @throws ft::PositiveOverflow When a value is too high for the target type
  */
 template <typename To, typename From>
 To numeric_cast(From from);
@@ -66,9 +65,8 @@ To numeric_cast(From from);
  *
  * @throws ft::BadNumericCast When the conversion is invalid (e.g., NaN to
  * integer)
- * @throws ft::NegativeOverflow When a negative value cannot be represented in
- * the target type
- * @throws ft::PositiveOverflow When a value is too large for the target type
+ * @throws ft::NegativeOverflow When a value is too low for the target type
+ * @throws ft::PositiveOverflow When a value is too high for the target type
  */
 template <typename To, typename From>
 ft::Optional<To> numeric_cast(From from, std::nothrow_t /*nothrow*/);
