@@ -120,8 +120,6 @@ ft::Optional<T> from_string(const std::string& str,
  */
 template <typename T>
 std::string to_string(T v, std::ios::fmtflags fmt = std::ios::fmtflags());
-template <typename T>
-std::string to_string(T* v, std::ios::fmtflags fmt = std::ios::fmtflags());
 std::string to_string(bool v, std::ios::fmtflags fmt = std::ios::boolalpha);
 
 /* trim */
