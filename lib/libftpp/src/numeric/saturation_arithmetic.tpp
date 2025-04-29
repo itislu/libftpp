@@ -6,7 +6,7 @@
 
 namespace ft {
 
-template <class T>
+template <typename T>
 typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
 add_sat(T x, T y) throw()
 {
@@ -31,7 +31,7 @@ add_sat(T x, T y) throw()
 	return x + y;
 }
 
-template <class T>
+template <typename T>
 typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
 sub_sat(T x, T y) throw()
 {
@@ -56,7 +56,7 @@ sub_sat(T x, T y) throw()
 	return x - y;
 }
 
-template <class T>
+template <typename T>
 typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
 mul_sat(T x, T y) throw()
 {
@@ -83,7 +83,7 @@ mul_sat(T x, T y) throw()
 	return x * y;
 }
 
-template <class T>
+template <typename T>
 typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
 div_sat(T x, T y) throw()
 {

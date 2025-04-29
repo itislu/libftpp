@@ -83,28 +83,28 @@ ft::Optional<To> numeric_cast(From from, std::nothrow_t /*nothrow*/);
 /**
  * https://en.cppreference.com/w/cpp/numeric/add_sat
  */
-template <class T>
+template <typename T>
 typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
 add_sat(T x, T y) throw();
 
 /**
  * https://en.cppreference.com/w/cpp/numeric/sub_sat
  */
-template <class T>
+template <typename T>
 typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
 sub_sat(T x, T y) throw();
 
 /**
  * https://en.cppreference.com/w/cpp/numeric/mul_sat
  */
-template <class T>
+template <typename T>
 typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
 mul_sat(T x, T y) throw();
 
 /**
  * https://en.cppreference.com/w/cpp/numeric/div_sat
  */
-template <class T>
+template <typename T>
 typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
 div_sat(T x, T y) throw();
 

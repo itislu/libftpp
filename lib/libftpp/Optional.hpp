@@ -85,29 +85,29 @@ bool operator>(const Optional<T>& lhs, const Optional<U>& rhs);
 template <typename T, typename U>
 bool operator>=(const Optional<T>& lhs, const Optional<U>& rhs);
 
-template <class T>
+template <typename T>
 bool operator==(const Optional<T>& opt, nullopt_t /*unused*/) throw();
-template <class T>
+template <typename T>
 bool operator==(nullopt_t /*unused*/, const Optional<T>& opt) throw();
-template <class T>
+template <typename T>
 bool operator!=(const Optional<T>& opt, nullopt_t /*unused*/) throw();
-template <class T>
+template <typename T>
 bool operator!=(nullopt_t /*unused*/, const Optional<T>& opt) throw();
-template <class T>
+template <typename T>
 bool operator<(const Optional<T>& opt, nullopt_t /*unused*/) throw();
-template <class T>
+template <typename T>
 bool operator<(nullopt_t /*unused*/, const Optional<T>& opt) throw();
-template <class T>
+template <typename T>
 bool operator<=(const Optional<T>& opt, nullopt_t /*unused*/) throw();
-template <class T>
+template <typename T>
 bool operator<=(nullopt_t /*unused*/, const Optional<T>& opt) throw();
-template <class T>
+template <typename T>
 bool operator>(const Optional<T>& opt, nullopt_t /*unused*/) throw();
-template <class T>
+template <typename T>
 bool operator>(nullopt_t /*unused*/, const Optional<T>& opt) throw();
-template <class T>
+template <typename T>
 bool operator>=(const Optional<T>& opt, nullopt_t /*unused*/) throw();
-template <class T>
+template <typename T>
 bool operator>=(nullopt_t /*unused*/, const Optional<T>& opt) throw();
 
 template <typename T, typename U>

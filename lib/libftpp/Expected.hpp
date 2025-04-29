@@ -5,7 +5,7 @@
 
 namespace ft {
 
-template <class E>
+template <typename E>
 class BadExpectedAccess;
 
 // NOLINTBEGIN(cppcoreguidelines-virtual-class-destructor)
@@ -28,7 +28,7 @@ protected:
 /**
  * https://en.cppreference.com/w/cpp/utility/expected/bad_expected_access
  */
-template <class E>
+template <typename E>
 class BadExpectedAccess : public BadExpectedAccess<void> {
 public:
 	explicit BadExpectedAccess(const E& error);

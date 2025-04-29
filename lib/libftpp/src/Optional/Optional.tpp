@@ -246,73 +246,73 @@ bool operator>=(const Optional<T>& lhs, const Optional<U>& rhs)
 	return !(lhs < rhs);
 }
 
-template <class T>
+template <typename T>
 bool operator==(const Optional<T>& opt, nullopt_t /*unused*/) throw()
 {
 	return !opt.has_value();
 }
 
-template <class T>
+template <typename T>
 bool operator==(nullopt_t /*unused*/, const Optional<T>& opt) throw()
 {
 	return opt == nullopt;
 }
 
-template <class T>
+template <typename T>
 bool operator!=(const Optional<T>& opt, nullopt_t /*unused*/) throw()
 {
 	return !(opt == nullopt);
 }
 
-template <class T>
+template <typename T>
 bool operator!=(nullopt_t /*unused*/, const Optional<T>& opt) throw()
 {
 	return !(opt == nullopt);
 }
 
-template <class T>
+template <typename T>
 bool operator<(const Optional<T>& /*opt*/, nullopt_t /*unused*/) throw()
 {
 	return false;
 }
 
-template <class T>
+template <typename T>
 bool operator<(nullopt_t /*unused*/, const Optional<T>& opt) throw()
 {
 	return opt.has_value();
 }
 
-template <class T>
+template <typename T>
 bool operator<=(const Optional<T>& opt, nullopt_t /*unused*/) throw()
 {
 	return !(opt > nullopt);
 }
 
-template <class T>
+template <typename T>
 bool operator<=(nullopt_t /*unused*/, const Optional<T>& opt) throw()
 {
 	return !(nullopt > opt);
 }
 
-template <class T>
+template <typename T>
 bool operator>(const Optional<T>& opt, nullopt_t /*unused*/) throw()
 {
 	return nullopt < opt;
 }
 
-template <class T>
+template <typename T>
 bool operator>(nullopt_t /*unused*/, const Optional<T>& opt) throw()
 {
 	return opt < nullopt;
 }
 
-template <class T>
+template <typename T>
 bool operator>=(const Optional<T>& opt, nullopt_t /*unused*/) throw()
 {
 	return !(opt < nullopt);
 }
 
-template <class T>
+template <typename T>
 bool operator>=(nullopt_t /*unused*/, const Optional<T>& opt) throw()
 {
 	return !(nullopt < opt);
