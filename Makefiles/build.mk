@@ -205,12 +205,12 @@ RUN				:=	true
 endif
 
 ifeq (val, $(filter val,$(MAKECMDGOALS) $(subst $(COMMA),$(SPACE),$(MODE))))
-ENV				+=	$(VALGRIND) $(VALGRINDFLAGS)
+ENV				+=	RUNNING_ON_VALGRIND=1 $(VALGRIND) $(VALGRINDFLAGS)
 RUN				:=	true
 endif
 
 ifeq (valfd, $(filter valfd,$(MAKECMDGOALS) $(subst $(COMMA),$(SPACE),$(MODE))))
-ENV				+=	$(VALGRIND) $(VALGRINDFLAGS) $(VALGRINDFDFLAGS)
+ENV				+=	RUNNING_ON_VALGRIND=1 $(VALGRIND) $(VALGRINDFLAGS) $(VALGRINDFDFLAGS)
 NEW_TERM		:=	true
 RUN				:=	true
 endif
