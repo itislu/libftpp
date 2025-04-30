@@ -2,22 +2,21 @@
 Language: Cpp
 AccessModifierOffset: -4
 AlignAfterOpenBracket: Align
-AlignConsecutiveMacros: true
-AlignEscapedNewlines: Left
-AlignTrailingComments: true
+AlignConsecutiveMacros: AcrossComments
+AlignEscapedNewlines: LeftWithLastLine
+AlignTrailingComments: Always # Bool also allowed
 AllowAllArgumentsOnNextLine: true
 AllowAllParametersOfDeclarationOnNextLine: false
-AllowShortBlocksOnASingleLine: false
+AllowShortBlocksOnASingleLine: Never
 AllowShortCaseLabelsOnASingleLine: false
 AllowShortEnumsOnASingleLine: false
 AllowShortFunctionsOnASingleLine: All
 AllowShortIfStatementsOnASingleLine: Never
 AllowShortLoopsOnASingleLine: false
-AlwaysBreakAfterReturnType: None
 AlwaysBreakBeforeMultilineStrings: false
-AlwaysBreakTemplateDeclarations: Yes
 BinPackArguments: false
-BinPackParameters: false
+BinPackParameters: false # OnePerLine doesn't work
+BreakAfterReturnType: Automatic
 BreakBeforeBinaryOperators: NonAssignment
 BreakBeforeBraces: Custom
 BraceWrapping:
@@ -31,6 +30,7 @@ BreakBeforeTernaryOperators: true
 BreakConstructorInitializers: BeforeColon
 BreakInheritanceList: BeforeColon
 BreakStringLiterals: false
+BreakTemplateDeclarations: Yes
 FixNamespaceComments: true
 IncludeBlocks: Merge
 IndentCaseLabels: false
@@ -39,13 +39,17 @@ IndentWidth: 4
 IndentWrappedFunctionNames: false
 InsertBraces: true
 InsertNewlineAtEOF: true
-KeepEmptyLinesAtTheStartOfBlocks: false
+KeepEmptyLines:
+  AtEndOfFile: false
+  AtStartOfBlock: false
+  AtStartOfFile: false
 NamespaceIndentation: None
 PackConstructorInitializers: Never
 PointerAlignment: Left
-ReflowComments: true
-SortIncludes: true
-SortUsingDeclarations: true
+ReflowComments: true # Always doesn't work
+ShortNamespaceLines: 0
+SortIncludes: CaseSensitive
+SortUsingDeclarations: Lexicographic
 SpaceAfterCStyleCast: false
 SpaceAfterLogicalNot: false
 SpaceAfterTemplateKeyword: true

@@ -22,6 +22,7 @@ Diagnostics:
         readability-identifier-length,
         cert-oop54-cpp, # alias
         cppcoreguidelines-avoid-magic-numbers, # alias
+        cppcoreguidelines-c-copy-assignment-signature, # alias
         cppcoreguidelines-non-private-member-variables-in-classes, # alias
         hicpp-avoid-goto, # alias
         hicpp-deprecated-headers, # alias
