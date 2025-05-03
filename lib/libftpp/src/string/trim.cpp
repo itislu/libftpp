@@ -25,7 +25,8 @@ std::string& trim(std::string& str)
 std::string trim(const std::string& str)
 {
 	std::string new_str(str);
-	return trim(new_str);
+	trim(new_str);
+	return new_str;
 }
 
 } // namespace ft
