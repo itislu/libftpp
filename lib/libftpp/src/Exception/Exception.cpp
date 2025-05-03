@@ -65,6 +65,6 @@ void Exception::_update_full_msg()
 	            + (_who.empty() ? "" : _who + ": ") + _msg;
 }
 
-void swap(Exception& a, Exception& b) { a.swap(b); }
+void swap(Exception& lhs, Exception& rhs) { lhs.swap(rhs); }
 
 } // namespace ft
