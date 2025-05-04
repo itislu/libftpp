@@ -68,6 +68,30 @@ bool lexicographical_compare(InputIt1 first1,
                              Compare comp);
 
 /**
+ * https://en.cppreference.com/w/cpp/algorithm/max
+ */
+template <typename T>
+const T& max(const T& a, const T& b);
+
+/**
+ * Non-standard. Useful for assigning to the result.
+ */
+template <typename T>
+T& max(T& a, T& b);
+
+/**
+ * https://en.cppreference.com/w/cpp/algorithm/min
+ */
+template <typename T>
+const T& min(const T& a, const T& b);
+
+/**
+ * Non-standard. Useful for assigning to the result.
+ */
+template <typename T>
+T& min(T& a, T& b);
+
+/**
  * Generic swap implementation which always uses the type's internal swap, if
  * possible, otherwise falls back to copy-and-swap.
  *
@@ -102,5 +126,6 @@ transform(InputIt first, InputIt last, OutputIt d_result, UnaryOp unary_op);
 #include "src/algorithm/fill.tpp"                    // IWYU pragma: export
 #include "src/algorithm/iota.tpp"                    // IWYU pragma: export
 #include "src/algorithm/lexicographical_compare.tpp" // IWYU pragma: export
+#include "src/algorithm/min_max.tpp"                 // IWYU pragma: export
 #include "src/algorithm/swap.tpp"                    // IWYU pragma: export
 #include "src/algorithm/transform.tpp"               // IWYU pragma: export
