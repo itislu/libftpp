@@ -49,19 +49,6 @@ inline bool from_string<bool>(const std::string& str,
 }
 
 template <typename T>
-ft::Optional<T> from_string(const std::string& str,
-                            std::nothrow_t /*nothrow*/,
-                            std::string::size_type* endpos_out /*= NULL*/)
-{
-	try {
-		return from_string<T>(str, endpos_out);
-	}
-	catch (const std::logic_error&) {
-		return ft::nullopt;
-	}
-}
-
-template <typename T>
 T from_string(const std::string& str,
               std::ios::fmtflags fmt,
               std::string::size_type* endpos_out /*= NULL*/)
@@ -142,6 +129,19 @@ T from_string(const std::string& str,
 	}
 	// Invalid string
 	throw _from_string::invalid_argument<T>(str);
+}
+
+template <typename T>
+ft::Optional<T> from_string(const std::string& str,
+                            std::nothrow_t /*nothrow*/,
+                            std::string::size_type* endpos_out /*= NULL*/)
+{
+	try {
+		return from_string<T>(str, endpos_out);
+	}
+	catch (const std::logic_error&) {
+		return ft::nullopt;
+	}
 }
 
 template <typename T>

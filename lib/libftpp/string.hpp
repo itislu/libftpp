@@ -29,104 +29,78 @@ bool ends_with(const std::string& str, unsigned char suffix);
 /* from_string */
 
 /**
- * @brief Converts a string to a specified type
+ * @brief Parses a string and converts it to a value of the specified type `T`
  *
- * Does not skip whitespace by default.
- * Detects the base of integer types by prefix (`0`, `0x`, `0X`). Hex-prefix
- * only is invalid. Stops processing at the first invalid character for that
- * base.
+ * Default rules (when `fmt` is not provided):
+ * - Leading whitespace is *not* skipped. Use `std::ios::skipws` in `fmt` to
+ * enable skipping.
+ * - For integral types, the base is auto-detected from prefixes: `0` for octal,
+ *   `0x` or `0X` for hexadecimal. If no prefix is present, base 10 is assumed.
+ *   A standalone hex-prefix is considered invalid. The base can be explicitly
+ *   set using `std::ios::dec`, `std::ios::oct`, `std::ios::hex` in `fmt`.
+ * - For `bool`, accepts alphabetic ("true", "false") and numeric ("1", "0")
+ *   representations. `std::ios::boolalpha` in `fmt` restricts parsing to
+ *   alphabetic only.
  *
- * @tparam T The type to convert to
- * @param str The string to convert
- * @param endpos_out Optional out-parameter that gets set to the number of
- * characters that were processed, even on errors
- * @return T The converted value
+ * Parsing stops at the first invalid character for the expected format, target
+ * type or base.
  *
- * @throws std::out_of_range When the value is out of the representable range
- * @throws std::invalid_argument When the string cannot be converted to the type
+ * Overloads with the `nothrow` parameter return `ft::Optional<T>` and do not
+ * throw exceptions on conversion errors.
+ *
+ * @return For throwing overloads: The converted value of type `T`
+ * @return For non-throwing overloads: An `ft::Optional<T>` containing the
+ * converted value on success, or an empty `ft::Optional<T>` on failure
+ *
+ * @throws std::invalid_argument (Throwing overloads only) If the string `str`
+ * does not represent a valid value for type `T` according to the specified
+ * format (e.g., non-numeric characters for an integer, invalid base prefix, or
+ * non-boolean string for `bool`)
+ * @throws std::out_of_range (Throwing overloads only) If the parsed value is
+ * valid but falls outside the representable range of type `T`. For `bool` using
+ * numeric format, this is thrown if the value is numeric but not 1 or 0
+ *
+ * @tparam T The target type to convert the string to
+ * @param str The input string to parse
+ * @param endpos_out (optional) Out-parameter which, if not null, is set to the
+ * number of characters processed from `str`, even if an error occurs
  */
 template <typename T>
 T from_string(const std::string& str,
               std::string::size_type* endpos_out = NULL);
-
 /**
- * @brief Converts a string to a boolean.
- *
- * Accepts both alpha (true/false) and numeric (1/0) formats.
- * Does not skip whitespace by default.
- *
- * @param str The string to convert
- * @param endpos_out Optional out-parameter that gets set to the number of
- * characters that were processed, even on errors
- * @return bool The converted boolean value
- *
- * @throws std::out_of_range When the value is numeric but not 1 or 0
- * @throws std::invalid_argument When the string is neither numeric nor starts
- * with true/false
+ * @copydoc from_string(const std::string&, std::string::size_type*)
  */
 template <>
 inline bool from_string<bool>(const std::string& str,
                               std::string::size_type* endpos_out /*= NULL*/);
-
 /**
- * @brief Converts a string to a specified type without throwing exceptions
+ * @copydoc from_string(const std::string&, std::string::size_type*)
  *
- * This is the non-throwing version of the `from_string` function.
- * Instead of throwing exceptions on failure, it returns an empty
- * `ft::Optional`.
- *
- * Does not skip whitespace by default.
- *
- * @tparam T The type to convert to
- * @param str The string to convert
- * @param nothrow A tag (f.e. `std::nothrow`) to indicate the non-throwing
- * behavior
- * @param endpos_out Optional out-parameter that gets set to the number of
- * characters that were processed, even on errors
- * @return ft::Optional<T> The converted value wrapped in an `ft::Optional`, or
- * an empty `ft::Optional` if the conversion fails
- */
-template <typename T>
-ft::Optional<T> from_string(const std::string& str,
-                            std::nothrow_t nothrow,
-                            std::string::size_type* endpos_out = NULL);
-
-/**
- * @brief Converts a string to a specified type
- *
- * @tparam T The type to convert to
- * @param str The string to convert
- * @param fmt Stream formatting flags that determine how the string is
- * interpreted
- * @param endpos_out Optional out-parameter that gets set to the number of
- * characters that were processed, even on errors
- * @return T The converted value
- *
- * @throws std::out_of_range When the value is out of the representable range
- * @throws std::invalid_argument When the string cannot be converted to the type
+ * @param fmt (optional) Stream format flags (`std::ios::fmtflags`) to control
+ * parsing behavior (e.g., base, skipping whitespace, scientific notation)
  */
 template <typename T>
 T from_string(const std::string& str,
               std::ios::fmtflags fmt,
               std::string::size_type* endpos_out = NULL);
-
 /**
- * @brief Converts a string to a specified type without throwing exceptions
+ * @copydoc from_string(const std::string&, std::string::size_type*)
  *
- * This is the non-throwing version of the `from_string` function.
- * Instead of throwing exceptions on failure, it returns an empty
- * `ft::Optional`.
+ * @param nothrow (optional) A tag (`std::nothrow`) selecting the non-throwing
+ * overload
+ */
+template <typename T>
+ft::Optional<T> from_string(const std::string& str,
+                            std::nothrow_t nothrow,
+                            std::string::size_type* endpos_out = NULL);
+/**
+ * @copydoc from_string(const std::string&, std::string::size_type*)
  *
- * @tparam T The type to convert to
- * @param str The string to convert
- * @param fmt Stream formatting flags that determine how the string is
- * interpreted
- * @param nothrow A tag (f.e. `std::nothrow`) to indicate the non-throwing
- * behavior
- * @param endpos_out Optional out-parameter that gets set to the number of
- * characters that were processed, even on errors
- * @return ft::Optional<T> The converted value wrapped in an `ft::Optional`, or
- * an empty `ft::Optional` if the conversion fails
+ * @param fmt (optional) Stream format flags (`std::ios::fmtflags`) to control
+ * parsing behavior (e.g., base, skipping whitespace, scientific notation)
+ * @param nothrow (optional) A tag (`std::nothrow`) selecting the non-throwing
+ * overload
  */
 template <typename T>
 ft::Optional<T> from_string(const std::string& str,
