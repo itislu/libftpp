@@ -1,6 +1,7 @@
 #pragma once
 
 #include "../../Optional.hpp"
+#include "../../algorithm.hpp"
 #include "../../string.hpp"
 #include "../../type_traits.hpp"
 #include "../../utility.hpp"
@@ -29,27 +30,31 @@ static std::invalid_argument invalid_argument(const std::string& str);
 } // namespace _from_string
 
 template <typename T>
-T from_string(const std::string& str)
+T from_string(const std::string& str,
+              std::string::size_type* endpos_out /*= NULL*/)
 {
-	return from_string<T>(str, std::ios::fmtflags());
+	return from_string<T>(str, std::ios::fmtflags(), endpos_out);
 }
 
 template <>
-inline bool from_string<bool>(const std::string& str)
+inline bool from_string<bool>(const std::string& str,
+                              std::string::size_type* endpos_out /*= NULL*/)
 {
 	try {
-		return from_string<bool>(str, std::ios::boolalpha);
+		return from_string<bool>(str, std::ios::boolalpha, endpos_out);
 	}
 	catch (const std::logic_error&) {
-		return from_string<bool>(str, std::ios::fmtflags());
+		return from_string<bool>(str, std::ios::fmtflags(), endpos_out);
 	}
 }
 
 template <typename T>
-ft::Optional<T> from_string(const std::string& str, std::nothrow_t /*nothrow*/)
+ft::Optional<T> from_string(const std::string& str,
+                            std::nothrow_t /*nothrow*/,
+                            std::string::size_type* endpos_out /*= NULL*/)
 {
 	try {
-		return from_string<T>(str);
+		return from_string<T>(str, endpos_out);
 	}
 	catch (const std::logic_error&) {
 		return ft::nullopt;
@@ -57,13 +62,22 @@ ft::Optional<T> from_string(const std::string& str, std::nothrow_t /*nothrow*/)
 }
 
 template <typename T>
-T from_string(const std::string& str, std::ios::fmtflags fmt)
+T from_string(const std::string& str,
+              std::ios::fmtflags fmt,
+              std::string::size_type* endpos_out /*= NULL*/)
 {
+	if (endpos_out) {
+		*endpos_out = 0;
+	}
 	T res;
 	std::istringstream iss(str);
 	iss.flags(fmt);
 
 	if (iss >> res) {
+		if (endpos_out) {
+			*endpos_out = ft::min(
+			    static_cast<std::string::size_type>(iss.tellg()), str.length());
+		}
 		// Check for negative value for unsigned integer types
 		if (std::numeric_limits<T>::is_integer && !ft::is_same<T, bool>::value
 		    && std::numeric_limits<T>::min() == 0) {
@@ -94,6 +108,9 @@ T from_string(const std::string& str, std::ios::fmtflags fmt)
 		    || test < static_cast<long>(std::numeric_limits<T>::min())
 		    || static_cast<unsigned long>(test) > static_cast<unsigned long>(
 		           std::numeric_limits<T>::max())) {
+			if (endpos_out && end) {
+				*endpos_out = end - start;
+			}
 			throw _from_string::out_of_range<T>(str);
 		}
 	}
@@ -112,6 +129,9 @@ T from_string(const std::string& str, std::ios::fmtflags fmt)
 		else {
 			res = std::strtold(start, &end);
 		}
+		if (endpos_out && end) {
+			*endpos_out = end - start;
+		}
 		if (errno == ERANGE) {
 			throw _from_string::out_of_range<T>(str);
 		}
@@ -127,10 +147,11 @@ T from_string(const std::string& str, std::ios::fmtflags fmt)
 template <typename T>
 ft::Optional<T> from_string(const std::string& str,
                             std::ios::fmtflags fmt,
-                            std::nothrow_t /*nothrow*/)
+                            std::nothrow_t /*nothrow*/,
+                            std::string::size_type* endpos_out /*= NULL*/)
 {
 	try {
-		return from_string<T>(str, fmt);
+		return from_string<T>(str, fmt, endpos_out);
 	}
 	catch (const std::logic_error&) {
 		return ft::nullopt;

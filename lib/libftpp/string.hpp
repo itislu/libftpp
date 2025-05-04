@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Optional.hpp"
+#include <cstddef>
 #include <ios>
 #include <new>
 #include <string>
@@ -31,16 +32,22 @@ bool ends_with(const std::string& str, unsigned char suffix);
  * @brief Converts a string to a specified type
  *
  * Does not skip whitespace by default.
+ * Detects the base of integer types by prefix (`0`, `0x`, `0X`). Hex-prefix
+ * only is invalid. Stops processing at the first invalid character for that
+ * base.
  *
  * @tparam T The type to convert to
  * @param str The string to convert
+ * @param endpos_out Optional out-parameter that gets set to the number of
+ * characters that were processed, even on errors
  * @return T The converted value
  *
  * @throws std::out_of_range When the value is out of the representable range
  * @throws std::invalid_argument When the string cannot be converted to the type
  */
 template <typename T>
-T from_string(const std::string& str);
+T from_string(const std::string& str,
+              std::string::size_type* endpos_out = NULL);
 
 /**
  * @brief Converts a string to a boolean.
@@ -49,6 +56,8 @@ T from_string(const std::string& str);
  * Does not skip whitespace by default.
  *
  * @param str The string to convert
+ * @param endpos_out Optional out-parameter that gets set to the number of
+ * characters that were processed, even on errors
  * @return bool The converted boolean value
  *
  * @throws std::out_of_range When the value is numeric but not 1 or 0
@@ -56,7 +65,8 @@ T from_string(const std::string& str);
  * with true/false
  */
 template <>
-inline bool from_string<bool>(const std::string& str);
+inline bool from_string<bool>(const std::string& str,
+                              std::string::size_type* endpos_out /*= NULL*/);
 
 /**
  * @brief Converts a string to a specified type without throwing exceptions
@@ -71,11 +81,15 @@ inline bool from_string<bool>(const std::string& str);
  * @param str The string to convert
  * @param nothrow A tag (f.e. `std::nothrow`) to indicate the non-throwing
  * behavior
+ * @param endpos_out Optional out-parameter that gets set to the number of
+ * characters that were processed, even on errors
  * @return ft::Optional<T> The converted value wrapped in an `ft::Optional`, or
  * an empty `ft::Optional` if the conversion fails
  */
 template <typename T>
-ft::Optional<T> from_string(const std::string& str, std::nothrow_t nothrow);
+ft::Optional<T> from_string(const std::string& str,
+                            std::nothrow_t nothrow,
+                            std::string::size_type* endpos_out = NULL);
 
 /**
  * @brief Converts a string to a specified type
@@ -84,13 +98,17 @@ ft::Optional<T> from_string(const std::string& str, std::nothrow_t nothrow);
  * @param str The string to convert
  * @param fmt Stream formatting flags that determine how the string is
  * interpreted
+ * @param endpos_out Optional out-parameter that gets set to the number of
+ * characters that were processed, even on errors
  * @return T The converted value
  *
  * @throws std::out_of_range When the value is out of the representable range
  * @throws std::invalid_argument When the string cannot be converted to the type
  */
 template <typename T>
-T from_string(const std::string& str, std::ios::fmtflags fmt);
+T from_string(const std::string& str,
+              std::ios::fmtflags fmt,
+              std::string::size_type* endpos_out = NULL);
 
 /**
  * @brief Converts a string to a specified type without throwing exceptions
@@ -105,13 +123,16 @@ T from_string(const std::string& str, std::ios::fmtflags fmt);
  * interpreted
  * @param nothrow A tag (f.e. `std::nothrow`) to indicate the non-throwing
  * behavior
+ * @param endpos_out Optional out-parameter that gets set to the number of
+ * characters that were processed, even on errors
  * @return ft::Optional<T> The converted value wrapped in an `ft::Optional`, or
  * an empty `ft::Optional` if the conversion fails
  */
 template <typename T>
 ft::Optional<T> from_string(const std::string& str,
                             std::ios::fmtflags fmt,
-                            std::nothrow_t nothrow);
+                            std::nothrow_t nothrow,
+                            std::string::size_type* endpos_out = NULL);
 
 /* to_string */
 
