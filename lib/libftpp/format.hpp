@@ -23,18 +23,23 @@ const std::size_t label_width_colored = 25;
 
 template <typename T>
 std::string ok(const T& msg);
+std::string ok();
 
 template <typename T>
 std::string info(const T& msg);
+std::string info();
 
 template <typename T>
 std::string warn(const T& msg);
+std::string warn();
 
 template <typename T>
 std::string error(const T& msg);
+std::string error();
 
 template <typename T>
 std::string line(const T& msg);
+std::string line();
 
 } // namespace log
 

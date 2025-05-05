@@ -28,6 +28,7 @@ Diagnostics:
         hicpp-avoid-goto, # alias
         hicpp-deprecated-headers, # alias
         hicpp-explicit-conversions, # alias
+        hicpp-member-init, # alias
         hicpp-no-array-decay, # alias
         hicpp-no-malloc, # alias
         hicpp-special-member-functions, # alias
