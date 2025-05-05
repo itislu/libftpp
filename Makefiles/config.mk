@@ -36,6 +36,7 @@ DOCKER_DIR		:=	$(REPO_ROOT)/docker
 
 #	Flags
 
+MAKEFLAGS		+=	--jobs
 CXX				:=	c++
 CXX_VERSION		:=	$(shell $(CXX) --version | head -1)
 IS_CLANG		:=	$(if $(findstring clang,$(CXX_VERSION)),true)

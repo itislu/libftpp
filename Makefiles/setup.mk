@@ -4,7 +4,7 @@ SETUP_MK		:=	1
 
 # ******************************* MAKE SETUP ********************************* #
 
-MAKEFLAGS		+=	--jobs --silent --no-builtin-rules --no-builtin-variables
+MAKEFLAGS		+=	--silent --no-builtin-rules --no-builtin-variables
 SHELL			:=	/bin/bash
 PWD				:=	$(shell pwd)
 MAKEFILES_DIR	:=	$(abspath $(dir $(lastword $(MAKEFILE_LIST))))
