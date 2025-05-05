@@ -1,6 +1,15 @@
 CompileFlags:
   Add:
-    [-Wall, -Wextra, -Werror, -Wshadow, -Wdocumentation, --std=c++98, -pedantic, --language=c++]
+    [
+      -Wall,
+      -Wextra,
+      -Werror,
+      -Wpedantic,
+      -Wshadow,
+      -Wdocumentation,
+      -std=c++98,
+      --language=c++,
+    ]
   Compiler: c++
 
 Diagnostics:
