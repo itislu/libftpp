@@ -1,6 +1,6 @@
 CompileFlags:
   Add:
-    [-Wall, -Wextra, -Werror, -Wshadow, --std=c++98, -pedantic, --language=c++]
+    [-Wall, -Wextra, -Werror, -Wshadow, -Wdocumentation, --std=c++98, -pedantic, --language=c++]
   Compiler: c++
 
 Diagnostics:
@@ -20,6 +20,7 @@ Diagnostics:
         bugprone-easily-swappable-parameters,
         misc-use-anonymous-namespace,
         readability-identifier-length,
+        cert-exp42-c, # alias
         cert-oop54-cpp, # alias
         cppcoreguidelines-avoid-magic-numbers, # alias
         cppcoreguidelines-c-copy-assignment-signature, # alias
