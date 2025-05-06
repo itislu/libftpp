@@ -46,6 +46,7 @@ Diagnostics:
         hicpp-use-nullptr, # alias
       ]
     CheckOptions:
+      bugprone-empty-catch.IgnoreCatchWithKeywords: "REASON"
       modernize-deprecated-headers.CheckHeaderFile: true
       readability-implicit-bool-conversion.AllowPointerConditions: true
       readability-magic-numbers.IgnoredIntegerValues: "1;2;3;4;10;42"
