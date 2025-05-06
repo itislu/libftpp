@@ -174,10 +174,17 @@ static void check_unwanted_scientific_notation(const std::string& str,
                                                std::string::size_type& endpos)
 {
 	if (std::numeric_limits<T>::is_iec559
-	    && (fmt & std::ios::floatfield) == std::ios::fixed
-	    && str.substr(0, endpos).find_first_of("eEpP") < endpos) {
-		endpos = 0;
-		throw _from_string::invalid_argument<T>(str);
+	    && (fmt & std::ios::floatfield) == std::ios::fixed) {
+		const std::string unwanted("eEpP");
+		const std::string::const_iterator end =
+		    str.begin() + static_cast<std::string::difference_type>(endpos);
+
+		if (ft::find_first_of(
+		        str.begin(), end, unwanted.begin(), unwanted.end())
+		    != end) {
+			endpos = 0;
+			throw _from_string::invalid_argument<T>(str);
+		}
 	}
 }
 

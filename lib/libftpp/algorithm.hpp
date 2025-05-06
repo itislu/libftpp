@@ -47,6 +47,19 @@ template <typename OutputIt, typename Size, typename T>
 OutputIt fill_n(OutputIt first, Size count, const T& value);
 
 /**
+ * https://en.cppreference.com/w/cpp/algorithm/find_first_of
+ */
+template <typename InputIt, typename ForwardIt>
+InputIt
+find_first_of(InputIt first, InputIt last, ForwardIt s_first, ForwardIt s_last);
+template <typename InputIt, typename ForwardIt, typename BinaryPred>
+InputIt find_first_of(InputIt first,
+                      InputIt last,
+                      ForwardIt s_first,
+                      ForwardIt s_last,
+                      BinaryPred p);
+
+/**
  * https://en.cppreference.com/w/cpp/algorithm/iota
  */
 template <typename ForwardIt, typename T>
@@ -124,6 +137,7 @@ transform(InputIt first, InputIt last, OutputIt d_result, UnaryOp unary_op);
 #include "src/algorithm/count.tpp"                   // IWYU pragma: export
 #include "src/algorithm/equal.tpp"                   // IWYU pragma: export
 #include "src/algorithm/fill.tpp"                    // IWYU pragma: export
+#include "src/algorithm/find_first_of.tpp"           // IWYU pragma: export
 #include "src/algorithm/iota.tpp"                    // IWYU pragma: export
 #include "src/algorithm/lexicographical_compare.tpp" // IWYU pragma: export
 #include "src/algorithm/min_max.tpp"                 // IWYU pragma: export
