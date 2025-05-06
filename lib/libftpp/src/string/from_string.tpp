@@ -24,6 +24,10 @@ namespace ft {
 
 namespace _from_string {
 template <typename T>
+static void check_unwanted_scientific_notation(const std::string& str,
+                                               std::ios::fmtflags fmt,
+                                               std::string::size_type& endpos);
+template <typename T>
 static std::out_of_range out_of_range(const std::string& str);
 template <typename T>
 static std::invalid_argument invalid_argument(const std::string& str);
@@ -53,18 +57,16 @@ T from_string(const std::string& str,
               std::ios::fmtflags fmt,
               std::string::size_type* endpos_out /*= NULL*/)
 {
-	if (endpos_out) {
-		*endpos_out = 0;
-	}
+	std::string::size_type _; // NOLINT(cppcoreguidelines-init-variables)
+	std::string::size_type& endpos = endpos_out ? *endpos_out : _;
+	endpos = 0;
 	T res;
 	std::istringstream iss(str);
 	iss.flags(fmt);
 
 	if (iss >> res) {
-		if (endpos_out) {
-			*endpos_out = ft::min(
-			    static_cast<std::string::size_type>(iss.tellg()), str.length());
-		}
+		endpos = ft::min(static_cast<std::string::size_type>(iss.tellg()),
+		                 str.length());
 		// Check for negative value for unsigned integer types
 		if (std::numeric_limits<T>::is_integer && !ft::is_same<T, bool>::value
 		    && std::numeric_limits<T>::min() == 0) {
@@ -72,6 +74,10 @@ T from_string(const std::string& str,
 			        from_string<float>(str, fmt, std::nothrow).value_or(-1))) {
 				throw _from_string::out_of_range<T>(str);
 			}
+		}
+		else if (std::numeric_limits<T>::is_iec559) {
+			_from_string::check_unwanted_scientific_notation<T>(
+			    str, fmt, endpos);
 		}
 		return res;
 	}
@@ -95,8 +101,8 @@ T from_string(const std::string& str,
 		    || test < static_cast<long>(std::numeric_limits<T>::min())
 		    || static_cast<unsigned long>(test) > static_cast<unsigned long>(
 		           std::numeric_limits<T>::max())) {
-			if (endpos_out && end) {
-				*endpos_out = end - start;
+			if (end) {
+				endpos = end - start;
 			}
 			throw _from_string::out_of_range<T>(str);
 		}
@@ -116,9 +122,11 @@ T from_string(const std::string& str,
 		else {
 			res = std::strtold(start, &end);
 		}
-		if (endpos_out && end) {
-			*endpos_out = end - start;
+		if (end) {
+			endpos = end - start;
 		}
+
+		_from_string::check_unwanted_scientific_notation<T>(str, fmt, endpos);
 		if (errno == ERANGE) {
 			throw _from_string::out_of_range<T>(str);
 		}
@@ -159,6 +167,19 @@ ft::Optional<T> from_string(const std::string& str,
 }
 
 namespace _from_string {
+
+template <typename T>
+static void check_unwanted_scientific_notation(const std::string& str,
+                                               std::ios::fmtflags fmt,
+                                               std::string::size_type& endpos)
+{
+	if (std::numeric_limits<T>::is_iec559
+	    && (fmt & std::ios::floatfield) == std::ios::fixed
+	    && str.substr(0, endpos).find_first_of("eEpP") < endpos) {
+		endpos = 0;
+		throw _from_string::invalid_argument<T>(str);
+	}
+}
 
 template <typename T>
 static std::out_of_range out_of_range(const std::string& str)
