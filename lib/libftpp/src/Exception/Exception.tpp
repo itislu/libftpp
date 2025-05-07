@@ -2,7 +2,6 @@
 
 #include "../../Exception.hpp"
 #include "../../Optional.hpp"
-#include "../../format.hpp"
 #include <string>
 
 namespace ft {
@@ -126,8 +125,13 @@ const ft::Optional<std::string>& StdException<BaseException>::where() const
 template <typename BaseException>
 void StdException<BaseException>::_update_what_output()
 {
-	_what_output = (_where ? GRAY(*_where + ": ") : "")
-	               + (_who ? *_who + ": " : "") + _msg;
+	if (_where) {
+		_what_output += *_where + ": ";
+	}
+	if (_who) {
+		_what_output += *_who + ": ";
+	}
+	_what_output += _msg;
 }
 
 template <typename BaseException>
