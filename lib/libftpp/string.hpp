@@ -1,10 +1,12 @@
 #pragma once
 
+#include "Exception.hpp"
 #include "Optional.hpp"
 #include <cstddef>
 #include <ios>
 #include <new>
 #include <string>
+#include <typeinfo>
 
 namespace ft {
 
@@ -52,13 +54,14 @@ bool ends_with(const std::string& str, unsigned char suffix);
  * @return For non-throwing overloads: An `ft::Optional<T>` containing the
  * converted value on success, or an empty `ft::Optional<T>` on failure
  *
- * @throws std::invalid_argument (Throwing overloads only) If the string `str`
- * does not represent a valid value for type `T` according to the specified
- * format (e.g., non-numeric characters for an integer, invalid base prefix, or
- * non-boolean string for `bool`)
- * @throws std::out_of_range (Throwing overloads only) If the parsed value is
- * valid but falls outside the representable range of type `T`. For `bool` using
- * numeric format, this is thrown if the value is numeric but not 1 or 0
+ * @throws ft::FromStringInvalidException (Throwing overloads only) If the
+ * string `str` does not represent a valid value for type `T` according to the
+ * specified format (e.g., non-numeric characters for an integer, invalid base
+ * prefix, or non-boolean string for `bool`)
+ * @throws FromStringRangeException (Throwing overloads only) If the parsed
+ * value is valid but falls outside the representable range of type `T`. For
+ * `bool` using numeric format, this is thrown if the value is numeric but not 1
+ * or 0
  *
  * @tparam T The target type to convert the string to
  * @param str The input string to parse
@@ -107,6 +110,38 @@ ft::Optional<T> from_string(const std::string& str,
                             std::ios::fmtflags fmt,
                             std::nothrow_t nothrow,
                             std::string::size_type* endpos_out = NULL);
+
+class FromStringException : public ft::Exception {
+public:
+	FromStringException(const std::string& msg,
+	                    const std::string& input,
+	                    const std::type_info& type_id);
+	FromStringException(const FromStringException& other) throw();
+	~FromStringException() throw();
+	FromStringException& operator=(FromStringException other) throw();
+
+	const std::string& input() const throw();
+	const std::type_info& type_id() const throw();
+	void swap(FromStringException& other) throw();
+
+private:
+	FromStringException();
+
+	std::string _input;
+	const std::type_info* _type_id;
+};
+
+class FromStringRangeException : public FromStringException {
+public:
+	FromStringRangeException(const std::string& input,
+	                         const std::type_info& type_id);
+};
+
+class FromStringInvalidException : public FromStringException {
+public:
+	FromStringInvalidException(const std::string& input,
+	                           const std::type_info& type_id);
+};
 
 /* to_string */
 

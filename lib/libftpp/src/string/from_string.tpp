@@ -4,21 +4,16 @@
 #include "../../algorithm.hpp"
 #include "../../string.hpp"
 #include "../../type_traits.hpp"
-#include "../../utility.hpp"
 #include <cctype>
 #include <cerrno>
-#include <cfloat>
 #include <cmath>
 #include <cstddef>
 #include <cstdlib>
-#include <cstring>
 #include <iostream>
 #include <limits>
 #include <new>
 #include <sstream>
-#include <stdexcept>
 #include <string>
-#include <typeinfo>
 
 namespace ft {
 
@@ -27,10 +22,6 @@ template <typename T>
 static void check_unwanted_scientific_notation(const std::string& str,
                                                std::ios::fmtflags fmt,
                                                std::string::size_type& endpos);
-template <typename T>
-static std::out_of_range out_of_range(const std::string& str);
-template <typename T>
-static std::invalid_argument invalid_argument(const std::string& str);
 } // namespace _from_string
 
 template <typename T>
@@ -47,7 +38,7 @@ inline bool from_string<bool>(const std::string& str,
 	try {
 		return from_string<bool>(str, std::ios::boolalpha, endpos_out);
 	}
-	catch (const std::logic_error&) {
+	catch (const FromStringException&) {
 		return from_string<bool>(str, std::ios::fmtflags(), endpos_out);
 	}
 }
@@ -72,7 +63,7 @@ T from_string(const std::string& str,
 		    && std::numeric_limits<T>::min() == 0) {
 			if (std::signbit(
 			        from_string<float>(str, fmt, std::nothrow).value_or(-1))) {
-				throw _from_string::out_of_range<T>(str);
+				throw FromStringRangeException(str, typeid(T));
 			}
 		}
 		else if (std::numeric_limits<T>::is_iec559) {
@@ -85,7 +76,7 @@ T from_string(const std::string& str,
 	/* Error handling */
 
 	if (!(fmt & std::ios::skipws) && std::isspace(*str.c_str())) {
-		throw _from_string::invalid_argument<T>(str);
+		throw FromStringInvalidException(str, typeid(T));
 	}
 
 	// Check if integer type out of range
@@ -104,7 +95,7 @@ T from_string(const std::string& str,
 			if (end) {
 				endpos = end - start;
 			}
-			throw _from_string::out_of_range<T>(str);
+			throw FromStringRangeException(str, typeid(T));
 		}
 	}
 	// Check if floating point type out of range
@@ -128,7 +119,7 @@ T from_string(const std::string& str,
 
 		_from_string::check_unwanted_scientific_notation<T>(str, fmt, endpos);
 		if (errno == ERANGE) {
-			throw _from_string::out_of_range<T>(str);
+			throw FromStringRangeException(str, typeid(T));
 		}
 		// stringstream does not detect special floating point values
 		if (std::isinf(res) || std::isnan(res)) {
@@ -136,7 +127,7 @@ T from_string(const std::string& str,
 		}
 	}
 	// Invalid string
-	throw _from_string::invalid_argument<T>(str);
+	throw FromStringInvalidException(str, typeid(T));
 }
 
 template <typename T>
@@ -147,7 +138,7 @@ ft::Optional<T> from_string(const std::string& str,
 	try {
 		return from_string<T>(str, endpos_out);
 	}
-	catch (const std::logic_error&) {
+	catch (const FromStringException&) {
 		return ft::nullopt;
 	}
 }
@@ -161,7 +152,7 @@ ft::Optional<T> from_string(const std::string& str,
 	try {
 		return from_string<T>(str, fmt, endpos_out);
 	}
-	catch (const std::logic_error&) {
+	catch (const FromStringException&) {
 		return ft::nullopt;
 	}
 }
@@ -183,25 +174,9 @@ static void check_unwanted_scientific_notation(const std::string& str,
 		        str.begin(), end, unwanted.begin(), unwanted.end())
 		    != end) {
 			endpos = 0;
-			throw _from_string::invalid_argument<T>(str);
+			throw FromStringInvalidException(str, typeid(T));
 		}
 	}
-}
-
-template <typename T>
-static std::out_of_range out_of_range(const std::string& str)
-{
-	return std::out_of_range(std::string(std::strerror(ERANGE)) + " ("
-	                         + ft::demangle(typeid(T).name()) + "): \"" + str
-	                         + "\"");
-}
-
-template <typename T>
-static std::invalid_argument invalid_argument(const std::string& str)
-{
-	return std::invalid_argument(std::string("Cannot convert to ")
-	                             + ft::demangle(typeid(T).name()) + ": \"" + str
-	                             + "\"");
 }
 
 } // namespace _from_string
