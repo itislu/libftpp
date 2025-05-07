@@ -17,21 +17,6 @@ unsigned long abs_diff(long a, long b) throw();
 
 /* numeric_cast */
 
-class BadNumericCast : public std::bad_cast {
-public:
-	const char* what() const throw();
-};
-
-class NegativeOverflow : public BadNumericCast {
-public:
-	const char* what() const throw();
-};
-
-class PositiveOverflow : public BadNumericCast {
-public:
-	const char* what() const throw();
-};
-
 /**
  * @brief Safely converts numeric values between different types
  *
@@ -62,7 +47,7 @@ To numeric_cast(From from);
  * This is the non-throwing version of the `numeric_cast` function.
  * Instead of throwing exceptions on failure, it returns an empty
  * `ft::Optional`.
- * To use it, pass a tag (f.e. `std::nothrow`) to indicate the non-throwing
+ * To use it, pass `std::nothrow` as a tag to indicate the non-throwing
  * behavior.
  *
  * @tparam To The target type to convert to
@@ -77,6 +62,21 @@ To numeric_cast(From from);
  */
 template <typename To, typename From>
 ft::Optional<To> numeric_cast(From from, std::nothrow_t /*nothrow*/);
+
+class BadNumericCast : public std::bad_cast {
+public:
+	const char* what() const throw();
+};
+
+class NegativeOverflow : public BadNumericCast {
+public:
+	const char* what() const throw();
+};
+
+class PositiveOverflow : public BadNumericCast {
+public:
+	const char* what() const throw();
+};
 
 /* Saturation arithmetic */
 
