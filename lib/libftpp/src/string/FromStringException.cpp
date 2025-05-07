@@ -65,7 +65,7 @@ FromStringRangeException::FromStringRangeException(
 FromStringInvalidException::FromStringInvalidException(
     const std::string& input,
     const std::type_info& type_id)
-    : FromStringException(std::string("Cannot convert to ")
+    : FromStringException(std::string("could not convert to ")
                               + ft::demangle(type_id.name()) + ": \"" + input
                               + "\"",
                           input,
