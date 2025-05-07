@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Optional.hpp"
+#include "../../Expected.hpp"
 #include "../../numeric.hpp"
 #include <cmath>
 #include <ios>
@@ -39,13 +39,14 @@ To numeric_cast(From from)
 }
 
 template <typename To, typename From>
-ft::Optional<To> numeric_cast(From from, std::nothrow_t /*unused*/)
+ft::Expected<To, ft::NumericCastException>
+numeric_cast(From from, std::nothrow_t /*unused*/)
 {
 	try {
 		return numeric_cast<To>(from);
 	}
-	catch (const NumericCastException&) {
-		return ft::nullopt;
+	catch (const NumericCastException& e) {
+		return ft::Unexpected<NumericCastException>(e);
 	}
 }
 

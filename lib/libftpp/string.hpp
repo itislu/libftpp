@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Exception.hpp"
-#include "Optional.hpp"
+#include "Expected.hpp"
 #include <cstddef>
 #include <ios>
 #include <new>
@@ -30,6 +30,10 @@ bool ends_with(const std::string& str, unsigned char suffix);
 
 /* from_string */
 
+class FromStringException;
+class FromStringRangeException;
+class FromStringInvalidException;
+
 /**
  * @brief Parses a string and converts it to a value of the specified type `T`
  *
@@ -47,18 +51,19 @@ bool ends_with(const std::string& str, unsigned char suffix);
  * Parsing stops at the first invalid character for the expected format, target
  * type or base.
  *
- * Overloads with the `nothrow` parameter return `ft::Optional<T>` and do not
+ * Overloads with the `nothrow` parameter return a `ft::Expected` and do not
  * throw exceptions on conversion errors.
  *
  * @return For throwing overloads: The converted value of type `T`
- * @return For non-throwing overloads: An `ft::Optional<T>` containing the
- * converted value on success, or an empty `ft::Optional<T>` on failure
+ * @return For non-throwing overloads: A `ft::Expected<T,
+ * ft::FromStringException>` containing the converted value on success, or a
+ * `ft::FromStringException` on failure
  *
  * @throws ft::FromStringInvalidException (Throwing overloads only) If the
  * string `str` does not represent a valid value for type `T` according to the
  * specified format (e.g., non-numeric characters for an integer, invalid base
  * prefix, or non-boolean string for `bool`)
- * @throws FromStringRangeException (Throwing overloads only) If the parsed
+ * @throws ft::FromStringRangeException (Throwing overloads only) If the parsed
  * value is valid but falls outside the representable range of type `T`. For
  * `bool` using numeric format, this is thrown if the value is numeric but not 1
  * or 0
@@ -94,9 +99,10 @@ T from_string(const std::string& str,
  * overload
  */
 template <typename T>
-ft::Optional<T> from_string(const std::string& str,
-                            std::nothrow_t nothrow,
-                            std::string::size_type* endpos_out = NULL);
+ft::Expected<T, ft::FromStringException>
+from_string(const std::string& str,
+            std::nothrow_t nothrow,
+            std::string::size_type* endpos_out = NULL);
 /**
  * @copydoc from_string(const std::string&, std::string::size_type*)
  *
@@ -106,10 +112,11 @@ ft::Optional<T> from_string(const std::string& str,
  * overload
  */
 template <typename T>
-ft::Optional<T> from_string(const std::string& str,
-                            std::ios::fmtflags fmt,
-                            std::nothrow_t nothrow,
-                            std::string::size_type* endpos_out = NULL);
+ft::Expected<T, ft::FromStringException>
+from_string(const std::string& str,
+            std::ios::fmtflags fmt,
+            std::nothrow_t nothrow,
+            std::string::size_type* endpos_out = NULL);
 
 class FromStringException : public ft::Exception {
 public:

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../../Optional.hpp"
+#include "../../Expected.hpp"
 #include "../../algorithm.hpp"
 #include "../../string.hpp"
 #include "../../type_traits.hpp"
@@ -131,29 +131,31 @@ T from_string(const std::string& str,
 }
 
 template <typename T>
-ft::Optional<T> from_string(const std::string& str,
-                            std::nothrow_t /*nothrow*/,
-                            std::string::size_type* endpos_out /*= NULL*/)
+ft::Expected<T, ft::FromStringException>
+from_string(const std::string& str,
+            std::nothrow_t /*nothrow*/,
+            std::string::size_type* endpos_out /*= NULL*/)
 {
 	try {
 		return from_string<T>(str, endpos_out);
 	}
-	catch (const FromStringException&) {
-		return ft::nullopt;
+	catch (const FromStringException& e) {
+		return ft::Unexpected<FromStringException>(e);
 	}
 }
 
 template <typename T>
-ft::Optional<T> from_string(const std::string& str,
-                            std::ios::fmtflags fmt,
-                            std::nothrow_t /*nothrow*/,
-                            std::string::size_type* endpos_out /*= NULL*/)
+ft::Expected<T, ft::FromStringException>
+from_string(const std::string& str,
+            std::ios::fmtflags fmt,
+            std::nothrow_t /*nothrow*/,
+            std::string::size_type* endpos_out /*= NULL*/)
 {
 	try {
 		return from_string<T>(str, fmt, endpos_out);
 	}
-	catch (const FromStringException&) {
-		return ft::nullopt;
+	catch (const FromStringException& e) {
+		return ft::Unexpected<FromStringException>(e);
 	}
 }
 

@@ -1,7 +1,7 @@
 #pragma once
 
 #include "Exception.hpp"
-#include "Optional.hpp"
+#include "Expected.hpp"
 #include "type_traits.hpp"
 #include <limits>
 #include <new>
@@ -17,6 +17,10 @@ unsigned int abs_diff(int a, int b) throw();
 unsigned long abs_diff(long a, long b) throw();
 
 /* numeric_cast */
+
+class NumericCastException;
+class NumericCastNegativeOverflowException;
+class NumericCastPositiveOverflowException;
 
 /**
  * @brief Safely converts numeric values between different types
@@ -48,25 +52,19 @@ To numeric_cast(From from);
  * undefined behavior.
  *
  * This is the non-throwing version of the `numeric_cast` function.
- * Instead of throwing exceptions on failure, it returns an empty
- * `ft::Optional`.
+ * Instead of throwing exceptions on failure, it returns a `ft::Expected`.
  * To use it, pass `std::nothrow` as a tag to indicate the non-throwing
  * behavior.
  *
  * @tparam To The target type to convert to
  * @tparam From The source type to convert from
  * @param from The value to be converted
- * @return The converted value
- *
- * @throws ft::NumericCastException When the conversion is invalid (NaN to
- * integer)
- * @throws ft::NumericCastNegativeOverflowException When a value is too low for
- * the target type
- * @throws ft::NumericCastPositiveOverflowException When a value is too high for
- * the target type
+ * @return A `ft::Expected<To, ft::NumericCastException>` with the converted
+ * value on success, or a `ft::NumericCastException` on failure
  */
 template <typename To, typename From>
-ft::Optional<To> numeric_cast(From from, std::nothrow_t /*nothrow*/);
+ft::Expected<To, ft::NumericCastException>
+numeric_cast(From from, std::nothrow_t /*nothrow*/);
 
 class NumericCastException : public ft::Exception {
 public:
