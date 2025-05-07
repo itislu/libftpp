@@ -20,6 +20,7 @@ Diagnostics:
         "cert-*",
         "clang-analyzer-*",
         "cppcoreguidelines-*",
+        "google-explicit-constructor",
         "hicpp-*",
         "misc-*",
         "performance-*",
