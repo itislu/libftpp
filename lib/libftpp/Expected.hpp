@@ -6,85 +6,10 @@
 namespace ft {
 
 template <typename E>
+class Unexpected;
+template <typename E>
 class BadExpectedAccess;
-
-// NOLINTBEGIN(cppcoreguidelines-virtual-class-destructor)
-/**
- * https://en.cppreference.com/w/cpp/utility/expected/bad_expected_access
- */
-template <>
-class BadExpectedAccess<void> : public std::exception {
-public:
-	const char* what() const throw();
-
-protected:
-	BadExpectedAccess() throw();
-	BadExpectedAccess(const BadExpectedAccess& /*unused*/);
-	~BadExpectedAccess() throw();
-	BadExpectedAccess& operator=(const BadExpectedAccess& /*unused*/);
-};
-// NOLINTEND(cppcoreguidelines-virtual-class-destructor)
-
-/**
- * https://en.cppreference.com/w/cpp/utility/expected/bad_expected_access
- */
-template <typename E>
-class BadExpectedAccess : public BadExpectedAccess<void> {
-public:
-	explicit BadExpectedAccess(const E& error);
-	BadExpectedAccess(const BadExpectedAccess& other);
-	~BadExpectedAccess() throw();
-	BadExpectedAccess& operator=(const BadExpectedAccess& other);
-
-	const E& error() const throw();
-	E& error() throw();
-
-private:
-	E _error;
-};
-
-/**
- * https://en.cppreference.com/w/cpp/utility/expected/unexpected
- */
-template <typename E>
-class Unexpected {
-public:
-	Unexpected(const Unexpected& other);
-	template <typename Err>
-	explicit Unexpected(const Err& error);
-	~Unexpected();
-	Unexpected& operator=(Unexpected other);
-
-	const E& error() const throw();
-	E& error() throw();
-
-	void swap(Unexpected& other);
-
-private:
-	Unexpected();
-
-	E _error;
-};
-
-template <typename E>
-void swap(Unexpected<E>& lhs, Unexpected<E>& rhs);
-
-template <typename E, typename E2>
-bool operator==(const Unexpected<E>& lhs, const Unexpected<E2>& rhs);
-template <typename E, typename E2>
-bool operator!=(const Unexpected<E>& lhs, const Unexpected<E2>& rhs);
-
-/**
- * https://en.cppreference.com/w/cpp/utility/expected/unexpect_t
- */
-struct unexpect_t {
-	explicit unexpect_t(int /*unused*/) throw();
-};
-
-/**
- * https://en.cppreference.com/w/cpp/utility/expected/unexpect_t
- */
-extern const unexpect_t unexpect;
+struct unexpect_t;
 
 /**
  * https://en.cppreference.com/w/cpp/utility/expected
@@ -197,6 +122,86 @@ private:
 
 template <typename E, typename T2, typename E2>
 bool operator==(const Expected<void, E>& lhs, const Expected<T2, E2>& rhs);
+template <typename E>
+class BadExpectedAccess;
+
+// NOLINTBEGIN(cppcoreguidelines-virtual-class-destructor)
+/**
+ * https://en.cppreference.com/w/cpp/utility/expected/bad_expected_access
+ */
+template <>
+class BadExpectedAccess<void> : public std::exception {
+public:
+	const char* what() const throw();
+
+protected:
+	BadExpectedAccess() throw();
+	BadExpectedAccess(const BadExpectedAccess& /*unused*/);
+	~BadExpectedAccess() throw();
+	BadExpectedAccess& operator=(const BadExpectedAccess& /*unused*/);
+};
+// NOLINTEND(cppcoreguidelines-virtual-class-destructor)
+
+/**
+ * https://en.cppreference.com/w/cpp/utility/expected/unexpected
+ */
+template <typename E>
+class Unexpected {
+public:
+	Unexpected(const Unexpected& other);
+	template <typename Err>
+	explicit Unexpected(const Err& error);
+	~Unexpected();
+	Unexpected& operator=(Unexpected other);
+
+	const E& error() const throw();
+	E& error() throw();
+
+	void swap(Unexpected& other);
+
+private:
+	Unexpected();
+
+	E _error;
+};
+
+template <typename E>
+void swap(Unexpected<E>& lhs, Unexpected<E>& rhs);
+
+template <typename E, typename E2>
+bool operator==(const Unexpected<E>& lhs, const Unexpected<E2>& rhs);
+template <typename E, typename E2>
+bool operator!=(const Unexpected<E>& lhs, const Unexpected<E2>& rhs);
+
+/**
+ * https://en.cppreference.com/w/cpp/utility/expected/bad_expected_access
+ */
+template <typename E>
+class BadExpectedAccess : public BadExpectedAccess<void> {
+public:
+	explicit BadExpectedAccess(const E& error);
+	BadExpectedAccess(const BadExpectedAccess& other);
+	~BadExpectedAccess() throw();
+	BadExpectedAccess& operator=(const BadExpectedAccess& other);
+
+	const E& error() const throw();
+	E& error() throw();
+
+private:
+	E _error;
+};
+
+/**
+ * https://en.cppreference.com/w/cpp/utility/expected/unexpect_t
+ */
+struct unexpect_t {
+	explicit unexpect_t(int /*unused*/) throw();
+};
+
+/**
+ * https://en.cppreference.com/w/cpp/utility/expected/unexpect_t
+ */
+extern const unexpect_t unexpect;
 
 } // namespace ft
 

@@ -5,25 +5,8 @@
 
 namespace ft {
 
-/**
- * https://en.cppreference.com/w/cpp/utility/optional/bad_optional_access
- */
-class BadOptionalAccess : public std::exception {
-public:
-	const char* what() const throw();
-};
-
-/**
- * https://en.cppreference.com/w/cpp/utility/optional/nullopt_t
- */
-struct nullopt_t {
-	explicit nullopt_t(int /*unused*/) throw();
-};
-
-/**
- * https://en.cppreference.com/w/cpp/utility/optional/nullopt
- */
-extern const nullopt_t nullopt;
+class BadOptionalAccess;
+struct nullopt_t;
 
 /**
  * https://en.cppreference.com/w/cpp/utility/optional
@@ -134,6 +117,26 @@ template <typename T, typename U>
 bool operator>=(const Optional<T>& opt, const U& value);
 template <typename U, typename T>
 bool operator>=(const U& value, const Optional<T>& opt);
+
+/**
+ * https://en.cppreference.com/w/cpp/utility/optional/bad_optional_access
+ */
+class BadOptionalAccess : public std::exception {
+public:
+	const char* what() const throw();
+};
+
+/**
+ * https://en.cppreference.com/w/cpp/utility/optional/nullopt_t
+ */
+struct nullopt_t {
+	explicit nullopt_t(int /*unused*/) throw();
+};
+
+/**
+ * https://en.cppreference.com/w/cpp/utility/optional/nullopt
+ */
+extern const nullopt_t nullopt;
 
 } // namespace ft
 
