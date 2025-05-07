@@ -9,6 +9,7 @@ CompileFlags:
       -Wdocumentation,
       -std=c++98,
       --language=c++,
+      -Ilib,
     ]
   Compiler: c++
 
@@ -36,6 +37,7 @@ Diagnostics:
         cppcoreguidelines-c-copy-assignment-signature, # alias
         cppcoreguidelines-non-private-member-variables-in-classes, # alias
         hicpp-avoid-goto, # alias
+        hicpp-braces-around-statements, # alias
         hicpp-deprecated-headers, # alias
         hicpp-explicit-conversions, # alias
         hicpp-member-init, # alias
