@@ -44,7 +44,7 @@ ft::Optional<To> numeric_cast(From from, std::nothrow_t /*unused*/)
 	try {
 		return numeric_cast<To>(from);
 	}
-	catch (const BadNumericCast&) {
+	catch (const NumericCastException&) {
 		return ft::nullopt;
 	}
 }
@@ -55,7 +55,7 @@ template <typename To, typename From>
 static To int_to_int(From from)
 {
 	if (!std::numeric_limits<To>::is_signed && from < 0) {
-		throw NegativeOverflow();
+		throw NumericCastNegativeOverflowException();
 	}
 	return Impl<To, From>::try_cast(from);
 }
@@ -64,10 +64,10 @@ template <typename To, typename From>
 static To fp_to_int(From from)
 {
 	if (std::isnan(from)) {
-		throw BadNumericCast();
+		throw NumericCastException();
 	}
 	if (!std::numeric_limits<To>::is_signed && from < 0) {
-		throw NegativeOverflow();
+		throw NumericCastNegativeOverflowException();
 	}
 	return Impl<To, From>::try_cast(from);
 }
@@ -95,7 +95,8 @@ struct Impl {
 		std::stringstream ss;
 		ss << std::fixed << from;
 		if (!(ss >> to)) {
-			from < 0 ? throw NegativeOverflow() : throw PositiveOverflow();
+			from < 0 ? throw NumericCastNegativeOverflowException()
+			         : throw NumericCastPositiveOverflowException();
 		}
 		return static_cast<To>(from);
 	}
@@ -115,13 +116,14 @@ struct Impl<char, From> {
 		std::stringstream ss;
 		ss << std::fixed << from;
 		if (!(ss >> to)) {
-			from < 0 ? throw NegativeOverflow() : throw PositiveOverflow();
+			from < 0 ? throw NumericCastNegativeOverflowException()
+			         : throw NumericCastPositiveOverflowException();
 		}
 		if (to > std::numeric_limits<char>::max()) {
-			throw PositiveOverflow();
+			throw NumericCastPositiveOverflowException();
 		}
 		if (to < std::numeric_limits<char>::min()) {
-			throw NegativeOverflow();
+			throw NumericCastNegativeOverflowException();
 		}
 		return static_cast<char>(from);
 	}
@@ -135,10 +137,11 @@ struct Impl<unsigned char, From> {
 		std::stringstream ss;
 		ss << std::fixed << from;
 		if (!(ss >> to)) {
-			from < 0 ? throw NegativeOverflow() : throw PositiveOverflow();
+			from < 0 ? throw NumericCastNegativeOverflowException()
+			         : throw NumericCastPositiveOverflowException();
 		}
 		if (to > std::numeric_limits<unsigned char>::max()) {
-			throw PositiveOverflow();
+			throw NumericCastPositiveOverflowException();
 		}
 		return static_cast<unsigned char>(from);
 	}
@@ -152,7 +155,8 @@ struct Impl<To, char> {
 		std::stringstream ss;
 		ss << static_cast<int>(from);
 		if (!(ss >> to)) {
-			from < 0 ? throw NegativeOverflow() : throw PositiveOverflow();
+			from < 0 ? throw NumericCastNegativeOverflowException()
+			         : throw NumericCastPositiveOverflowException();
 		}
 		return static_cast<To>(from);
 	}
@@ -166,7 +170,7 @@ struct Impl<To, unsigned char> {
 		std::stringstream ss;
 		ss << static_cast<unsigned int>(from);
 		if (!(ss >> to)) {
-			throw PositiveOverflow();
+			throw NumericCastPositiveOverflowException();
 		}
 		return static_cast<To>(from);
 	}

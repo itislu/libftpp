@@ -1,10 +1,11 @@
 #pragma once
 
+#include "Exception.hpp"
 #include "Optional.hpp"
 #include "type_traits.hpp"
 #include <limits>
 #include <new>
-#include <typeinfo>
+#include <string>
 
 namespace ft {
 
@@ -29,10 +30,12 @@ unsigned long abs_diff(long a, long b) throw();
  * @param from The value to be converted
  * @return The converted value
  *
- * @throws ft::BadNumericCast When the conversion is invalid (e.g., NaN to
+ * @throws ft::NumericCastException When the conversion is invalid (e.g., NaN to
  * integer)
- * @throws ft::NegativeOverflow When a value is too low for the target type
- * @throws ft::PositiveOverflow When a value is too high for the target type
+ * @throws ft::NumericCastNegativeOverflowException When a value is too low for
+ * the target type
+ * @throws ft::NumericCastPositiveOverflowException When a value is too high for
+ * the target type
  */
 template <typename To, typename From>
 To numeric_cast(From from);
@@ -55,27 +58,30 @@ To numeric_cast(From from);
  * @param from The value to be converted
  * @return The converted value
  *
- * @throws ft::BadNumericCast When the conversion is invalid (e.g., NaN to
+ * @throws ft::NumericCastException When the conversion is invalid (NaN to
  * integer)
- * @throws ft::NegativeOverflow When a value is too low for the target type
- * @throws ft::PositiveOverflow When a value is too high for the target type
+ * @throws ft::NumericCastNegativeOverflowException When a value is too low for
+ * the target type
+ * @throws ft::NumericCastPositiveOverflowException When a value is too high for
+ * the target type
  */
 template <typename To, typename From>
 ft::Optional<To> numeric_cast(From from, std::nothrow_t /*nothrow*/);
 
-class BadNumericCast : public std::bad_cast {
+class NumericCastException : public ft::Exception {
 public:
-	const char* what() const throw();
+	NumericCastException();
+	explicit NumericCastException(const std::string& msg);
 };
 
-class NegativeOverflow : public BadNumericCast {
+class NumericCastNegativeOverflowException : public NumericCastException {
 public:
-	const char* what() const throw();
+	NumericCastNegativeOverflowException();
 };
 
-class PositiveOverflow : public BadNumericCast {
+class NumericCastPositiveOverflowException : public NumericCastException {
 public:
-	const char* what() const throw();
+	NumericCastPositiveOverflowException();
 };
 
 /* Saturation arithmetic */
