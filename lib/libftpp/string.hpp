@@ -35,7 +35,7 @@ class FromStringRangeException;
 class FromStringInvalidException;
 
 /**
- * @brief Parses a string and converts it to a value of the specified type `T`
+ * @brief Parses a string and converts it to a value of the specified type `To`
  *
  * Default rules (when `fmt` is not provided):
  * - Leading whitespace is *not* skipped. Use `std::ios::skipws` in `fmt` to
@@ -54,27 +54,27 @@ class FromStringInvalidException;
  * Overloads with the `nothrow` parameter return a `ft::Expected` and do not
  * throw exceptions on conversion errors.
  *
- * @return For throwing overloads: The converted value of type `T`
- * @return For non-throwing overloads: A `ft::Expected<T,
+ * @return For throwing overloads: The converted value of type `To`
+ * @return For non-throwing overloads: A `ft::Expected<To,
  * ft::FromStringException>` containing the converted value on success, or a
  * `ft::FromStringException` on failure
  *
  * @throws ft::FromStringInvalidException (Throwing overloads only) If the
- * string `str` does not represent a valid value for type `T` according to the
+ * string `str` does not represent a valid value for type `To` according to the
  * specified format (e.g., non-numeric characters for an integer, invalid base
  * prefix, or non-boolean string for `bool`)
  * @throws ft::FromStringRangeException (Throwing overloads only) If the parsed
- * value is valid but falls outside the representable range of type `T`. For
+ * value is valid but falls outside the representable range of type `To`. For
  * `bool` using numeric format, this is thrown if the value is numeric but not 1
  * or 0
  *
- * @tparam T The target type to convert the string to
+ * @tparam To The target type to convert the string to
  * @param str The input string to parse
  * @param endpos_out (optional) Out-parameter which, if not null, is set to the
  * number of characters processed from `str`, even if an error occurs
  */
-template <typename T>
-T from_string(const std::string& str,
+template <typename To>
+To from_string(const std::string& str,
               std::string::size_type* endpos_out = NULL);
 /**
  * @copydoc from_string(const std::string&, std::string::size_type*)
@@ -88,8 +88,8 @@ inline bool from_string<bool>(const std::string& str,
  * @param fmt (optional) Stream format flags (`std::ios::fmtflags`) to control
  * parsing behavior (e.g., base, skipping whitespace, scientific notation)
  */
-template <typename T>
-T from_string(const std::string& str,
+template <typename To>
+To from_string(const std::string& str,
               std::ios::fmtflags fmt,
               std::string::size_type* endpos_out = NULL);
 /**
@@ -98,8 +98,8 @@ T from_string(const std::string& str,
  * @param nothrow (optional) A tag (`std::nothrow`) selecting the non-throwing
  * overload
  */
-template <typename T>
-ft::Expected<T, ft::FromStringException>
+template <typename To>
+ft::Expected<To, ft::FromStringException>
 from_string(const std::string& str,
             std::nothrow_t nothrow,
             std::string::size_type* endpos_out = NULL);
@@ -111,8 +111,8 @@ from_string(const std::string& str,
  * @param nothrow (optional) A tag (`std::nothrow`) selecting the non-throwing
  * overload
  */
-template <typename T>
-ft::Expected<T, ft::FromStringException>
+template <typename To>
+ft::Expected<To, ft::FromStringException>
 from_string(const std::string& str,
             std::ios::fmtflags fmt,
             std::nothrow_t nothrow,

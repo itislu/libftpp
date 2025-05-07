@@ -18,17 +18,17 @@
 namespace ft {
 
 namespace _from_string {
-template <typename T>
+template <typename To>
 static void check_unwanted_scientific_notation(const std::string& str,
                                                std::ios::fmtflags fmt,
                                                std::string::size_type& endpos);
 } // namespace _from_string
 
-template <typename T>
-T from_string(const std::string& str,
-              std::string::size_type* endpos_out /*= NULL*/)
+template <typename To>
+To from_string(const std::string& str,
+               std::string::size_type* endpos_out /*= NULL*/)
 {
-	return from_string<T>(str, std::ios::fmtflags(), endpos_out);
+	return from_string<To>(str, std::ios::fmtflags(), endpos_out);
 }
 
 template <>
@@ -43,15 +43,15 @@ inline bool from_string<bool>(const std::string& str,
 	}
 }
 
-template <typename T>
-T from_string(const std::string& str,
-              std::ios::fmtflags fmt,
-              std::string::size_type* endpos_out /*= NULL*/)
+template <typename To>
+To from_string(const std::string& str,
+               std::ios::fmtflags fmt,
+               std::string::size_type* endpos_out /*= NULL*/)
 {
 	std::string::size_type _; // NOLINT(cppcoreguidelines-init-variables)
 	std::string::size_type& endpos = endpos_out ? *endpos_out : _;
 	endpos = 0;
-	T res;
+	To res;
 	std::istringstream iss(str);
 	iss.flags(fmt);
 
@@ -59,15 +59,15 @@ T from_string(const std::string& str,
 		endpos = ft::min(static_cast<std::string::size_type>(iss.tellg()),
 		                 str.length());
 		// Check for negative value for unsigned integer types
-		if (std::numeric_limits<T>::is_integer && !ft::is_same<T, bool>::value
-		    && std::numeric_limits<T>::min() == 0) {
+		if (std::numeric_limits<To>::is_integer && !ft::is_same<To, bool>::value
+		    && std::numeric_limits<To>::min() == 0) {
 			if (std::signbit(
 			        from_string<float>(str, fmt, std::nothrow).value_or(-1))) {
-				throw FromStringRangeException(str, typeid(T));
+				throw FromStringRangeException(str, typeid(To));
 			}
 		}
-		else if (std::numeric_limits<T>::is_iec559) {
-			_from_string::check_unwanted_scientific_notation<T>(
+		else if (std::numeric_limits<To>::is_iec559) {
+			_from_string::check_unwanted_scientific_notation<To>(
 			    str, fmt, endpos);
 		}
 		return res;
@@ -76,11 +76,11 @@ T from_string(const std::string& str,
 	/* Error handling */
 
 	if (!(fmt & std::ios::skipws) && std::isspace(*str.c_str())) {
-		throw FromStringInvalidException(str, typeid(T));
+		throw FromStringInvalidException(str, typeid(To));
 	}
 
 	// Check if integer type out of range
-	if (std::numeric_limits<T>::is_integer) {
+	if (std::numeric_limits<To>::is_integer) {
 		const char* const start = str.c_str();
 		char* end = NULL;
 
@@ -89,25 +89,25 @@ T from_string(const std::string& str,
 		errno = 0;
 		const long test = std::strtol(start, &end, 0);
 		if (errno == ERANGE
-		    || test < static_cast<long>(std::numeric_limits<T>::min())
+		    || test < static_cast<long>(std::numeric_limits<To>::min())
 		    || static_cast<unsigned long>(test) > static_cast<unsigned long>(
-		           std::numeric_limits<T>::max())) {
+		           std::numeric_limits<To>::max())) {
 			if (end) {
 				endpos = end - start;
 			}
-			throw FromStringRangeException(str, typeid(T));
+			throw FromStringRangeException(str, typeid(To));
 		}
 	}
 	// Check if floating point type out of range
-	else if (std::numeric_limits<T>::is_iec559) {
+	else if (std::numeric_limits<To>::is_iec559) {
 		const char* const start = str.c_str();
 		char* end = NULL;
 
 		errno = 0;
-		if (ft::is_same<T, float>::value) {
+		if (ft::is_same<To, float>::value) {
 			res = std::strtof(start, &end);
 		}
-		else if (ft::is_same<T, double>::value) {
+		else if (ft::is_same<To, double>::value) {
 			res = std::strtod(start, &end);
 		}
 		else {
@@ -117,9 +117,9 @@ T from_string(const std::string& str,
 			endpos = end - start;
 		}
 
-		_from_string::check_unwanted_scientific_notation<T>(str, fmt, endpos);
+		_from_string::check_unwanted_scientific_notation<To>(str, fmt, endpos);
 		if (errno == ERANGE) {
-			throw FromStringRangeException(str, typeid(T));
+			throw FromStringRangeException(str, typeid(To));
 		}
 		// stringstream does not detect special floating point values
 		if (std::isinf(res) || std::isnan(res)) {
@@ -127,32 +127,32 @@ T from_string(const std::string& str,
 		}
 	}
 	// Invalid string
-	throw FromStringInvalidException(str, typeid(T));
+	throw FromStringInvalidException(str, typeid(To));
 }
 
-template <typename T>
-ft::Expected<T, ft::FromStringException>
+template <typename To>
+ft::Expected<To, ft::FromStringException>
 from_string(const std::string& str,
             std::nothrow_t /*nothrow*/,
             std::string::size_type* endpos_out /*= NULL*/)
 {
 	try {
-		return from_string<T>(str, endpos_out);
+		return from_string<To>(str, endpos_out);
 	}
 	catch (const FromStringException& e) {
 		return ft::Unexpected<FromStringException>(e);
 	}
 }
 
-template <typename T>
-ft::Expected<T, ft::FromStringException>
+template <typename To>
+ft::Expected<To, ft::FromStringException>
 from_string(const std::string& str,
             std::ios::fmtflags fmt,
             std::nothrow_t /*nothrow*/,
             std::string::size_type* endpos_out /*= NULL*/)
 {
 	try {
-		return from_string<T>(str, fmt, endpos_out);
+		return from_string<To>(str, fmt, endpos_out);
 	}
 	catch (const FromStringException& e) {
 		return ft::Unexpected<FromStringException>(e);
@@ -161,12 +161,12 @@ from_string(const std::string& str,
 
 namespace _from_string {
 
-template <typename T>
+template <typename To>
 static void check_unwanted_scientific_notation(const std::string& str,
                                                std::ios::fmtflags fmt,
                                                std::string::size_type& endpos)
 {
-	if (std::numeric_limits<T>::is_iec559
+	if (std::numeric_limits<To>::is_iec559
 	    && (fmt & std::ios::floatfield) == std::ios::fixed) {
 		const std::string unwanted("eEpP");
 		const std::string::const_iterator end =
@@ -176,7 +176,7 @@ static void check_unwanted_scientific_notation(const std::string& str,
 		        str.begin(), end, unwanted.begin(), unwanted.end())
 		    != end) {
 			endpos = 0;
-			throw FromStringInvalidException(str, typeid(T));
+			throw FromStringInvalidException(str, typeid(To));
 		}
 	}
 }
