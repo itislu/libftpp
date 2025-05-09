@@ -95,7 +95,7 @@ help-libs libs-help:
 					echo -e "Build all libraries the project depends on."
 					echo
 					echo -e "The following libraries will be built:"
-					for lib in $(LIBRARIES); do \
+					for lib in $(LIBS_LOCAL); do \
 						echo -e "  $$lib"; \
 					done
 
