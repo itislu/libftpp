@@ -107,8 +107,8 @@ endif
 
 .DEFAULT		:
 					$(call PRINTLN,"$(MSG_UNKNOWN)")
-					echo
-					$(MAKE) help
+					$(call PRINTLN,"$(MSG_TRY_HELP)")
+					exit 2
 
 
 endif

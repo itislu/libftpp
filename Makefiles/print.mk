@@ -55,6 +55,7 @@ endef
 MSG_LINK		:=	"🔗"
 MSG_ARCHIVE		:=	"🔒"
 MSG_UNKNOWN		=	$(STY_ITA)"Unknown target: "$(STY_BOL)$(STY_RED)"$@"$(STY_RES)
+MSG_TRY_HELP	=	$(STY_ITA)"Try '"$(STY_BOL)"make help"$(STY_RES)$(STY_ITA)"' for a list of available targets."$(STY_RES)
 
 
 #	Adjustments to dynamic messages
