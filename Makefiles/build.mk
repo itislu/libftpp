@@ -7,7 +7,7 @@ include				$(MAKEFILES_DIR)/print.mk
 
 # *************************** BUILD PREPARATION ****************************** #
 
-export				CXX CXXFLAGS MAKECMDGOALS MAKEFLAGS
+export				MAKECMDGOALS
 
 
 #	Build artifacts
@@ -82,7 +82,7 @@ modes			:
 					fi
 					if [ "$(NEW_TERM)" = "true" ] && [ -n "$(TERMINAL)" ]; then \
 						$(TERMINAL) $(TERMINALFLAGS) bash -c \
-							"unset CXX CXXFLAGS MAKECMDGOALS; \
+							"unset MAKECMDGOALS; \
 							trap '' SIGINT; \
 							$(ENV) ./$(NAME) $(value ARGS); \
 							exec $(shell echo $$SHELL)"; \
