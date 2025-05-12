@@ -83,7 +83,7 @@ modes			:
 					if [ "$(NEW_TERM)" = "true" ] && [ -n "$(TERMINAL)" ]; then \
 						$(TERMINAL) $(TERMINALFLAGS) bash -c \
 							"unset MAKECMDGOALS; \
-							trap '' SIGINT; \
+							trap ':' SIGINT; \
 							$(ENV) ./$(NAME) $(value ARGS); \
 							exec $(shell echo $$SHELL)"; \
 					elif [ "$(RUN)" = "true" ]; then \
