@@ -75,7 +75,7 @@ class FromStringInvalidException;
  */
 template <typename To>
 To from_string(const std::string& str,
-              std::string::size_type* endpos_out = NULL);
+               std::string::size_type* endpos_out = NULL);
 /**
  * @copydoc from_string(const std::string&, std::string::size_type*)
  */
@@ -90,8 +90,8 @@ inline bool from_string<bool>(const std::string& str,
  */
 template <typename To>
 To from_string(const std::string& str,
-              std::ios::fmtflags fmt,
-              std::string::size_type* endpos_out = NULL);
+               std::ios::fmtflags fmt,
+               std::string::size_type* endpos_out = NULL);
 /**
  * @copydoc from_string(const std::string&, std::string::size_type*)
  *
