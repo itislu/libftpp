@@ -18,7 +18,7 @@ UML_OUTDIR		:=	$(DOC_DIR)/uml
 
 
 bear			:	.bear-image
-					docker run --rm \
+					if ! docker run --rm \
 						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
 						-w $(PWD) \
@@ -26,7 +26,17 @@ bear			:	.bear-image
 						bash -c '{ \
 							bear -- make re; \
 							make fclean; \
-						} >/dev/null'
+						} >/dev/null'; then \
+						echo "User mapping failed, trying without specific user..." >&2; \
+						docker run --rm \
+							-v $(REPO_ROOT):$(REPO_ROOT) \
+							-w $(PWD) \
+							$(BEAR_IMG) \
+							bash -c '{ \
+								bear -- make re; \
+								make fclean; \
+							} >/dev/null'; \
+					fi
 					echo
 					$(call PRINTLN,"Generated compile_commands.json.")
 
@@ -35,7 +45,7 @@ bear			:	.bear-image
 
 doxygen			:	.doxygen-image bear $(DOXYFILE)
 					mkdir -p $(DOXYGEN_OUTDIR)
-					docker run --rm \
+					if ! docker run --rm \
 						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
 						-w $(PWD) \
@@ -44,18 +54,36 @@ doxygen			:	.doxygen-image bear $(DOXYFILE)
 							cat $(DOXYFILE); \
 							echo PROJECT_NAME="$(if $(REPO_SUBDIR),[$(REPO_SUBDIR)] - )$(NAME)"; \
 							echo OUTPUT_DIRECTORY=$(DOXYGEN_OUTDIR); \
-						} | doxygen -q -'
+						} | doxygen -q -'; then \
+						echo "User mapping failed, trying without specific user..." >&2; \
+						docker run --rm \
+							-v $(REPO_ROOT):$(REPO_ROOT) \
+							-w $(PWD) \
+							$(DOXYGEN_IMG) \
+							bash -c '{ \
+								cat $(DOXYFILE); \
+								echo PROJECT_NAME="$(if $(REPO_SUBDIR),[$(REPO_SUBDIR)] - )$(NAME)"; \
+								echo OUTPUT_DIRECTORY=$(DOXYGEN_OUTDIR); \
+							} | doxygen -q -'; \
+					fi
 					echo
 					$(call PRINTLN,"Generated Doxygen documentation in $(DOXYGEN_OUTDIR).")
 					open $(DOXYGEN_OUTDIR)/html/index.html
 
 $(DOXYFILE)		:	| .doxygen-image
-					docker run --rm \
+					if ! docker run --rm \
 						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
 						-w $(PWD) \
 						$(DOXYGEN_IMG) \
-						doxygen -g $(DOXYFILE)
+						doxygen -g $(DOXYFILE); then \
+						echo "User mapping failed, trying without specific user..." >&2; \
+						docker run --rm \
+							-v $(REPO_ROOT):$(REPO_ROOT) \
+							-w $(PWD) \
+							$(DOXYGEN_IMG) \
+							doxygen -g $(DOXYFILE); \
+					fi
 					echo
 					$(call PRINTLN,"Created default Doxyfile. Please review and adjust settings as needed$(COMMA) then rerun.")
 					exit 1
@@ -68,22 +96,36 @@ uml				:	.clang-uml .plantuml-image
 
 .clang-uml		:	.clang-uml-image bear $(CLANG_UML_CFG)
 					mkdir -p $(UML_OUTDIR)
-					docker run --rm \
+					if ! docker run --rm \
 						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
 						-w $(PWD) \
 						$(CLANG_UML_IMG) \
-						clang-uml --progress --paths-relative-to-pwd --config=$(CLANG_UML_CFG) --output-directory=$(UML_OUTDIR)
+						clang-uml --progress --paths-relative-to-pwd --config=$(CLANG_UML_CFG) --output-directory=$(UML_OUTDIR); then \
+						echo "User mapping failed, trying without specific user..." >&2; \
+						docker run --rm \
+							-v $(REPO_ROOT):$(REPO_ROOT) \
+							-w $(PWD) \
+							$(CLANG_UML_IMG) \
+							clang-uml --progress --paths-relative-to-pwd --config=$(CLANG_UML_CFG) --output-directory=$(UML_OUTDIR); \
+					fi
 					echo
 					$(call PRINTLN,"Generated PlantUML files in $(UML_OUTDIR).")
 
 $(CLANG_UML_CFG):	| .clang-uml-image
-					docker run --rm \
+					if ! docker run --rm \
 						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
 						-w $(PWD) \
 						$(CLANG_UML_IMG) \
-						clang-uml --init
+						clang-uml --init; then \
+						echo "User mapping failed, trying without specific user..." >&2; \
+						docker run --rm \
+							-v $(REPO_ROOT):$(REPO_ROOT) \
+							-w $(PWD) \
+							$(CLANG_UML_IMG) \
+							clang-uml --init; \
+					fi
 					mv .clang-uml $(CLANG_UML_CFG)
 					echo
 					$(call PRINTLN,"Created default .clang-uml configuration file. Please review and adjust settings as needed$(COMMA) then rerun.")
@@ -95,21 +137,35 @@ $(CLANG_UML_CFG):	| .clang-uml-image
 .plantuml		:	.plantuml-image
 					$(call PRINTLN,"Converting PlantUML files to PNG and SVG ...")
 					mkdir -p $(UML_OUTDIR)
-					docker run --rm \
+					if ! docker run --rm \
 						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
 						-w $(PWD) \
 						$(PLANTUML_IMG) \
-						plantuml -tpng -tsvg "$(UML_OUTDIR)/*.puml"
+						plantuml -tpng -tsvg "$(UML_OUTDIR)/*.puml"; then \
+						echo "User mapping failed, trying without specific user..." >&2; \
+						docker run --rm \
+							-v $(REPO_ROOT):$(REPO_ROOT) \
+							-w $(PWD) \
+							$(PLANTUML_IMG) \
+							plantuml -tpng -tsvg "$(UML_OUTDIR)/*.puml"; \
+					fi
 					$(call PRINTLN,"Generated PNG and SVG files in $(UML_OUTDIR).")
 					open $(UML_OUTDIR)
 					$(call PRINTLN,"Converting PlantUML files to PDF '('this may take a moment')' ...")
-					docker run --rm \
+					if ! docker run --rm \
 						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
 						-w $(PWD) \
 						$(PLANTUML_IMG) \
-						plantuml -tpdf "$(UML_OUTDIR)/*.puml"
+						plantuml -tpdf "$(UML_OUTDIR)/*.puml"; then \
+						echo "User mapping failed, trying without specific user..." >&2; \
+						docker run --rm \
+							-v $(REPO_ROOT):$(REPO_ROOT) \
+							-w $(PWD) \
+							$(PLANTUML_IMG) \
+							plantuml -tpdf "$(UML_OUTDIR)/*.puml"; \
+					fi
 					$(call PRINTLN,"Generated PDF files in $(UML_OUTDIR).")
 
 .plantuml-image	:
