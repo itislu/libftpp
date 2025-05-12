@@ -82,7 +82,8 @@ modes			:
 					fi
 					if [ "$(NEW_TERM)" = "true" ] && [ -n "$(TERMINAL)" ]; then \
 						$(TERMINAL) $(TERMINALFLAGS) bash -c \
-							"trap '' SIGINT; \
+							"unset CXX CXXFLAGS MAKECMDGOALS; \
+							trap '' SIGINT; \
 							$(ENV) ./$(NAME) $(value ARGS); \
 							exec $(shell echo $$SHELL)"; \
 					elif [ "$(RUN)" = "true" ]; then \
@@ -101,7 +102,7 @@ re				:
 #	Dependency files inclusion
 
 #	Include if building or if no target specified
-ifneq (, $(or $(filter $(BUILD_TARGETS),$(MAKECMDGOALS)),$(if $(MAKECMDGOALS),,all)))
+ifneq (, $(or $(filter $(BUILD_TARGETS) $(NAME),$(MAKECMDGOALS)),$(if $(MAKECMDGOALS),,all)))
     -include		$(DEP)
 endif
 
