@@ -150,6 +150,26 @@ public:
 	                           const std::type_info& type_id);
 };
 
+// NOLINTBEGIN(misc-non-private-member-variables-in-classes)
+
+// Functor
+template <typename T>
+struct FromString {
+	T operator()(const std::string& str);
+};
+
+// Functor
+template <typename T>
+struct FromStringFmt {
+	explicit FromStringFmt(std::ios::fmtflags fmt_);
+
+	T operator()(const std::string& str);
+
+	std::ios::fmtflags fmt;
+};
+
+// NOLINTEND(misc-non-private-member-variables-in-classes)
+
 /* to_string */
 
 /**
@@ -166,5 +186,6 @@ std::string trim(const std::string& str);
 
 } // namespace ft
 
+#include "src/string/FromString.tpp"  // IWYU pragma: export
 #include "src/string/from_string.tpp" // IWYU pragma: export
 #include "src/string/to_string.tpp"   // IWYU pragma: export
