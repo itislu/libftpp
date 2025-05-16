@@ -125,13 +125,16 @@ const ft::Optional<std::string>& StdException<BaseException>::where() const
 template <typename BaseException>
 void StdException<BaseException>::_update_what_output()
 {
+	_what_output.clear();
 	if (_where) {
-		_what_output += *_where + ": ";
+		_what_output.append(*_where);
+		_what_output.append(": ");
 	}
 	if (_who) {
-		_what_output += *_who + ": ";
+		_what_output.append(*_who);
+		_what_output.append(": ");
 	}
-	_what_output += _msg;
+	_what_output.append(_msg);
 }
 
 template <typename BaseException>
