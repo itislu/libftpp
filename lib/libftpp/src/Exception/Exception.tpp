@@ -8,10 +8,10 @@ namespace ft {
 
 template <typename BaseException>
 StdException<BaseException>::StdException(
-    const std::string& msg,
+    const std::string& error,
     const ft::Optional<std::string>& who /*= ft::nullopt*/,
     const ft::Optional<std::string>& where /*= ft::nullopt*/)
-    : _msg(msg),
+    : _error(error),
       _who(who && !who->empty() ? who : ft::nullopt),
       _where(where && !where->empty() ? where : ft::nullopt)
 {
@@ -28,7 +28,7 @@ StdException<BaseException>::StdException(const StdException& other) throw()
 		// REASON: Exception objects should be nothrow constructable
 	}
 	try {
-		_msg = other._msg;
+		_error = other._error;
 	}
 	catch (...) {
 		// REASON: Exception objects should be nothrow constructable
@@ -69,7 +69,7 @@ template <typename BaseException>
 void StdException<BaseException>::swap(StdException& other) throw()
 {
 	_what_output.swap(other._what_output);
-	_msg.swap(other._msg);
+	_error.swap(other._error);
 	_who.swap(other._who);
 	_where.swap(other._where);
 }
@@ -103,9 +103,9 @@ StdException<BaseException>::set_where(const std::string& where)
 }
 
 template <typename BaseException>
-const std::string& StdException<BaseException>::msg() const throw()
+const std::string& StdException<BaseException>::error() const throw()
 {
-	return _msg;
+	return _error;
 }
 
 template <typename BaseException>
@@ -134,7 +134,7 @@ void StdException<BaseException>::_update_what_output()
 		_what_output.append(*_who);
 		_what_output.append(": ");
 	}
-	_what_output.append(_msg);
+	_what_output.append(_error);
 }
 
 template <typename BaseException>

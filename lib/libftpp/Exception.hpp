@@ -36,19 +36,27 @@ typedef StdException<std::exception> Exception;
 template <typename BaseException>
 class StdException : public BaseException {
 public:
-	explicit StdException(const std::string& msg,
+	explicit StdException(const std::string& error,
 	                      const ft::Optional<std::string>& who = ft::nullopt,
 	                      const ft::Optional<std::string>& where = ft::nullopt);
 	StdException(const StdException& other) throw();
 	virtual ~StdException() throw();
 	StdException& operator=(StdException other) throw();
 
+	/**
+	 * Returns a formatted error message, combining `error()` with `who()` and
+	 * `where()` (if existing).
+	 */
 	const char* what() const throw();
 	void swap(StdException& other) throw();
 
 	StdException& set_who(const std::string& who);
 	StdException& set_where(const std::string& where);
-	const std::string& msg() const throw();
+	/**
+	 * Returns the unformatted error message, not including information from
+	 * `who()` and `where()`.
+	 */
+	const std::string& error() const throw();
 	const ft::Optional<std::string>& who() const throw();
 	const ft::Optional<std::string>& where() const throw();
 
@@ -58,7 +66,7 @@ private:
 	void _update_what_output();
 
 	std::string _what_output;
-	std::string _msg;
+	std::string _error;
 	ft::Optional<std::string> _who;
 	ft::Optional<std::string> _where;
 };
