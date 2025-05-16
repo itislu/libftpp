@@ -2,8 +2,6 @@
 #include "../../algorithm.hpp"
 #include "../../string.hpp"
 #include "../../utility.hpp"
-#include <cerrno>
-#include <cstring>
 #include <string>
 #include <typeinfo>
 
@@ -55,7 +53,7 @@ void FromStringException::swap(FromStringException& other) throw()
 FromStringRangeException::FromStringRangeException(
     const std::string& input,
     const std::type_info& type_id)
-    : FromStringException(std::string(std::strerror(ERANGE)) + " ("
+    : FromStringException("numerical result out of range ("
                               + ft::demangle(type_id.name()) + "): \"" + input
                               + "\"",
                           input,
@@ -65,9 +63,8 @@ FromStringRangeException::FromStringRangeException(
 FromStringInvalidException::FromStringInvalidException(
     const std::string& input,
     const std::type_info& type_id)
-    : FromStringException(std::string("could not convert to ")
-                              + ft::demangle(type_id.name()) + ": \"" + input
-                              + "\"",
+    : FromStringException("could not convert to " + ft::demangle(type_id.name())
+                              + ": \"" + input + "\"",
                           input,
                           type_id)
 {}
