@@ -48,9 +48,8 @@ To from_string(const std::string& str,
                std::ios::fmtflags fmt,
                std::string::size_type* endpos_out /*= NULL*/)
 {
-	std::string::size_type _; // NOLINT(cppcoreguidelines-init-variables)
-	std::string::size_type& endpos = endpos_out ? *endpos_out : _;
-	endpos = 0;
+	// NOLINTNEXTLINE: Let endpos always be a valid reference
+	std::string::size_type _, &endpos = (endpos_out ? *endpos_out : _) = 0;
 	To res;
 	std::istringstream iss(str);
 	iss.flags(fmt);
