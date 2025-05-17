@@ -25,25 +25,25 @@ StdException<BaseException>::StdException(const StdException& other) throw()
 		_what_output = other._what_output;
 	}
 	catch (...) {
-		// REASON: Exception objects should be nothrow constructable
+		// EMPTY: Exception objects should be nothrow constructable
 	}
 	try {
 		_error = other._error;
 	}
 	catch (...) {
-		// REASON: Exception objects should be nothrow constructable
+		// EMPTY: Exception objects should be nothrow constructable
 	}
 	try {
 		_who = other._who;
 	}
 	catch (...) {
-		// REASON: Exception objects should be nothrow constructable
+		// EMPTY: Exception objects should be nothrow constructable
 	}
 	try {
 		_where = other._where;
 	}
 	catch (...) {
-		// REASON: Exception objects should be nothrow constructable
+		// EMPTY: Exception objects should be nothrow constructable
 	}
 }
 

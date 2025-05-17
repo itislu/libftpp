@@ -24,7 +24,7 @@ FromStringException::FromStringException(
 		_input = other._input;
 	}
 	catch (...) {
-		// REASON: Exception objects should be nothrow constructable
+		// EMPTY: Exception objects should be nothrow constructable
 	}
 }
 
