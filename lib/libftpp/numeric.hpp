@@ -82,7 +82,59 @@ public:
 	NumericCastPositiveOverflowException();
 };
 
-/* Saturation arithmetic */
+/* Arithmetic */
+
+// https://wiki.sei.cmu.edu/confluence/display/c/INT32-C.+Ensure+that+operations+on+signed+integers+do+not+result+in+overflow
+
+class ArithmeticException;
+class ArithmeticNegativeOverflowException;
+class ArithmeticPositiveOverflowException;
+class ArithmeticDivisionByZeroException;
+
+/**
+ * @brief Checked integer addition, guaranteeing no undefined behavior
+ *
+ * @return A `ft::Expected<T, ft::ArithmeticException>` with the result of the
+ * addition on success, or a `ft::ArithmeticException` if the addition would
+ * overflow
+ */
+template <typename T>
+typename ft::enable_if<std::numeric_limits<T>::is_integer,
+                       ft::Expected<T, ArithmeticException> >::type
+add_checked(T x, T y);
+/**
+ * @brief Checked integer subtraction, guaranteeing no undefined behavior
+ *
+ * @return A `ft::Expected<T, ft::ArithmeticException>` with the result of the
+ * subtraction on success, or a `ft::ArithmeticException` if the subtraction
+ * would overflow
+ */
+template <typename T>
+typename ft::enable_if<std::numeric_limits<T>::is_integer,
+                       ft::Expected<T, ArithmeticException> >::type
+sub_checked(T x, T y);
+/**
+ * @brief Checked integer multiplication, guaranteeing no undefined behavior
+ *
+ * @return A `ft::Expected<T, ft::ArithmeticException>` with the result of the
+ * multiplication on success, or a `ft::ArithmeticException` if the
+ * multiplication would overflow
+ */
+template <typename T>
+typename ft::enable_if<std::numeric_limits<T>::is_integer,
+                       ft::Expected<T, ArithmeticException> >::type
+mul_checked(T x, T y);
+/**
+ * @brief Checked integer division, guaranteeing no undefined behavior
+ *
+ * @return A `ft::Expected<T, ft::ArithmeticException>` with the result of the
+ * division on success, or a `ft::ArithmeticException` if the division would
+ * overflow or `y == 0`
+ */
+template <typename T>
+typename ft::enable_if<std::numeric_limits<T>::is_integer,
+                       ft::Expected<T, ArithmeticException> >::type
+div_checked(T x, T y);
 
 /**
  * https://en.cppreference.com/w/cpp/numeric/add_sat
@@ -90,29 +142,96 @@ public:
 template <typename T>
 typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
 add_sat(T x, T y) throw();
-
 /**
  * https://en.cppreference.com/w/cpp/numeric/sub_sat
  */
 template <typename T>
 typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
 sub_sat(T x, T y) throw();
-
 /**
  * https://en.cppreference.com/w/cpp/numeric/mul_sat
  */
 template <typename T>
 typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
 mul_sat(T x, T y) throw();
-
 /**
  * https://en.cppreference.com/w/cpp/numeric/div_sat
+ *
+ * @note Unlike `std::div_sat()`, dividing by zero does not lead to undefined
+ * behavior, but mimicks the IEEE 754 standard for floating point types:
+ * - If `x` is negative, returns the minimum representable value of `T`.
+ * - If `x` is positive, returns the maximum representable value of `T`.
+ * - If `x` is zero, returns zero.
  */
 template <typename T>
 typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
 div_sat(T x, T y) throw();
 
+/**
+ * @brief Throwing integer addition, guaranteeing no undefined behavior
+ *
+ * @throws ft::ArithmeticNegativeOverflowException When the result of the
+ * addition would be lower than the lowest representable value of `T`
+ * @throws ft::ArithmeticPositiveOverflowException When the result of the
+ * addition would be greater than the highest representable value of `T`
+ */
+template <typename T>
+typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
+add_throw(T x, T y);
+/**
+ * @brief Throwing integer subtraction, guaranteeing no undefined behavior
+ *
+ * @throws ft::ArithmeticNegativeOverflowException When the result of the
+ * subtraction would be lower than the lowest representable value of `T`
+ * @throws ft::ArithmeticPositiveOverflowException When the result of the
+ * subtraction would be greater than the highest representable value of `T`
+ */
+template <typename T>
+typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
+sub_throw(T x, T y);
+/**
+ * @brief Throwing integer multiplication, guaranteeing no undefined behavior
+ *
+ * @throws ft::ArithmeticNegativeOverflowException When the result of the
+ * multiplication would be lower than the lowest representable value of `T`
+ * @throws ft::ArithmeticPositiveOverflowException When the result of the
+ * multiplication would be greater than the highest representable value of `T`
+ */
+template <typename T>
+typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
+mul_throw(T x, T y);
+/**
+ * @brief Throwing integer division, guaranteeing no undefined behavior
+ *
+ * @throws ft::ArithmeticPositiveOverflowException When the result of the
+ * division would be greater than the highest representable value of `T`
+ * @throws ft::ArithmeticDivisionByZeroException When `y == 0`
+ */
+template <typename T>
+typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
+div_throw(T x, T y);
+
+class ArithmeticException : public ft::Exception {
+public:
+	ArithmeticException(const std::string& msg, const std::string& who);
+};
+
+class ArithmeticNegativeOverflowException : public ArithmeticException {
+public:
+	explicit ArithmeticNegativeOverflowException(const std::string& who);
+};
+
+class ArithmeticPositiveOverflowException : public ArithmeticException {
+public:
+	explicit ArithmeticPositiveOverflowException(const std::string& who);
+};
+
+class ArithmeticDivisionByZeroException : public ArithmeticException {
+public:
+	explicit ArithmeticDivisionByZeroException(const std::string& who);
+};
+
 } // namespace ft
 
-#include "src/numeric/numeric_cast.tpp"          // IWYU pragma: export
-#include "src/numeric/saturation_arithmetic.tpp" // IWYU pragma: export
+#include "src/numeric/arithmetic.tpp"   // IWYU pragma: export
+#include "src/numeric/numeric_cast.tpp" // IWYU pragma: export

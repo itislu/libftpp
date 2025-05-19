@@ -31,6 +31,7 @@ Diagnostics:
         bugprone-easily-swappable-parameters,
         misc-use-anonymous-namespace,
         readability-identifier-length,
+        cert-dcl37-c, # alias
         cert-exp42-c, # alias
         cert-oop54-cpp, # alias
         cppcoreguidelines-avoid-magic-numbers, # alias
