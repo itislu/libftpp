@@ -21,6 +21,11 @@ struct is_array<T[]> : true_type {};
 template <typename T, std::size_t N>
 struct is_array<T[N]> : true_type {};
 
+/* is_function */
+template <typename T>
+struct is_function
+    : bool_constant<!is_const<const T>::value && !is_reference<T>::value> {};
+
 /* is_pointer */
 template <typename T>
 struct is_pointer : conditional<is_const<T>::value || is_volatile<T>::value,
@@ -29,6 +34,12 @@ struct is_pointer : conditional<is_const<T>::value || is_volatile<T>::value,
 
 template <typename T>
 struct is_pointer<T*> : true_type {};
+
+/* is_object */
+template <typename T>
+struct is_object
+    : bool_constant<!is_function<T>::value && !is_reference<T>::value
+                    && !is_void<T>::value> {};
 
 /* is_reference */
 template <typename>

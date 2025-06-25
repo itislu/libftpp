@@ -48,10 +48,22 @@ template <typename>
 struct is_array;
 
 /**
+ * https://en.cppreference.com/w/cpp/types/is_function
+ */
+template <typename>
+struct is_function;
+
+/**
  * https://en.cppreference.com/w/cpp/types/is_pointer
  */
 template <typename>
 struct is_pointer;
+
+/**
+ * https://en.cppreference.com/w/cpp/types/is_object
+ */
+template <typename>
+struct is_object;
 
 /**
  * https://en.cppreference.com/w/cpp/types/is_reference
