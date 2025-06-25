@@ -195,7 +195,7 @@ private:
  * https://en.cppreference.com/w/cpp/utility/expected/unexpect_t
  */
 struct unexpect_t {
-	explicit unexpect_t(int /*unused*/) throw();
+	explicit unexpect_t() throw();
 };
 
 /**

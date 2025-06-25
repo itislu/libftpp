@@ -2,8 +2,8 @@
 
 namespace ft {
 
-unexpect_t::unexpect_t(int /*unused*/) throw() {}
+unexpect_t::unexpect_t() throw() {}
 
-const unexpect_t unexpect(0);
+const unexpect_t unexpect;
 
 } // namespace ft
