@@ -1,6 +1,8 @@
 #pragma once
 
 #include "SafeBool.hpp"
+#include "assert.hpp"
+#include "type_traits.hpp"
 #include <exception>
 
 namespace ft {
@@ -11,11 +13,36 @@ template <typename E>
 class BadExpectedAccess;
 struct unexpect_t;
 
+namespace _unexpected {
+template <typename T>
+struct is_unexpected;
+} // namespace _unexpected
+
 /**
  * https://en.cppreference.com/w/cpp/utility/expected
  */
 template <typename T, typename E>
 class Expected : public ft::SafeBool<Expected<T, E> > {
+private:
+	STATIC_ASSERT( // T must not be an array type
+	    !ft::is_array<T>::value);
+	STATIC_ASSERT( // T must not be a reference type
+	    !ft::is_reference<T>::value);
+	STATIC_ASSERT( // T must not be a function type
+	    !ft::is_function<T>::value);
+	STATIC_ASSERT( // T must not be a specialization of ft::Unexpected
+	    !_unexpected::is_unexpected<typename ft::remove_cv<T>::type>::value);
+	STATIC_ASSERT( // T must not be ft::unexpect_t
+	    (!ft::is_same<typename ft::remove_cv<T>::type, ft::unexpect_t>::value));
+	STATIC_ASSERT( // E must be an object type
+	    ft::is_object<E>::value);
+	STATIC_ASSERT( // E must not be an array type
+	    !ft::is_array<E>::value);
+	STATIC_ASSERT( // E must not be a specialization of ft::Unexpected
+	    !_unexpected::is_unexpected<typename ft::remove_cv<E>::type>::value);
+	STATIC_ASSERT( // E must not be cv-qualified type
+	    !ft::is_const<E>::value && !ft::is_volatile<E>::value);
+
 public:
 	Expected();
 	Expected(const Expected& other);
@@ -84,6 +111,16 @@ bool operator!=(const Expected<T, E>& lhs, const T2& value);
  */
 template <typename E>
 class Expected<void, E> : public ft::SafeBool<Expected<void, E> > {
+private:
+	STATIC_ASSERT( // E must be an object type
+	    ft::is_object<E>::value);
+	STATIC_ASSERT( // E must not be an array type
+	    !ft::is_array<E>::value);
+	STATIC_ASSERT( // E must not be a specialization of ft::Unexpected
+	    !_unexpected::is_unexpected<typename ft::remove_cv<E>::type>::value);
+	STATIC_ASSERT( // E must not be cv-qualified type
+	    !ft::is_const<E>::value && !ft::is_volatile<E>::value);
+
 public:
 	Expected() throw();
 	Expected(const Expected& other);
@@ -147,6 +184,16 @@ protected:
  */
 template <typename E>
 class Unexpected {
+private:
+	STATIC_ASSERT( // E must be an object type
+	    ft::is_object<E>::value);
+	STATIC_ASSERT( // E must not be an array type
+	    !ft::is_array<E>::value);
+	STATIC_ASSERT( // E must not be a specialization of ft::Unexpected
+	    !_unexpected::is_unexpected<typename ft::remove_cv<E>::type>::value);
+	STATIC_ASSERT( // E must not be cv-qualified type
+	    !ft::is_const<E>::value && !ft::is_volatile<E>::value);
+
 public:
 	Unexpected(const Unexpected& other);
 	template <typename Err>

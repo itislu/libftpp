@@ -62,4 +62,22 @@ bool operator!=(const Unexpected<E>& lhs, const Unexpected<E2>& rhs)
 	return !(lhs == rhs);
 }
 
+namespace _unexpected {
+
+template <typename>
+struct is_unexpected {
+	enum {
+		value = false
+	};
+};
+
+template <typename T>
+struct is_unexpected<Unexpected<T> > {
+	enum {
+		value = true
+	};
+};
+
+} // namespace _unexpected
+
 } // namespace ft
