@@ -38,73 +38,73 @@ struct type_identity {
 /**
  * https://en.cppreference.com/w/cpp/types/is_void
  */
-template <typename>
+template <typename T>
 struct is_void;
 
 /**
  * https://en.cppreference.com/w/cpp/types/is_integral
  */
-template <typename>
+template <typename T>
 struct is_integral;
 
 /**
  * https://en.cppreference.com/w/cpp/types/is_floating_point
  */
-template <typename>
+template <typename T>
 struct is_floating_point;
 
 /**
  * https://en.cppreference.com/w/cpp/types/is_array
  */
-template <typename>
+template <typename T>
 struct is_array;
 
 /**
  * https://en.cppreference.com/w/cpp/types/is_function
  */
-template <typename>
+template <typename T>
 struct is_function;
 
 /**
  * https://en.cppreference.com/w/cpp/types/is_pointer
  */
-template <typename>
+template <typename T>
 struct is_pointer;
 
 /**
  * https://en.cppreference.com/w/cpp/types/is_object
  */
-template <typename>
+template <typename T>
 struct is_object;
 
 /**
  * https://en.cppreference.com/w/cpp/types/is_reference
  */
-template <typename>
+template <typename T>
 struct is_reference;
 
 /**
  * https://en.cppreference.com/w/cpp/types/is_const
  */
-template <typename>
+template <typename T>
 struct is_const;
 
 /**
  * https://en.cppreference.com/w/cpp/types/is_volatile
  */
-template <typename>
+template <typename T>
 struct is_volatile;
 
 /**
  * https://en.cppreference.com/w/cpp/types/is_bounded_array
  */
-template <typename>
+template <typename T>
 struct is_bounded_array;
 
 /**
  * https://en.cppreference.com/w/cpp/types/is_unbounded_array
  */
-template <typename>
+template <typename T>
 struct is_unbounded_array;
 
 /* Property queries */
@@ -112,13 +112,13 @@ struct is_unbounded_array;
 /**
  * https://en.cppreference.com/w/cpp/types/rank
  */
-template <typename>
+template <typename T>
 struct rank;
 
 /**
  * https://en.cppreference.com/w/cpp/types/extent
  */
-template <typename, unsigned N = 0>
+template <typename T, unsigned N = 0>
 struct extent;
 
 /* Type relationships */
@@ -126,7 +126,7 @@ struct extent;
 /**
  * https://en.cppreference.com/w/cpp/types/is_same
  */
-template <typename, typename>
+template <typename T, typename U>
 struct is_same;
 
 /* Type transformations */
@@ -134,67 +134,67 @@ struct is_same;
 /**
  * https://en.cppreference.com/w/cpp/types/remove_cv
  */
-template <typename>
+template <typename T>
 struct remove_cv;
 
 /**
  * https://en.cppreference.com/w/cpp/types/remove_cv
  */
-template <typename>
+template <typename T>
 struct remove_const;
 
 /**
  * https://en.cppreference.com/w/cpp/types/remove_cv
  */
-template <typename>
+template <typename T>
 struct remove_volatile;
 
 /**
  * https://en.cppreference.com/w/cpp/types/add_cv
  */
-template <typename>
+template <typename T>
 struct add_cv;
 
 /**
  * https://en.cppreference.com/w/cpp/types/add_cv
  */
-template <typename>
+template <typename T>
 struct add_const;
 
 /**
  * https://en.cppreference.com/w/cpp/types/add_cv
  */
-template <typename>
+template <typename T>
 struct add_volatile;
 
 /**
  * https://en.cppreference.com/w/cpp/types/remove_extent
  */
-template <typename>
+template <typename T>
 struct remove_extent;
 
 /**
  * https://en.cppreference.com/w/cpp/types/remove_all_extents
  */
-template <typename>
+template <typename T>
 struct remove_all_extents;
 
 /**
  * https://en.cppreference.com/w/cpp/types/remove_pointer
  */
-template <typename>
+template <typename T>
 struct remove_pointer;
 
 /**
  * https://en.cppreference.com/w/cpp/types/enable_if
  */
-template <bool, typename = void>
+template <bool B, typename T = void>
 struct enable_if;
 
 /**
  * https://en.cppreference.com/w/cpp/types/conditional
  */
-template <bool, typename, typename>
+template <bool B, typename T, typename F>
 struct conditional;
 
 /**
