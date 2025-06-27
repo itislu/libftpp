@@ -2,6 +2,7 @@
 
 #include "../../type_traits.hpp"
 #include <cstddef>
+#include <limits>
 
 namespace ft {
 
@@ -10,6 +11,16 @@ namespace ft {
 /* is_void */
 template <typename T>
 struct is_void : is_same<typename remove_cv<T>::type, void> {};
+
+/* is_integral */
+template <typename T>
+struct is_integral : bool_constant<std::numeric_limits<T>::is_integer> {};
+
+/* is_floating_point */
+template <typename T>
+struct is_floating_point
+    : bool_constant<std::numeric_limits<T>::is_specialized
+                    && !std::numeric_limits<T>::is_integer> {};
 
 /* is_array */
 template <typename T>

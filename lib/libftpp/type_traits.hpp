@@ -42,6 +42,18 @@ template <typename>
 struct is_void;
 
 /**
+ * https://en.cppreference.com/w/cpp/types/is_integral
+ */
+template <typename>
+struct is_integral;
+
+/**
+ * https://en.cppreference.com/w/cpp/types/is_floating_point
+ */
+template <typename>
+struct is_floating_point;
+
+/**
  * https://en.cppreference.com/w/cpp/types/is_array
  */
 template <typename>
