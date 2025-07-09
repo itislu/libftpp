@@ -21,7 +21,7 @@ $(MAKECMDGOALS)	:	$(SUBDIRS)
 .PHONY			:	$(SUBDIRS)
 $(SUBDIRS)		:
 					$(call PRINTLN,"──────────────────────────────────────────────────────────────")
-					MSG_PREFIX="[$@]" $(MAKE) --directory=$@ $(MAKECMDGOALS)
+					MAKELEVEL=$$(( $(MAKELEVEL) - 1 )) MSG_PREFIX="[$@]" $(MAKE) --directory=$@ $(MAKECMDGOALS)
 
 
 endif
