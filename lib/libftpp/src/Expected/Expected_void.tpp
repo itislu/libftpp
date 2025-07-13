@@ -32,8 +32,8 @@ Expected<void, E>::Expected(const Expected<U, G>& other)
 
 template <typename E>
 template <typename G>
-Expected<void, E>::Expected(const Unexpected<G>& unex)
-    : _error(new E(unex.error())),
+Expected<void, E>::Expected(const Unexpected<G>& e)
+    : _error(new E(e.error())),
       _has_value(false)
 {}
 

@@ -49,9 +49,9 @@ public:
 	template <typename U, typename G>
 	Expected(const Expected<U, G>& other);
 	template <typename U>
-	Expected(const U& value);
+	Expected(const U& v);
 	template <typename G>
-	Expected(const Unexpected<G>& unex);
+	Expected(const Unexpected<G>& e);
 	explicit Expected(unexpect_t /*unused*/);
 	~Expected();
 	Expected& operator=(Expected other) throw();
@@ -98,13 +98,13 @@ bool operator==(const Expected<T, E>& lhs, const Expected<T2, E2>& rhs);
 template <typename T, typename E, typename E2>
 bool operator==(const Expected<T, E>& lhs, const Unexpected<E2>& unex);
 template <typename T, typename E, typename T2>
-bool operator==(const Expected<T, E>& lhs, const T2& value);
+bool operator==(const Expected<T, E>& lhs, const T2& val);
 template <typename T, typename E, typename T2, typename E2>
 bool operator!=(const Expected<T, E>& lhs, const Expected<T2, E2>& rhs);
 template <typename T, typename E, typename E2>
 bool operator!=(const Expected<T, E>& lhs, const Unexpected<E2>& unex);
 template <typename T, typename E, typename T2>
-bool operator!=(const Expected<T, E>& lhs, const T2& value);
+bool operator!=(const Expected<T, E>& lhs, const T2& val);
 
 /**
  * https://en.cppreference.com/w/cpp/utility/expected
@@ -127,7 +127,7 @@ public:
 	template <typename U, typename G>
 	Expected(const Expected<U, G>& other);
 	template <typename G>
-	Expected(const Unexpected<G>& unex);
+	Expected(const Unexpected<G>& e);
 	explicit Expected(unexpect_t /*unused*/);
 	~Expected();
 	Expected& operator=(Expected other) throw();
@@ -178,7 +178,7 @@ private:
 public:
 	Unexpected(const Unexpected& other);
 	template <typename Err>
-	explicit Unexpected(const Err& error);
+	explicit Unexpected(const Err& e);
 	~Unexpected();
 	Unexpected& operator=(Unexpected other);
 
@@ -194,12 +194,12 @@ private:
 };
 
 template <typename E>
-void swap(Unexpected<E>& lhs, Unexpected<E>& rhs);
+void swap(Unexpected<E>& x, Unexpected<E>& y);
 
 template <typename E, typename E2>
-bool operator==(const Unexpected<E>& lhs, const Unexpected<E2>& rhs);
+bool operator==(const Unexpected<E>& x, const Unexpected<E2>& y);
 template <typename E, typename E2>
-bool operator!=(const Unexpected<E>& lhs, const Unexpected<E2>& rhs);
+bool operator!=(const Unexpected<E>& x, const Unexpected<E2>& y);
 
 // NOLINTBEGIN(cppcoreguidelines-virtual-class-destructor)
 /**
@@ -224,7 +224,7 @@ protected:
 template <typename E>
 class BadExpectedAccess : public BadExpectedAccess<void> {
 public:
-	explicit BadExpectedAccess(const E& error);
+	explicit BadExpectedAccess(const E& e);
 	BadExpectedAccess(const BadExpectedAccess& other);
 	~BadExpectedAccess() throw();
 	BadExpectedAccess& operator=(const BadExpectedAccess& other);

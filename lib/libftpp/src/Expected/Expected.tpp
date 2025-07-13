@@ -45,15 +45,15 @@ Expected<T, E>::Expected(const Expected<U, G>& other)
 
 template <typename T, typename E>
 template <typename U>
-Expected<T, E>::Expected(const U& value)
-    : _value(new T(value)),
+Expected<T, E>::Expected(const U& v)
+    : _value(new T(v)),
       _has_value(true)
 {}
 
 template <typename T, typename E>
 template <typename G>
-Expected<T, E>::Expected(const Unexpected<G>& unex)
-    : _error(new E(unex.error())),
+Expected<T, E>::Expected(const Unexpected<G>& e)
+    : _error(new E(e.error())),
       _has_value(false)
 {}
 
@@ -283,9 +283,9 @@ bool operator==(const Expected<T, E>& lhs, const Unexpected<E2>& unex)
 }
 
 template <typename T, typename E, typename T2>
-bool operator==(const Expected<T, E>& lhs, const T2& value)
+bool operator==(const Expected<T, E>& lhs, const T2& val)
 {
-	return (lhs.has_value() && *lhs == value);
+	return (lhs.has_value() && *lhs == val);
 }
 
 template <typename T, typename E, typename T2, typename E2>
@@ -301,9 +301,9 @@ bool operator!=(const Expected<T, E>& lhs, const Unexpected<E2>& unex)
 }
 
 template <typename T, typename E, typename T2>
-bool operator!=(const Expected<T, E>& lhs, const T2& value)
+bool operator!=(const Expected<T, E>& lhs, const T2& val)
 {
-	return !(lhs == value);
+	return !(lhs == val);
 }
 
 } // namespace ft

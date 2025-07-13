@@ -11,8 +11,8 @@ Unexpected<E>::Unexpected(const Unexpected& other)
 
 template <typename E>
 template <typename Err>
-Unexpected<E>::Unexpected(const Err& error)
-    : _error(error)
+Unexpected<E>::Unexpected(const Err& e)
+    : _error(e)
 {}
 
 template <typename E>
@@ -45,21 +45,21 @@ void Unexpected<E>::swap(Unexpected& other)
 }
 
 template <typename E>
-void swap(Unexpected<E>& lhs, Unexpected<E>& rhs)
+void swap(Unexpected<E>& x, Unexpected<E>& y)
 {
-	lhs.swap(rhs);
+	x.swap(y);
 }
 
 template <typename E, typename E2>
-bool operator==(const Unexpected<E>& lhs, const Unexpected<E2>& rhs)
+bool operator==(const Unexpected<E>& x, const Unexpected<E2>& y)
 {
-	return lhs.error() == rhs.error();
+	return x.error() == y.error();
 }
 
 template <typename E, typename E2>
-bool operator!=(const Unexpected<E>& lhs, const Unexpected<E2>& rhs)
+bool operator!=(const Unexpected<E>& x, const Unexpected<E2>& y)
 {
-	return !(lhs == rhs);
+	return !(x == y);
 }
 
 namespace _unexpected {

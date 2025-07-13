@@ -5,8 +5,8 @@
 namespace ft {
 
 template <typename E>
-BadExpectedAccess<E>::BadExpectedAccess(const E& error)
-    : _error(error)
+BadExpectedAccess<E>::BadExpectedAccess(const E& e)
+    : _error(e)
 {}
 
 template <typename E>
