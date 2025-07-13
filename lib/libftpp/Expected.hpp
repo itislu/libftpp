@@ -159,25 +159,6 @@ private:
 
 template <typename E, typename T2, typename E2>
 bool operator==(const Expected<void, E>& lhs, const Expected<T2, E2>& rhs);
-template <typename E>
-class BadExpectedAccess;
-
-// NOLINTBEGIN(cppcoreguidelines-virtual-class-destructor)
-/**
- * https://en.cppreference.com/w/cpp/utility/expected/bad_expected_access
- */
-template <>
-class BadExpectedAccess<void> : public std::exception {
-public:
-	const char* what() const throw();
-
-protected:
-	BadExpectedAccess() throw();
-	BadExpectedAccess(const BadExpectedAccess& /*unused*/);
-	~BadExpectedAccess() throw();
-	BadExpectedAccess& operator=(const BadExpectedAccess& /*unused*/);
-};
-// NOLINTEND(cppcoreguidelines-virtual-class-destructor)
 
 /**
  * https://en.cppreference.com/w/cpp/utility/expected/unexpected
@@ -219,6 +200,23 @@ template <typename E, typename E2>
 bool operator==(const Unexpected<E>& lhs, const Unexpected<E2>& rhs);
 template <typename E, typename E2>
 bool operator!=(const Unexpected<E>& lhs, const Unexpected<E2>& rhs);
+
+// NOLINTBEGIN(cppcoreguidelines-virtual-class-destructor)
+/**
+ * https://en.cppreference.com/w/cpp/utility/expected/bad_expected_access
+ */
+template <>
+class BadExpectedAccess<void> : public std::exception {
+public:
+	const char* what() const throw();
+
+protected:
+	BadExpectedAccess() throw();
+	BadExpectedAccess(const BadExpectedAccess& /*unused*/);
+	~BadExpectedAccess() throw();
+	BadExpectedAccess& operator=(const BadExpectedAccess& /*unused*/);
+};
+// NOLINTEND(cppcoreguidelines-virtual-class-destructor)
 
 /**
  * https://en.cppreference.com/w/cpp/utility/expected/bad_expected_access
