@@ -4,6 +4,18 @@
 
 namespace ft {
 
+/**
+ * @brief Helper types with distinct sizes for SFINAE `sizeof` tricks
+ *
+ * These types are commonly used in template metaprogramming as return types in
+ * overloaded functions to determine which overload was selected at compile
+ * time. An expression that resolves to one of these types is evaluated with
+ * `sizeof`, and the result is compared against `sizeof(yes_type)` to produce a
+ * compile-time boolean value.
+ */
+typedef char (&yes_type)[1];
+typedef char (&no_type)[2];
+
 /* Base classes */
 
 /**
@@ -209,17 +221,14 @@ struct conditional;
 		template <typename ToCheck, RETURN_TYPE (ToCheck::*)(ARGS)>          \
 		struct Sfinae {};                                                    \
                                                                              \
-		typedef char yes[1];                                                 \
-		typedef char no[2];                                                  \
-                                                                             \
 		template <typename ToCheck>                                          \
-		static yes& test(Sfinae<ToCheck, &ToCheck::METHOD_NAME>*);           \
+		static yes_type test(Sfinae<ToCheck, &ToCheck::METHOD_NAME>*);       \
 		template <typename>                                                  \
-		static no& test(...);                                                \
+		static no_type test(...);                                            \
                                                                              \
 	public:                                                                  \
 		enum {                                                               \
-			value = sizeof(test<T>(NULL)) == sizeof(yes)                     \
+			value = sizeof(test<T>(NULL)) == sizeof(yes_type)                \
 		};                                                                   \
 	};
 
