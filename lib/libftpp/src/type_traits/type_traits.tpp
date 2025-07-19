@@ -46,6 +46,13 @@ struct is_pointer : conditional<is_const<T>::value || is_volatile<T>::value,
 template <typename T>
 struct is_pointer<T*> : true_type {};
 
+/* is_lvalue_reference */
+template <typename>
+struct is_lvalue_reference : false_type {};
+
+template <typename T>
+struct is_lvalue_reference<T&> : true_type {};
+
 /* is_object */
 template <typename T>
 struct is_object
@@ -53,11 +60,8 @@ struct is_object
                     && !is_void<T>::value> {};
 
 /* is_reference */
-template <typename>
-struct is_reference : false_type {};
-
 template <typename T>
-struct is_reference<T&> : true_type {};
+struct is_reference : is_lvalue_reference<T> {};
 
 /* is_const */
 template <typename>
@@ -155,6 +159,32 @@ struct add_const : type_identity<const T> {};
 /* add_volatile */
 template <typename T>
 struct add_volatile : type_identity<volatile T> {};
+
+/* remove_reference */
+template <typename T>
+struct remove_reference : type_identity<T> {};
+
+template <typename T>
+struct remove_reference<T&> : type_identity<T> {};
+
+/* add_lvalue_reference */
+namespace _add_lvalue_reference {
+template <typename T, typename = void>
+struct Impl;
+} // namespace _add_lvalue_reference
+
+template <typename T>
+struct add_lvalue_reference : _add_lvalue_reference::Impl<T> {};
+
+namespace _add_lvalue_reference {
+
+template <typename T, typename /*= void*/>
+struct Impl : type_identity<T> {};
+
+template <typename T>
+struct Impl<T, typename voider<T&>::type> : type_identity<T&> {};
+
+} // namespace _add_lvalue_reference
 
 /* remove_extent */
 template <typename T>

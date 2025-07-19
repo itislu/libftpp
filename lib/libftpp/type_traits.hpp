@@ -84,6 +84,12 @@ template <typename T>
 struct is_pointer;
 
 /**
+ * https://en.cppreference.com/w/cpp/types/is_lvalue_reference
+ */
+template <typename T>
+struct is_lvalue_reference;
+
+/**
  * https://en.cppreference.com/w/cpp/types/is_object
  */
 template <typename T>
@@ -178,6 +184,18 @@ struct add_const;
  */
 template <typename T>
 struct add_volatile;
+
+/**
+ * https://en.cppreference.com/w/cpp/types/remove_reference
+ */
+template <typename T>
+struct remove_reference;
+
+/**
+ * https://en.cppreference.com/w/cpp/types/add_reference
+ */
+template <typename T>
+struct add_lvalue_reference;
 
 /**
  * https://en.cppreference.com/w/cpp/types/remove_extent
