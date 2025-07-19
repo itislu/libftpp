@@ -153,6 +153,12 @@ struct extent;
 template <typename T, typename U>
 struct is_same;
 
+/**
+ * https://en.cppreference.com/w/cpp/types/is_convertible
+ */
+template <typename From, typename To>
+struct is_convertible;
+
 /* Type transformations */
 
 /**

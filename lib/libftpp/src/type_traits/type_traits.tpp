@@ -209,6 +209,132 @@ struct is_same : false_type {};
 template <typename T>
 struct is_same<T, T> : true_type {};
 
+/* is_convertible */
+#if defined(__clang__) && defined(__has_feature)
+#	if __has_feature(is_convertible_to)
+#		define BUILTIN_IS_CONVERTIBLE(FROM, TO) __is_convertible_to(FROM, TO)
+#	endif
+#elif defined(__GNUC__)                                           \
+    && (__GNUC__ > 13 || (__GNUC__ == 13 && __GNUC_MINOR__ >= 4))
+// Buggy 13.1: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106784
+// Fixed 13.4: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109680
+// Related writeup about "Abominable Function Types":
+// https://www.open-std.org/JTC1/SC22/WG21/docs/papers/2015/p0172r0.html
+#	define BUILTIN_IS_CONVERTIBLE(FROM, TO) __is_convertible(FROM, TO)
+#elif defined(_MSC_VER) && _MSC_VER >= 1400
+// Appears in Visual Studio 2005 Docs, but not in 2003
+#	define BUILTIN_IS_CONVERTIBLE(FROM, TO) __is_convertible_to(FROM, TO)
+#endif
+
+#ifdef BUILTIN_IS_CONVERTIBLE
+
+template <typename From, typename To>
+struct is_convertible : bool_constant<BUILTIN_IS_CONVERTIBLE(From, To)> {};
+
+#else
+
+namespace _is_convertible {
+template <typename From, typename To, typename = void>
+struct Impl;
+} // namespace _is_convertible
+
+template <typename From, typename To>
+struct is_convertible : bool_constant<_is_convertible::Impl<From, To>::value> {
+};
+
+template <typename From>
+struct is_convertible<From, void> : false_type {};
+
+template <typename To>
+struct is_convertible<void, To> : false_type {};
+
+template <>
+struct is_convertible<void, void> : true_type {};
+
+namespace _is_convertible {
+
+template <typename From>
+struct is_impossible_source;
+template <typename To>
+struct is_impossible_target;
+template <typename From, typename To>
+struct is_impossible_abstract_to_ref;
+template <typename From, typename To>
+struct is_impossible_array_to_ref;
+
+/**
+ * Uses SFINAE with function overload resolution to determine if a value of type
+ * `From` can be implicitly converted to `To`.
+ */
+template <typename From, typename To, typename /*= void*/>
+struct Impl {
+private:
+	/**
+	 * Abstract classes, arrays and functions cannot be returned by value, so
+	 * return by reference. Conversions where this would effect the result are
+	 * checked seperately in a template specialization.
+	 * Everything else is returned by value.
+	 */
+	static
+	    typename conditional<is_abstract<From>::value || is_array<From>::value
+	                             || is_function<From>::value,
+	                         typename add_lvalue_reference<From>::type,
+	                         From>::type
+	    make_from();
+	static yes_type can_convert(To);
+	static no_type can_convert(...);
+
+public:
+	// NOLINTNEXTLINE(cert-err58-cpp)
+	static const bool value =
+	    sizeof(can_convert(make_from())) == sizeof(yes_type);
+};
+
+/**
+ * Certain conversions are known to be impossible. They are separate because
+ * they are not SFINAE-friendly and would otherwise cause compilation errors or
+ * incorrect results.
+ */
+template <typename From, typename To>
+struct Impl<
+    From,
+    To,
+    typename enable_if<is_impossible_source<From>::value
+                       || is_impossible_target<To>::value
+                       || is_impossible_abstract_to_ref<From, To>::value
+                       || is_impossible_array_to_ref<From, To>::value>::type>
+    : false_type {};
+
+// Example: `is_convertible<int() const, int (*)()>`
+template <typename From>
+struct is_impossible_source
+    : bool_constant<
+          is_function<From>::value
+          && is_same<typename add_lvalue_reference<From>::type, From>::value> {
+};
+
+// Example: `is_convertible<Abstract, Abstract>`
+template <typename To>
+struct is_impossible_target
+    : bool_constant<is_array<To>::value || is_function<To>::value
+                    || is_abstract<To>::value> {};
+
+// Example: `is_convertible<Abstract, Abstract&>`
+template <typename From, typename To>
+struct is_impossible_abstract_to_ref
+    : bool_constant<is_abstract<From>::value
+                    && is_nonconst_lvalue_reference<To>::value> {};
+
+// Example: `is_convertible<int[2], int (&)[2]>`
+template <typename From, typename To>
+struct is_impossible_array_to_ref
+    : bool_constant<is_array<From>::value
+                    && is_nonconst_lvalue_reference<To>::value> {};
+
+} // namespace _is_convertible
+
+#endif
+
 /* Type transformations */
 
 /* remove_cv */
