@@ -29,6 +29,14 @@ struct integral_constant {
 	value_type operator()() const throw() { return value; }
 };
 
+/**
+ * Out-of-class definition required for ODR-usage (taking address or binding to
+ * reference).
+ * https://listarchives.boost.org/Archives/boost/2003/01/41847.php
+ */
+template <typename T, T v>
+const T integral_constant<T, v>::value;
+
 template <bool B>
 struct bool_constant : integral_constant<bool, B> {};
 
