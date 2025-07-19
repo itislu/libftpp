@@ -114,6 +114,12 @@ template <typename T>
 struct is_volatile;
 
 /**
+ * https://en.cppreference.com/w/cpp/types/is_abstract
+ */
+template <typename T>
+struct is_abstract;
+
+/**
  * https://en.cppreference.com/w/cpp/types/is_bounded_array
  */
 template <typename T>

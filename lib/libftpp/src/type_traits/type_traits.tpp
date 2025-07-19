@@ -1,5 +1,6 @@
 #pragma once
 
+#include "../../assert.hpp" // IWYU pragma: keep
 #include "../../type_traits.hpp"
 #include <cstddef>
 #include <limits>
@@ -76,6 +77,90 @@ struct is_volatile : false_type {};
 
 template <typename T>
 struct is_volatile<volatile T> : true_type {};
+
+/* is_abstract */
+#if defined(__clang__) && defined(__has_feature)
+#	if __has_feature(is_abstract)
+#		define BUILTIN_IS_ABSTRACT(T) __is_abstract(T)
+#	endif
+#elif defined(__GNUC__)                                         \
+    && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3))
+// Introduced to gcc in commit cb68ec50055e516ac270a043f772935561b01968
+#	define BUILTIN_IS_ABSTRACT(T) __is_abstract(T)
+#elif defined(_MSC_VER) && _MSC_VER >= 1400
+// Appears in Visual Studio 2005 Docs, but not in 2003
+#	define BUILTIN_IS_ABSTRACT(T) __is_abstract(T)
+#endif
+
+#ifdef BUILTIN_IS_ABSTRACT
+
+template <typename T>
+struct is_abstract : bool_constant<BUILTIN_IS_ABSTRACT(T)> {};
+
+#else
+
+/**
+ * Fallback implementation.
+ * Relies on arrays of abstract class type causing type deduction failure.
+ * (DR 337 - https://cplusplus.github.io/CWG/issues/337.html)
+ * Inspiration:
+ * https://groups.google.com/g/comp.lang.c++.moderated/c/C6gvK2tB_kY/m/ByKtefbsO3UJ
+ *
+ * However, following DR 1640, the standard was revised with P0929R2 and arrays
+ * of abstract class types should not cause type deduction failure anymore.
+ * - https://cplusplus.github.io/CWG/issues/1640.html
+ * - https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0929r2.html
+ *
+ * gcc implemented this revision with gcc 11 and therefore this fallback
+ * implementation would not work from there on anymore (not a problem because
+ * the builtin gets chosen anyway).
+ * Discussion: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=17232
+ *
+ * For clang this implementation would still work until at least version 20.1.0
+ * (latest tested).
+ */
+namespace _is_abstract {
+template <typename T, typename = void>
+struct Impl;
+} // namespace _is_abstract
+
+template <typename T>
+struct is_abstract : bool_constant<_is_abstract::Impl<T>::value> {};
+
+namespace _is_abstract {
+
+template <typename T, typename /*= void*/>
+struct Impl {
+private:
+	/**
+	 * T must be a complete type. Further, if T is a template then this also
+	 * ensures to instantiate it, which is required to get the correct answer.
+	 */
+	STATIC_ASSERT(sizeof(T) != 0); // T must be a complete type
+
+	template <typename U, typename = void>
+	struct can_form_array : true_type {};
+
+	template <typename U>
+	struct can_form_array<U, typename voider<U[1]>::type> : false_type {};
+
+public:
+	static const bool value = can_form_array<T>::value;
+};
+
+/**
+ * Filter out types for which sizeof (completeness check) would hard error or
+ * which also cannot form arrays.
+ */
+template <typename T>
+struct Impl<T,
+            typename enable_if<is_function<T>::value || is_reference<T>::value
+                               || is_unbounded_array<T>::value
+                               || is_void<T>::value>::type> : false_type {};
+
+} // namespace _is_abstract
+
+#endif
 
 /* is_bounded_array */
 template <typename>
