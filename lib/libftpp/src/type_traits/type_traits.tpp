@@ -100,7 +100,7 @@ template <typename T, std::size_t N>
 struct rank<T[N]> : integral_constant<std::size_t, 1 + rank<T>::value> {};
 
 /* extent */
-template <typename T, unsigned N>
+template <typename T, unsigned N /*= 0*/>
 struct extent : integral_constant<std::size_t, 0> {};
 
 template <typename T, unsigned N>
@@ -128,14 +128,14 @@ struct remove_cv
     : type_identity<
           typename remove_volatile<typename remove_const<T>::type>::type> {};
 
-/* remove_cv */
+/* remove_const */
 template <typename T>
 struct remove_const : type_identity<T> {};
 
 template <typename T>
 struct remove_const<const T> : type_identity<T> {};
 
-/* remove_cv */
+/* remove_volatile */
 template <typename T>
 struct remove_volatile : type_identity<T> {};
 
@@ -148,11 +148,11 @@ struct add_cv
     : type_identity<typename add_volatile<typename add_const<T>::type>::type> {
 };
 
-/* add_cv */
+/* add_const */
 template <typename T>
 struct add_const : type_identity<const T> {};
 
-/* add_cv */
+/* add_volatile */
 template <typename T>
 struct add_volatile : type_identity<volatile T> {};
 
@@ -186,7 +186,7 @@ template <typename T>
 struct remove_pointer<T*> : type_identity<T> {};
 
 /* enable_if */
-template <bool, typename T>
+template <bool, typename T /*= void*/>
 struct enable_if : type_identity<T> {};
 
 template <typename T>
