@@ -256,6 +256,8 @@ template <typename = void,
           typename = void>
 struct voider;
 
+/* Custom type traits */
+
 /**
  * Generates type traits that check if a class has a specific method.
  * The generated type traits are named has_<method_name>.
@@ -282,6 +284,18 @@ struct voider;
 HAS_METHOD(void, swap, ToCheck&)
 
 #undef HAS_METHOD
+
+/**
+ * @brief Checks wether `T` is a non-const lvalue reference type
+ *
+ * Provides the member constant `value` which is equal to `true`, if `T` is a
+ * non-const lvalue reference type. Otherwise, `value` is equal to `false`.
+ *
+ * This is useful because if `T` is a reference type then `is_const<T>::value`
+ * is always `false`.
+ */
+template <typename T>
+struct is_nonconst_lvalue_reference;
 
 } // namespace ft
 
