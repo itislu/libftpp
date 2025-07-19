@@ -1,7 +1,5 @@
 #pragma once
 
-#include <cstddef>
-
 namespace ft {
 
 /**
@@ -265,29 +263,37 @@ struct voider;
 /* Custom type traits */
 
 /**
- * Generates type traits that check if a class has a specific method.
+ * Generates type traits that check if a class has a specific public non-static
+ * method.
  * The generated type traits are named has_<method_name>.
+ * There can only be 1 trait with the same method name.
+ *
+ * Usage example: `HAS_METHOD(void, swap, (T&))`
  */
-#define HAS_METHOD(RETURN_TYPE, METHOD_NAME, ARGS)                           \
-	template <typename T>                                                    \
-	struct has_##METHOD_NAME {                                               \
-	private:                                                                 \
+// NOLINTBEGIN(bugprone-macro-parentheses)
+#define HAS_METHOD(RETURN_TYPE, METHOD_NAME, ARGS_IN_PARENS)                 \
+	namespace _has_##METHOD_NAME                                             \
+	{                                                                        \
+                                                                             \
 		/* 2nd param: member-function pointer non-type template parameter */ \
-		template <typename ToCheck, RETURN_TYPE (ToCheck::*)(ARGS)>          \
+		template <typename T, RETURN_TYPE(T::*) ARGS_IN_PARENS>              \
 		struct Sfinae {};                                                    \
                                                                              \
-		template <typename ToCheck>                                          \
-		static yes_type test(Sfinae<ToCheck, &ToCheck::METHOD_NAME>*);       \
-		template <typename>                                                  \
-		static no_type test(...);                                            \
+		template <typename T, typename = void>                               \
+		struct Impl : false_type {};                                         \
                                                                              \
-	public:                                                                  \
-		enum {                                                               \
-			value = sizeof(test<T>(NULL)) == sizeof(yes_type)                \
-		};                                                                   \
-	};
+		template <typename T>                                                \
+		struct Impl<T, typename voider<Sfinae<T, &T::METHOD_NAME> >::type>   \
+		    : true_type {};                                                  \
+                                                                             \
+	} /* namespace _has_##METHOD_NAME */                                     \
+                                                                             \
+	template <typename T>                                                    \
+	struct has_##METHOD_NAME : _has_##METHOD_NAME::Impl<T> {};
+// NOLINTEND(bugprone-macro-parentheses)
 
-HAS_METHOD(void, swap, ToCheck&)
+/* has_swap */
+HAS_METHOD(void, swap, (T&))
 
 #undef HAS_METHOD
 
