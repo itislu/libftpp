@@ -263,39 +263,39 @@ struct voider;
 /* Custom type traits */
 
 /**
- * Generates type traits that check if a class has a specific public non-static
- * method.
- * The generated type traits are named has_<method_name>.
- * There can only be 1 trait with the same method name.
+ * @brief Generates type traits that check if a class has a specific public
+ * non-static member function.
  *
- * Usage example: `HAS_METHOD(void, swap, (T&))`
+ * The generated type traits are named has_member_function_<name>.
+ * There can only be 1 trait with the same function name.
+ *
+ * Usage example: `HAS_MEMBER_FUNCTION(void, swap, (T&))`
  */
 // NOLINTBEGIN(bugprone-macro-parentheses)
-#define HAS_METHOD(RETURN_TYPE, METHOD_NAME, ARGS_IN_PARENS)                 \
-	namespace _has_##METHOD_NAME                                             \
-	{                                                                        \
-                                                                             \
-		/* 2nd param: member-function pointer non-type template parameter */ \
-		template <typename T, RETURN_TYPE(T::*) ARGS_IN_PARENS>              \
-		struct Sfinae {};                                                    \
-                                                                             \
-		template <typename T, typename = void>                               \
-		struct Impl : false_type {};                                         \
-                                                                             \
-		template <typename T>                                                \
-		struct Impl<T, typename voider<Sfinae<T, &T::METHOD_NAME> >::type>   \
-		    : true_type {};                                                  \
-                                                                             \
-	} /* namespace _has_##METHOD_NAME */                                     \
-                                                                             \
-	template <typename T>                                                    \
-	struct has_##METHOD_NAME : _has_##METHOD_NAME::Impl<T> {};
+#define HAS_MEMBER_FUNCTION(RETURN_TYPE, NAME, ARGS_IN_PARENS)                 \
+	namespace _has_member_function_##NAME                                      \
+	{                                                                          \
+                                                                               \
+		/* 2nd param: member-function pointer non-type template parameter */   \
+		template <typename T, RETURN_TYPE(T::*) ARGS_IN_PARENS>                \
+		struct Sfinae {};                                                      \
+                                                                               \
+		template <typename T, typename = void>                                 \
+		struct Impl : ft::false_type {};                                       \
+                                                                               \
+		template <typename T>                                                  \
+		struct Impl<T, typename ft::voider<Sfinae<T, &T::NAME> >::type>        \
+		    : ft::true_type {};                                                \
+                                                                               \
+	} /* namespace _has_member_function_##NAME */                              \
+                                                                               \
+	template <typename T>                                                      \
+	struct has_member_function_##NAME : _has_member_function_##NAME::Impl<T> { \
+	};
 // NOLINTEND(bugprone-macro-parentheses)
 
-/* has_swap */
-HAS_METHOD(void, swap, (T&))
-
-#undef HAS_METHOD
+/* has_member_function_swap */
+HAS_MEMBER_FUNCTION(void, swap, (T&))
 
 /**
  * @brief Checks wether `T` is a non-const lvalue reference type
