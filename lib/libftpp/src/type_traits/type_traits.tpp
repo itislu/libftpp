@@ -7,6 +7,31 @@
 
 namespace ft {
 
+/* Base classes */
+
+/* integral_constant */
+template <typename T, T v>
+integral_constant<T, v>::operator integral_constant<T, v>::value_type() const
+    throw()
+{
+	return value;
+}
+
+template <typename T, T v>
+typename integral_constant<T, v>::value_type
+integral_constant<T, v>::operator()() const throw()
+{
+	return value;
+}
+
+/**
+ * Out-of-class definition required for ODR-usage (taking address or binding to
+ * reference).
+ * https://listarchives.boost.org/Archives/boost/2003/01/41847.php
+ */
+template <typename T, T v>
+const T integral_constant<T, v>::value;
+
 /* Unary type traits */
 
 /* is_void */
