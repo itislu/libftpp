@@ -199,4 +199,17 @@ struct conditional : type_identity<T> {};
 template <typename T, typename F>
 struct conditional<false, T, F> : type_identity<F> {};
 
+/* voider (void_t) */
+template <typename /*= void*/,
+          typename /*= void*/,
+          typename /*= void*/,
+          typename /*= void*/,
+          typename /*= void*/,
+          typename /*= void*/,
+          typename /*= void*/,
+          typename /*= void*/,
+          typename /*= void*/,
+          typename /*= void*/>
+struct voider : type_identity<void> {};
+
 } // namespace ft

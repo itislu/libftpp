@@ -210,6 +210,29 @@ template <bool B, typename T, typename F>
 struct conditional;
 
 /**
+ * https://en.cppreference.com/w/cpp/types/void_t
+ *
+ * Variadic templates do not exist in C++98, so an arbitrary limit of 10
+ * template parameters is set instead.
+ *
+ * It is not named `void_t` because `::type` is still required to use it.
+ * The `_t` suffix is usually used for helper types that don't need `::type`.
+ * The name `voider` is chosen because it is mentioned in N3911
+ * (https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2014/n3911.pdf).
+ */
+template <typename = void,
+          typename = void,
+          typename = void,
+          typename = void,
+          typename = void,
+          typename = void,
+          typename = void,
+          typename = void,
+          typename = void,
+          typename = void>
+struct voider;
+
+/**
  * Generates type traits that check if a class has a specific method.
  * The generated type traits are named has_<method_name>.
  */
