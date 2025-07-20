@@ -7,6 +7,35 @@
 
 namespace ft {
 
+/* Forward declarations */
+
+namespace _type_traits {
+struct null_type;
+} // namespace _type_traits
+
+template <typename B1 = _type_traits::null_type,
+          typename B2 = _type_traits::null_type,
+          typename B3 = _type_traits::null_type,
+          typename B4 = _type_traits::null_type,
+          typename B5 = _type_traits::null_type,
+          typename B6 = _type_traits::null_type,
+          typename B7 = _type_traits::null_type,
+          typename B8 = _type_traits::null_type,
+          typename B9 = _type_traits::null_type,
+          typename B10 = _type_traits::null_type>
+struct conjunction;
+template <typename B1 = _type_traits::null_type,
+          typename B2 = _type_traits::null_type,
+          typename B3 = _type_traits::null_type,
+          typename B4 = _type_traits::null_type,
+          typename B5 = _type_traits::null_type,
+          typename B6 = _type_traits::null_type,
+          typename B7 = _type_traits::null_type,
+          typename B8 = _type_traits::null_type,
+          typename B9 = _type_traits::null_type,
+          typename B10 = _type_traits::null_type>
+struct disjunction;
+
 /* Base classes */
 
 /* integral_constant */
@@ -477,6 +506,70 @@ template <typename /*= void*/,
           typename /*= void*/,
           typename /*= void*/>
 struct voider : type_identity<void> {};
+
+/* Logical operations */
+
+/* conjunction */
+template <typename B1 /*= _type_traits::null_type*/,
+          typename B2 /*= _type_traits::null_type*/,
+          typename B3 /*= _type_traits::null_type*/,
+          typename B4 /*= _type_traits::null_type*/,
+          typename B5 /*= _type_traits::null_type*/,
+          typename B6 /*= _type_traits::null_type*/,
+          typename B7 /*= _type_traits::null_type*/,
+          typename B8 /*= _type_traits::null_type*/,
+          typename B9 /*= _type_traits::null_type*/,
+          typename B10 /*= _type_traits::null_type*/>
+struct conjunction
+    : conditional<!bool(B1::value)
+                      || is_same<B2, _type_traits::null_type>::value,
+                  B1,
+                  conjunction<B2,
+                              B3,
+                              B4,
+                              B5,
+                              B6,
+                              B7,
+                              B8,
+                              B9,
+                              B10,
+                              _type_traits::null_type> >::type {};
+
+template <>
+struct conjunction<_type_traits::null_type> : true_type {};
+
+/* disjunction */
+template <typename B1 /*= _type_traits::null_type*/,
+          typename B2 /*= _type_traits::null_type*/,
+          typename B3 /*= _type_traits::null_type*/,
+          typename B4 /*= _type_traits::null_type*/,
+          typename B5 /*= _type_traits::null_type*/,
+          typename B6 /*= _type_traits::null_type*/,
+          typename B7 /*= _type_traits::null_type*/,
+          typename B8 /*= _type_traits::null_type*/,
+          typename B9 /*= _type_traits::null_type*/,
+          typename B10 /*= _type_traits::null_type*/>
+struct disjunction
+    : conditional<bool(B1::value)
+                      || is_same<B2, _type_traits::null_type>::value,
+                  B1,
+                  disjunction<B2,
+                              B3,
+                              B4,
+                              B5,
+                              B6,
+                              B7,
+                              B8,
+                              B9,
+                              B10,
+                              _type_traits::null_type> >::type {};
+
+template <>
+struct disjunction<_type_traits::null_type> : false_type {};
+
+/* negation */
+template <typename B>
+struct negation : bool_constant<!bool(B::value)> {};
 
 /* Custom type traits */
 

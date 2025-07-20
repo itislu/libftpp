@@ -260,6 +260,50 @@ template <typename = void,
           typename = void>
 struct voider;
 
+/* Logical operations */
+
+/**
+ * https://en.cppreference.com/w/cpp/types/conjunction
+ *
+ * Variadic templates do not exist in C++98, so an arbitrary limit of 10
+ * template parameters is set instead.
+ */
+template <typename B1 /* optional */,
+          typename B2 /* optional */,
+          typename B3 /* optional */,
+          typename B4 /* optional */,
+          typename B5 /* optional */,
+          typename B6 /* optional */,
+          typename B7 /* optional */,
+          typename B8 /* optional */,
+          typename B9 /* optional */,
+          typename B10 /* optional */>
+struct conjunction;
+
+/**
+ * https://en.cppreference.com/w/cpp/types/disjunction
+ *
+ * Variadic templates do not exist in C++98, so an arbitrary limit of 10
+ * template parameters is set instead.
+ */
+template <typename B1 /* optional */,
+          typename B2 /* optional */,
+          typename B3 /* optional */,
+          typename B4 /* optional */,
+          typename B5 /* optional */,
+          typename B6 /* optional */,
+          typename B7 /* optional */,
+          typename B8 /* optional */,
+          typename B9 /* optional */,
+          typename B10 /* optional */>
+struct disjunction;
+
+/**
+ * https://en.cppreference.com/w/cpp/types/negation
+ */
+template <typename B>
+struct negation;
+
 /* Custom type traits */
 
 /**
