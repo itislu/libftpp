@@ -7,7 +7,9 @@ namespace ft {
 
 namespace _swap {
 template <typename T, bool HasSwap>
-struct Impl;
+struct Impl {
+	static void swap(T& a, T& b);
+};
 } // namespace _swap
 
 template <typename T>

@@ -78,12 +78,6 @@ To from_string(const std::string& str,
                std::string::size_type* endpos_out = NULL);
 /**
  * @copydoc from_string(const std::string&, std::string::size_type*)
- */
-template <>
-inline bool from_string<bool>(const std::string& str,
-                              std::string::size_type* endpos_out /*= NULL*/);
-/**
- * @copydoc from_string(const std::string&, std::string::size_type*)
  *
  * @param fmt (optional) Stream format flags (`std::ios::fmtflags`) to control
  * parsing behavior (e.g., base, skipping whitespace, scientific notation)

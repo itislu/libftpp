@@ -21,7 +21,9 @@ static To fp_to_fp(From from);
 template <typename To, typename From>
 static To int_to_fp(From from);
 template <typename To, typename From>
-struct Impl;
+struct Impl {
+	static To try_cast(From from);
+};
 } // namespace _numeric_cast
 
 template <typename To, typename From>
@@ -90,19 +92,17 @@ static To int_to_fp(From from)
 }
 
 template <typename To, typename From>
-struct Impl {
-	static To try_cast(From from)
-	{
-		To to;
-		std::stringstream ss;
-		ss << std::fixed << from;
-		if (!(ss >> to)) {
-			from < 0 ? throw NumericCastNegativeOverflowException()
-			         : throw NumericCastPositiveOverflowException();
-		}
-		return static_cast<To>(from);
+To Impl<To, From>::try_cast(From from)
+{
+	To to;
+	std::stringstream ss;
+	ss << std::fixed << from;
+	if (!(ss >> to)) {
+		from < 0 ? throw NumericCastNegativeOverflowException()
+		         : throw NumericCastPositiveOverflowException();
 	}
-};
+	return static_cast<To>(from);
+}
 
 /**
  * Specializations for char and unsigned char because stringstream doesn't
