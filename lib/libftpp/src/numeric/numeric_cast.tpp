@@ -2,6 +2,7 @@
 
 #include "../../Expected.hpp"
 #include "../../numeric.hpp"
+#include "../../type_traits.hpp"
 #include <cmath>
 #include <ios>
 #include <limits>
@@ -26,13 +27,13 @@ struct Impl;
 template <typename To, typename From>
 To numeric_cast(From from)
 {
-	if (std::numeric_limits<To>::is_integer) {
-		if (std::numeric_limits<From>::is_integer) {
+	if (ft::is_integral<To>::value) {
+		if (ft::is_integral<From>::value) {
 			return _numeric_cast::int_to_int<To>(from);
 		}
 		return _numeric_cast::fp_to_int<To>(from);
 	}
-	if (std::numeric_limits<From>::is_integer) {
+	if (ft::is_integral<From>::value) {
 		return _numeric_cast::int_to_fp<To>(from);
 	}
 	return _numeric_cast::fp_to_fp<To>(from);

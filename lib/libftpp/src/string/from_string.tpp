@@ -58,14 +58,14 @@ To from_string(const std::string& str,
 		endpos = ft::min(static_cast<std::string::size_type>(iss.tellg()),
 		                 str.length());
 		// Check for negative value for unsigned integer types
-		if (std::numeric_limits<To>::is_integer && !ft::is_same<To, bool>::value
+		if (ft::is_integral<To>::value && !ft::is_same<To, bool>::value
 		    && std::numeric_limits<To>::min() == 0) {
 			if (std::signbit(
 			        from_string<float>(str, fmt, std::nothrow).value_or(-1))) {
 				throw FromStringRangeException(str, typeid(To));
 			}
 		}
-		else if (std::numeric_limits<To>::is_iec559) {
+		else if (ft::is_floating_point<To>::value) {
 			_from_string::check_unwanted_scientific_notation<To>(
 			    str, fmt, endpos);
 		}
@@ -79,7 +79,7 @@ To from_string(const std::string& str,
 	}
 
 	// Check if integer type out of range
-	if (std::numeric_limits<To>::is_integer) {
+	if (ft::is_integral<To>::value) {
 		const char* const start = str.c_str();
 		char* end = NULL;
 
@@ -91,14 +91,14 @@ To from_string(const std::string& str,
 		    || test < static_cast<long>(std::numeric_limits<To>::min())
 		    || static_cast<unsigned long>(test) > static_cast<unsigned long>(
 		           std::numeric_limits<To>::max())) {
-			if (end) {
+			if (end != NULL) {
 				endpos = end - start;
 			}
 			throw FromStringRangeException(str, typeid(To));
 		}
 	}
 	// Check if floating point type out of range
-	else if (std::numeric_limits<To>::is_iec559) {
+	else if (ft::is_floating_point<To>::value) {
 		const char* const start = str.c_str();
 		char* end = NULL;
 
@@ -112,7 +112,7 @@ To from_string(const std::string& str,
 		else {
 			res = std::strtold(start, &end);
 		}
-		if (end) {
+		if (end != NULL) {
 			endpos = end - start;
 		}
 
@@ -165,7 +165,7 @@ static void check_unwanted_scientific_notation(const std::string& str,
                                                std::ios::fmtflags fmt,
                                                std::string::size_type& endpos)
 {
-	if (std::numeric_limits<To>::is_iec559
+	if (ft::is_floating_point<To>::value
 	    && (fmt & std::ios::floatfield) == std::ios::fixed) {
 		const std::string unwanted("eEpP");
 		const std::string::const_iterator end =

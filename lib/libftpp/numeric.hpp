@@ -3,7 +3,6 @@
 #include "Exception.hpp"
 #include "Expected.hpp"
 #include "type_traits.hpp"
-#include <limits>
 #include <new>
 #include <string>
 
@@ -99,7 +98,7 @@ class ArithmeticDivisionByZeroException;
  * overflow
  */
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer,
+typename ft::enable_if<ft::is_integral<T>::value,
                        ft::Expected<T, ArithmeticException> >::type
 add_checked(T x, T y);
 /**
@@ -110,7 +109,7 @@ add_checked(T x, T y);
  * would overflow
  */
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer,
+typename ft::enable_if<ft::is_integral<T>::value,
                        ft::Expected<T, ArithmeticException> >::type
 sub_checked(T x, T y);
 /**
@@ -121,7 +120,7 @@ sub_checked(T x, T y);
  * multiplication would overflow
  */
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer,
+typename ft::enable_if<ft::is_integral<T>::value,
                        ft::Expected<T, ArithmeticException> >::type
 mul_checked(T x, T y);
 /**
@@ -132,7 +131,7 @@ mul_checked(T x, T y);
  * overflow or `y == 0`
  */
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer,
+typename ft::enable_if<ft::is_integral<T>::value,
                        ft::Expected<T, ArithmeticException> >::type
 div_checked(T x, T y);
 
@@ -140,32 +139,32 @@ div_checked(T x, T y);
  * https://en.cppreference.com/w/cpp/numeric/add_sat
  */
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
-add_sat(T x, T y) throw();
+typename ft::enable_if<ft::is_integral<T>::value, T>::type add_sat(T x,
+                                                                   T y) throw();
 /**
  * https://en.cppreference.com/w/cpp/numeric/sub_sat
  */
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
-sub_sat(T x, T y) throw();
+typename ft::enable_if<ft::is_integral<T>::value, T>::type sub_sat(T x,
+                                                                   T y) throw();
 /**
  * https://en.cppreference.com/w/cpp/numeric/mul_sat
  */
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
-mul_sat(T x, T y) throw();
+typename ft::enable_if<ft::is_integral<T>::value, T>::type mul_sat(T x,
+                                                                   T y) throw();
 /**
  * https://en.cppreference.com/w/cpp/numeric/div_sat
  *
  * @note Unlike `std::div_sat()`, dividing by zero does not lead to undefined
- * behavior, but mimicks the IEEE 754 standard for floating point types:
+ * behavior, but mimics the IEEE 754 standard for floating point types:
  * - If `x` is negative, returns the minimum representable value of `T`.
  * - If `x` is positive, returns the maximum representable value of `T`.
  * - If `x` is zero, returns zero.
  */
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
-div_sat(T x, T y) throw();
+typename ft::enable_if<ft::is_integral<T>::value, T>::type div_sat(T x,
+                                                                   T y) throw();
 
 /**
  * @brief Throwing integer addition, guaranteeing no undefined behavior
@@ -176,8 +175,7 @@ div_sat(T x, T y) throw();
  * addition would be greater than the highest representable value of `T`
  */
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
-add_throw(T x, T y);
+typename ft::enable_if<ft::is_integral<T>::value, T>::type add_throw(T x, T y);
 /**
  * @brief Throwing integer subtraction, guaranteeing no undefined behavior
  *
@@ -187,8 +185,7 @@ add_throw(T x, T y);
  * subtraction would be greater than the highest representable value of `T`
  */
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
-sub_throw(T x, T y);
+typename ft::enable_if<ft::is_integral<T>::value, T>::type sub_throw(T x, T y);
 /**
  * @brief Throwing integer multiplication, guaranteeing no undefined behavior
  *
@@ -198,8 +195,7 @@ sub_throw(T x, T y);
  * multiplication would be greater than the highest representable value of `T`
  */
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
-mul_throw(T x, T y);
+typename ft::enable_if<ft::is_integral<T>::value, T>::type mul_throw(T x, T y);
 /**
  * @brief Throwing integer division, guaranteeing no undefined behavior
  *
@@ -208,8 +204,7 @@ mul_throw(T x, T y);
  * @throws ft::ArithmeticDivisionByZeroException When `y == 0`
  */
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
-div_throw(T x, T y);
+typename ft::enable_if<ft::is_integral<T>::value, T>::type div_throw(T x, T y);
 
 class ArithmeticException : public ft::Exception {
 public:

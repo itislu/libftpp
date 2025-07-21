@@ -16,23 +16,23 @@ enum Error {
 	DIVISION_BY_ZERO
 };
 template <typename T>
-static typename ft::enable_if<std::numeric_limits<T>::is_integer, Error>::type
+static typename ft::enable_if<ft::is_integral<T>::value, Error>::type
 add(T x, T y, T* result) throw();
 template <typename T>
-static typename ft::enable_if<std::numeric_limits<T>::is_integer, Error>::type
+static typename ft::enable_if<ft::is_integral<T>::value, Error>::type
 sub(T x, T y, T* result) throw();
 template <typename T>
-static typename ft::enable_if<std::numeric_limits<T>::is_integer, Error>::type
+static typename ft::enable_if<ft::is_integral<T>::value, Error>::type
 mul(T x, T y, T* result) throw();
 template <typename T>
-static typename ft::enable_if<std::numeric_limits<T>::is_integer, Error>::type
+static typename ft::enable_if<ft::is_integral<T>::value, Error>::type
 div(T x, T y, T* result) throw();
 } // namespace _arithmetic
 
 /* Checked arithmetic */
 
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer,
+typename ft::enable_if<ft::is_integral<T>::value,
                        ft::Expected<T, ArithmeticException> >::type
 add_checked(T x, T y)
 {
@@ -53,7 +53,7 @@ add_checked(T x, T y)
 }
 
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer,
+typename ft::enable_if<ft::is_integral<T>::value,
                        ft::Expected<T, ArithmeticException> >::type
 sub_checked(T x, T y)
 {
@@ -74,7 +74,7 @@ sub_checked(T x, T y)
 }
 
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer,
+typename ft::enable_if<ft::is_integral<T>::value,
                        ft::Expected<T, ArithmeticException> >::type
 mul_checked(T x, T y)
 {
@@ -95,7 +95,7 @@ mul_checked(T x, T y)
 }
 
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer,
+typename ft::enable_if<ft::is_integral<T>::value,
                        ft::Expected<T, ArithmeticException> >::type
 div_checked(T x, T y)
 {
@@ -118,8 +118,8 @@ div_checked(T x, T y)
 /* Saturating arithmetic */
 
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
-add_sat(T x, T y) throw()
+typename ft::enable_if<ft::is_integral<T>::value, T>::type add_sat(T x,
+                                                                   T y) throw()
 {
 	T result;
 	switch (_arithmetic::add(x, y, &result)) {
@@ -136,8 +136,8 @@ add_sat(T x, T y) throw()
 }
 
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
-sub_sat(T x, T y) throw()
+typename ft::enable_if<ft::is_integral<T>::value, T>::type sub_sat(T x,
+                                                                   T y) throw()
 {
 	T result;
 	switch (_arithmetic::sub(x, y, &result)) {
@@ -154,8 +154,8 @@ sub_sat(T x, T y) throw()
 }
 
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
-mul_sat(T x, T y) throw()
+typename ft::enable_if<ft::is_integral<T>::value, T>::type mul_sat(T x,
+                                                                   T y) throw()
 {
 	T result;
 	switch (_arithmetic::mul(x, y, &result)) {
@@ -172,8 +172,8 @@ mul_sat(T x, T y) throw()
 }
 
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
-div_sat(T x, T y) throw()
+typename ft::enable_if<ft::is_integral<T>::value, T>::type div_sat(T x,
+                                                                   T y) throw()
 {
 	T result;
 	switch (_arithmetic::div(x, y, &result)) {
@@ -198,8 +198,7 @@ div_sat(T x, T y) throw()
 /* Throwing arithmetic */
 
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
-add_throw(T x, T y)
+typename ft::enable_if<ft::is_integral<T>::value, T>::type add_throw(T x, T y)
 {
 	T result;
 	switch (_arithmetic::add(x, y, &result)) {
@@ -216,8 +215,7 @@ add_throw(T x, T y)
 }
 
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
-sub_throw(T x, T y)
+typename ft::enable_if<ft::is_integral<T>::value, T>::type sub_throw(T x, T y)
 {
 	T result;
 	switch (_arithmetic::sub(x, y, &result)) {
@@ -234,8 +232,7 @@ sub_throw(T x, T y)
 }
 
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
-mul_throw(T x, T y)
+typename ft::enable_if<ft::is_integral<T>::value, T>::type mul_throw(T x, T y)
 {
 	T result;
 	switch (_arithmetic::mul(x, y, &result)) {
@@ -252,8 +249,7 @@ mul_throw(T x, T y)
 }
 
 template <typename T>
-typename ft::enable_if<std::numeric_limits<T>::is_integer, T>::type
-div_throw(T x, T y)
+typename ft::enable_if<ft::is_integral<T>::value, T>::type div_throw(T x, T y)
 {
 	T result;
 	switch (_arithmetic::div(x, y, &result)) {
@@ -272,7 +268,7 @@ div_throw(T x, T y)
 namespace _arithmetic {
 
 template <typename T>
-static typename ft::enable_if<std::numeric_limits<T>::is_integer, Error>::type
+static typename ft::enable_if<ft::is_integral<T>::value, Error>::type
 add(T x, T y, T* result) throw()
 {
 	const T max = std::numeric_limits<T>::max();
@@ -296,7 +292,7 @@ add(T x, T y, T* result) throw()
 }
 
 template <typename T>
-static typename ft::enable_if<std::numeric_limits<T>::is_integer, Error>::type
+static typename ft::enable_if<ft::is_integral<T>::value, Error>::type
 sub(T x, T y, T* result) throw()
 {
 	if (std::numeric_limits<T>::is_signed) {
@@ -320,7 +316,7 @@ sub(T x, T y, T* result) throw()
 }
 
 template <typename T>
-static typename ft::enable_if<std::numeric_limits<T>::is_integer, Error>::type
+static typename ft::enable_if<ft::is_integral<T>::value, Error>::type
 mul(T x, T y, T* result) throw()
 {
 	const T max = std::numeric_limits<T>::max();
@@ -346,7 +342,7 @@ mul(T x, T y, T* result) throw()
 }
 
 template <typename T>
-static typename ft::enable_if<std::numeric_limits<T>::is_integer, Error>::type
+static typename ft::enable_if<ft::is_integral<T>::value, Error>::type
 div(T x, T y, T* result) throw()
 {
 	if (y == 0) {
