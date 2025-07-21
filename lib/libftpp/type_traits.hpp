@@ -88,6 +88,12 @@ template <typename T>
 struct is_lvalue_reference;
 
 /**
+ * https://en.cppreference.com/w/cpp/types/is_arithmetic
+ */
+template <typename T>
+struct is_arithmetic;
+
+/**
  * https://en.cppreference.com/w/cpp/types/is_object
  */
 template <typename T>

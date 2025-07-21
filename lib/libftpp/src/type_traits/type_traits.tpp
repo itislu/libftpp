@@ -139,6 +139,11 @@ struct is_lvalue_reference : false_type {};
 template <typename T>
 struct is_lvalue_reference<T&> : true_type {};
 
+/* is_arithmetic */
+template <typename T>
+struct is_arithmetic
+    : bool_constant<is_integral<T>::value || is_floating_point<T>::value> {};
+
 /* is_object */
 template <typename T>
 struct is_object
