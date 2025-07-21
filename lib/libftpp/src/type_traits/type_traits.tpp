@@ -324,17 +324,14 @@ template <typename From, typename To, typename /*= void*/>
 struct Impl {
 private:
 	/**
-	 * Abstract classes, arrays and functions cannot be returned by value, so
-	 * return by reference. Conversions where this would effect the result are
-	 * checked seperately in a template specialization.
-	 * Everything else is returned by value.
+	 * Types that cannot be returned by value are returned by reference instead
+	 * to ensure the expression is well-formed. Conversions where this would
+	 * affect the result are handled in a separate specialization.
 	 */
-	static
-	    typename conditional<is_abstract<From>::value || is_array<From>::value
-	                             || is_function<From>::value,
-	                         typename add_lvalue_reference<From>::type,
-	                         From>::type
-	    make_from();
+	static typename conditional<!can_be_return_type<From>::value,
+	                            typename add_lvalue_reference<From>::type,
+	                            From>::type
+	make_from();
 	static yes_type can_convert(To);
 	static no_type can_convert(...);
 
@@ -572,6 +569,18 @@ template <typename B>
 struct negation : bool_constant<!bool(B::value)> {};
 
 /* Custom type traits */
+
+/* can_be_return_type */
+/**
+ * Because of DR 1646, a lot of compiler versions before P0929R2 behave
+ * differently on function declarations and template substitutions. Therefore,
+ * using deduction failure to implement this trait would not be reliable.
+ * https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0929r2.html
+ */
+template <typename T>
+struct can_be_return_type
+    : bool_constant<!is_abstract<T>::value && !is_array<T>::value
+                    && !is_function<T>::value> {};
 
 /**
  * If `T` is a reference type then `is_const<T>::value` is always `false`. The

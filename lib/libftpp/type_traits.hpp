@@ -307,6 +307,19 @@ struct negation;
 /* Custom type traits */
 
 /**
+ * @brief Checks wether `T` can be a return type of a function.
+ *
+ * Provides the member constant `value` which is equal to `true`, if `T` is not
+ * an abstract class, an array, or a function. Otherwise, `value` is equal to
+ * `false`.
+ *
+ * This trait reflects the type constraints of a function's definition
+ * or call, not just its declaration.
+ */
+template <typename T>
+struct can_be_return_type;
+
+/**
  * @brief Generates type traits that check if a class has a specific public
  * non-static member function.
  *
