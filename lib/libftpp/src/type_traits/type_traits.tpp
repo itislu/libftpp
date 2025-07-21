@@ -68,14 +68,45 @@ template <typename T>
 struct is_void : is_same<typename remove_cv<T>::type, void> {};
 
 /* is_integral */
+namespace _is_integral {
 template <typename T>
-struct is_integral : bool_constant<std::numeric_limits<T>::is_integer> {};
+struct Impl;
+} // namespace _is_integral
+
+/**
+ * Short-circuit types which `std::numeric_limits` does not support.
+ */
+template <typename T>
+struct is_integral
+    : conjunction<can_be_return_type<T>, _is_integral::Impl<T> > {};
+
+namespace _is_integral {
+
+template <typename T>
+struct Impl : bool_constant<std::numeric_limits<T>::is_integer> {};
+
+} // namespace _is_integral
 
 /* is_floating_point */
+namespace _is_floating_point {
+template <typename T>
+struct Impl;
+} // namespace _is_floating_point
+
+/**
+ * Short-circuit types which `std::numeric_limits` does not support.
+ */
 template <typename T>
 struct is_floating_point
-    : bool_constant<std::numeric_limits<T>::is_specialized
-                    && !std::numeric_limits<T>::is_integer> {};
+    : conjunction<can_be_return_type<T>, _is_floating_point::Impl<T> > {};
+
+namespace _is_floating_point {
+
+template <typename T>
+struct Impl : bool_constant<std::numeric_limits<T>::is_specialized
+                            && !std::numeric_limits<T>::is_integer> {};
+
+} // namespace _is_floating_point
 
 /* is_array */
 template <typename T>
