@@ -374,4 +374,40 @@ struct is_nonconst_lvalue_reference;
 
 } // namespace ft
 
+/**
+ * @brief A SFINAE-based macro that emulates C++20's `requires` clause
+ *
+ * `REQUIRES` is used for overload resolution and enables a function template if
+ * all type traits in a comma-separated list have a static member `value` that
+ * evaluates to `true`, acting as a logical AND.
+ * The function's return type must be placed in parentheses after the macro.
+ *
+ * Usage examples:
+ * ```
+ * template <typename T, unsigned N>
+ * REQUIRES((ft::is_integral<T>, ft::bool_constant<N < 10>))
+ * (T) function(T x);
+ * ```
+ * Note the double parentheses to pack all constraints into a single argument.
+ *
+ * ```
+ * template <typename T>
+ * REQUIRES(ft::negation<ft::is_integral<T> >)
+ * ((std::pair<T, T>)) function(T x);
+ * ```
+ * Note the double parentheses around the return type to escape the comma.
+ *
+ * Inspiration: https://stackoverflow.com/a/9220563
+ *
+ * `clang-format`: To help `clang-format` format code using this macro better,
+ * add `REQUIRES` to `StatementMacros` in the `clang-format` config.
+ */
+#define REQUIRES(TYPE_TRAITS)                                               \
+	typename ft::enable_if < ft::_requires::Impl<void(TYPE_TRAITS)>::value, \
+	    RETURN_TYPE_MUST_BE_PLACED_IN_PARENTHESES
+/* T is put in a function type to remove multiple parentheses. */
+#define RETURN_TYPE_MUST_BE_PLACED_IN_PARENTHESES(T)              \
+	typename ft::_requires::GetReturnType<void(T)>::type > ::type
+
+#include "src/type_traits/requires.tpp"    // IWYU pragma: export
 #include "src/type_traits/type_traits.tpp" // IWYU pragma: export

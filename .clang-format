@@ -60,6 +60,7 @@ SpaceBeforeRangeBasedForLoopColon: true
 SpacesInAngles: Never
 SpacesInSquareBrackets: false
 Standard: Auto
+StatementMacros: [REQUIRES]
 TabWidth: 4
 UseTab: ForIndentation
 ---

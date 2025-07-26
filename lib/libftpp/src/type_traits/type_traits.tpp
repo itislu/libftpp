@@ -2,16 +2,13 @@
 
 #include "../../assert.hpp" // IWYU pragma: keep
 #include "../../type_traits.hpp"
+#include "_type_traits.hpp"
 #include <cstddef>
 #include <limits>
 
 namespace ft {
 
 /* Forward declarations */
-
-namespace _type_traits {
-struct null_type;
-} // namespace _type_traits
 
 template <typename B1 = _type_traits::null_type,
           typename B2 = _type_traits::null_type,
