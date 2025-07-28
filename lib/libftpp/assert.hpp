@@ -20,7 +20,7 @@
  * Crucially, applying `sizeof` to an incomplete type is a compile-time error.
  * This provides the core assertion mechanism.
  *
- * 3. `APPEND_LINE_NUM(...)`: Generates unique enum names, preventing
+ * 3. `APPEND_UNIQUE_NUM(...)`: Generates unique enum names, preventing
  * redefinition errors when multiple assertions are used in the same scope.
  *
  * 4. `enum { ... }`: The `enum` wrapper serves two purposes. First, it provides
@@ -38,7 +38,7 @@
  */
 #define STATIC_ASSERT(EXPR)                              \
 	enum {                                               \
-		APPEND_LINE_NUM(static_assert_line_) =           \
+		APPEND_UNIQUE_NUM(static_assert_) =              \
 		    sizeof(ft::_static_assert::Impl<bool(EXPR)>) \
 	}
 

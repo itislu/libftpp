@@ -3,24 +3,31 @@
 /* Preprocessor Metaprogramming - Macros for manipulating code as text */
 
 /**
- * Append the line number of the invocation of this macro.
- * Example: `int APPEND_LINE_NUM(counter) = 0;` would produce `int counter7 = 0`
- * if the call is on line 7.
+ * @brief Append a unique number to `NAME`
  *
- * https://stackoverflow.com/a/71899854/24880406
+ * This macro uses the common predefined `__COUNTER__` macro, which guarantees a
+ * new number every time it is used.
+ * In the rare case that `__COUNTER__` is not supported, `__LINE__` is used as a
+ * fallback, which can lead to duplicate names.
+ *
+ * Inspiration: https://stackoverflow.com/a/71899854
  */
-#define APPEND_LINE_NUM(NAME) CONCAT_EXPANDED(NAME, __LINE__)
+#ifdef __COUNTER__
+#	define APPEND_UNIQUE_NUM(NAME) CONCAT_EXPANDED(NAME, __COUNTER__)
+#else
+#	define APPEND_UNIQUE_NUM(NAME) CONCAT_EXPANDED(NAME, __LINE__)
+#endif
 
 /**
- * Concatenate `PREFIX` and `SUFFIX` into `PREFIXSUFFIX`.
+ * @brief Concatenate `PREFIX` and `SUFFIX` into `PREFIXSUFFIX`
  *
- * https://stackoverflow.com/a/71899854/24880406
+ * Inspiration: https://stackoverflow.com/a/71899854
  */
 #define CONCAT(PREFIX, SUFFIX) PREFIX##SUFFIX
 
 /**
- * Expand `PREFIX` and `SUFFIX` before concatenating.
+ * @brief Expand `PREFIX` and `SUFFIX` before concatenating
  *
- * https://stackoverflow.com/a/71899854/24880406
+ * Inspiration: https://stackoverflow.com/a/71899854
  */
 #define CONCAT_EXPANDED(PREFIX, SUFFIX) CONCAT(PREFIX, SUFFIX)
