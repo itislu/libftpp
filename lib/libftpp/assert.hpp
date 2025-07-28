@@ -12,7 +12,7 @@
  * A comment in the same line as STATIC_ASSERT can be used as an error message.
  *
  * How it works:
- * 1. `ft::_assert::StaticAssert<(EXPR)>`: This template is intentionally left
+ * 1. `ft::static_assert::Impl<bool(EXPR)>`: This template is intentionally left
  * incomplete for the false case. When `EXPR` is true, it resolves to a complete
  * type; when `EXPR` is false, it resolves to an incomplete type.
  *
@@ -36,19 +36,10 @@
  *
  * Helpful article: https://www.drdobbs.com/compile-time-assertions/184401873
  */
-#define STATIC_ASSERT(EXPR)                           \
-	enum {                                            \
-		APPEND_LINE_NUM(static_assert_line_) =        \
-		    sizeof(ft::_assert::StaticAssert<(EXPR)>) \
+#define STATIC_ASSERT(EXPR)                              \
+	enum {                                               \
+		APPEND_LINE_NUM(static_assert_line_) =           \
+		    sizeof(ft::_static_assert::Impl<bool(EXPR)>) \
 	}
 
-namespace ft {
-namespace _assert {
-
-template <bool>
-struct StaticAssert;
-template <>
-struct StaticAssert<true> {};
-
-} // namespace _assert
-} // namespace ft
+#include "src/assert/static_assert.tpp" // IWYU pragma: export
