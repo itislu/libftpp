@@ -9,7 +9,9 @@ template <bool>
 struct Impl;
 
 template <>
-struct Impl<true> {};
+struct Impl<true> {
+	static const bool static_assertion_failed = false;
+};
 
 } // namespace _static_assert
 } // namespace ft
