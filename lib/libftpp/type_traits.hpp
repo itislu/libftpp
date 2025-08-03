@@ -375,24 +375,27 @@ struct is_nonconst_lvalue_reference;
 } // namespace ft
 
 /**
- * @brief A SFINAE-based macro that emulates C++20's `requires` clause
+ * @brief A macro that emulates C++20's `requires` clauses in C++98
  *
- * `REQUIRES` is used for overload resolution and enables a function template if
- * all type traits in a comma-separated list have a static member `value` that
- * evaluates to `true`, acting as a logical AND.
+ * `REQUIRES` is used for function template overload resolution. It enables a
+ * function template if and only if the provided compile-time `EXPRESSION`
+ * evaluates to `true` when explicitly converted to `bool`.
  * The function's return type must be placed in parentheses after the macro.
+ *
+ * The goal of this macro is to make function signatures that would otherwise
+ * use `enable_if` more readable.
  *
  * Usage examples:
  * ```
- * template <typename T, unsigned N>
- * REQUIRES((ft::is_integral<T>, ft::bool_constant<N < 10>))
+ * template <typename T>
+ * REQUIRES((ft::is_integral<T>::value && !ft::is_same<T, int>::value))
  * (T) function(T x);
  * ```
- * Note the double parentheses to pack all constraints into a single argument.
+ * Note the double parentheses around the expression to escape the comma.
  *
  * ```
- * template <typename T>
- * REQUIRES(ft::negation<ft::is_integral<T> >)
+ * template <typename T, unsigned N>
+ * REQUIRES(N < 10)
  * ((std::pair<T, T>)) function(T x);
  * ```
  * Note the double parentheses around the return type to escape the comma.
@@ -402,12 +405,12 @@ struct is_nonconst_lvalue_reference;
  * `clang-format`: To help `clang-format` format code using this macro better,
  * add `REQUIRES` to `StatementMacros` in the `clang-format` config.
  */
-#define REQUIRES(TYPE_TRAITS)                                               \
-	typename ft::enable_if < ft::_requires::Impl<void(TYPE_TRAITS)>::value, \
+#define REQUIRES(EXPRESSION)                      \
+	typename ft::enable_if < bool(EXPRESSION),    \
 	    RETURN_TYPE_MUST_BE_PLACED_IN_PARENTHESES
 /* T is put in a function type to remove multiple parentheses. */
-#define RETURN_TYPE_MUST_BE_PLACED_IN_PARENTHESES(T)              \
-	typename ft::_requires::GetReturnType<void(T)>::type > ::type
+#define RETURN_TYPE_MUST_BE_PLACED_IN_PARENTHESES(T)                   \
+	typename ft::_requires::unpack_return_type<void(T)>::type > ::type
 
 #include "src/type_traits/requires.tpp"    // IWYU pragma: export
 #include "src/type_traits/type_traits.tpp" // IWYU pragma: export
