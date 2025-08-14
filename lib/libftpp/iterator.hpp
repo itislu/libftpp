@@ -5,6 +5,22 @@
 
 namespace ft {
 
+/* Operations */
+
+/**
+ * https://en.cppreference.com/w/cpp/iterator/next
+ */
+template <typename InputIt>
+InputIt next(InputIt it,
+             typename std::iterator_traits<InputIt>::difference_type n = 1);
+
+/**
+ * https://en.cppreference.com/w/cpp/iterator/prev
+ */
+template <typename BidirIt>
+BidirIt prev(BidirIt it,
+             typename std::iterator_traits<BidirIt>::difference_type n = 1);
+
 /* Range access */
 
 /**
@@ -91,6 +107,8 @@ T* data(T (&array)[N]) throw();
 #include "src/iterator/data.tpp"   // IWYU pragma: export
 #include "src/iterator/empty.tpp"  // IWYU pragma: export
 #include "src/iterator/end.tpp"    // IWYU pragma: export
+#include "src/iterator/next.tpp"   // IWYU pragma: export
+#include "src/iterator/prev.tpp"   // IWYU pragma: export
 #include "src/iterator/rbegin.tpp" // IWYU pragma: export
 #include "src/iterator/rend.tpp"   // IWYU pragma: export
 #include "src/iterator/size.tpp"   // IWYU pragma: export
