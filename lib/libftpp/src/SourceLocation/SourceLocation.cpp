@@ -1,5 +1,4 @@
 #include "../../SourceLocation.hpp"
-#include "../../algorithm.hpp"
 #include <sstream>
 #include <stdint.h>
 #include <string>
@@ -28,17 +27,14 @@ SourceLocation::SourceLocation(const SourceLocation& other) throw()
 
 SourceLocation::~SourceLocation() {}
 
-SourceLocation& SourceLocation::operator=(SourceLocation other) throw()
+// POD types only, self-assignment is not an issue.
+// NOLINTNEXTLINE(bugprone-unhandled-self-assignment)
+SourceLocation& SourceLocation::operator=(const SourceLocation& other) throw()
 {
-	swap(other);
+	_line = other._line;
+	_file_name = other._file_name;
+	_function_name = other._function_name;
 	return *this;
-}
-
-void SourceLocation::swap(SourceLocation& other) throw()
-{
-	ft::swap(_line, other._line);
-	ft::swap(_file_name, other._file_name);
-	ft::swap(_function_name, other._function_name);
 }
 
 std::string SourceLocation::format() const

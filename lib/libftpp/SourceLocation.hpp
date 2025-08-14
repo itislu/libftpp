@@ -4,13 +4,13 @@
 #include <string>
 
 #if defined(__GNUC__) || defined(__clang__) // GCC, Clang, ICC
-#	define SOURCE_LOCATION_CURRENT() \
+#	define SOURCE_LOCATION_CURRENT()                                 \
 		(ft::SourceLocation(__LINE__, __FILE__, __PRETTY_FUNCTION__))
 #elif defined(_MSC_VER) // MSVC
-#	define SOURCE_LOCATION_CURRENT() \
+#	define SOURCE_LOCATION_CURRENT()                         \
 		(ft::SourceLocation(__LINE__, __FILE__, __FUNCSIG__))
 #else
-#	define SOURCE_LOCATION_CURRENT() \
+#	define SOURCE_LOCATION_CURRENT()                      \
 		(ft::SourceLocation(__LINE__, __FILE__, __func__))
 #endif
 
@@ -27,12 +27,10 @@ public:
 	               const char* function_name) throw();
 	SourceLocation(const SourceLocation& other) throw();
 	~SourceLocation();
-	SourceLocation& operator=(SourceLocation other) throw();
-
-	void swap(SourceLocation& other) throw();
+	SourceLocation& operator=(const SourceLocation& other) throw();
 
 	/**
-	 * Returns a string in the following format:
+	 * @return A string in the following format:
 	 * `<file_name>:<line>: <function_name>`
 	 */
 	std::string format() const;
