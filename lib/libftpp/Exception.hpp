@@ -1,6 +1,7 @@
 #pragma once
 
 #include "Optional.hpp"
+#include "SourceLocation.hpp"
 #include <exception>
 #include <string>
 
@@ -36,29 +37,32 @@ typedef StdException<std::exception> Exception;
 template <typename BaseException>
 class StdException : public BaseException {
 public:
-	explicit StdException(const std::string& error,
-	                      const ft::Optional<std::string>& who = ft::nullopt,
-	                      const ft::Optional<std::string>& where = ft::nullopt);
+	explicit StdException(const std::string& error);
+	StdException(const std::string& error, const ft::SourceLocation& where);
+	StdException(const std::string& error, const std::string& who);
+	StdException(const std::string& error,
+	             const ft::SourceLocation& where,
+	             const std::string& who);
 	StdException(const StdException& other) throw();
 	virtual ~StdException() throw();
 	StdException& operator=(StdException other) throw();
 
 	/**
-	 * Returns a formatted error message, combining `error()` with `who()` and
-	 * `where()` (if existing).
+	 * @return An error message in the following format:
+	 * `[where().format(): ][who(): ]<error()>`
 	 */
 	const char* what() const throw();
 	void swap(StdException& other) throw();
 
+	StdException& set_where(const ft::SourceLocation& where);
 	StdException& set_who(const std::string& who);
-	StdException& set_where(const std::string& where);
 	/**
-	 * Returns the unformatted error message, not including information from
-	 * `who()` and `where()`.
+	 * @return The unformatted error message, not including information from
+	 * `where()` and `who()`
 	 */
 	const std::string& error() const throw();
+	const ft::Optional<ft::SourceLocation>& where() const throw();
 	const ft::Optional<std::string>& who() const throw();
-	const ft::Optional<std::string>& where() const throw();
 
 private:
 	StdException();
@@ -67,8 +71,8 @@ private:
 
 	std::string _what_output;
 	std::string _error;
+	ft::Optional<ft::SourceLocation> _where;
 	ft::Optional<std::string> _who;
-	ft::Optional<std::string> _where;
 };
 
 template <typename BaseException>
