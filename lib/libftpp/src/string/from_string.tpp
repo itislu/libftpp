@@ -5,6 +5,7 @@
 #include "../../iterator.hpp"
 #include "../../string.hpp"
 #include "../../type_traits.hpp"
+#include <algorithm>
 #include <cctype>
 #include <cerrno>
 #include <cmath>
@@ -19,6 +20,10 @@
 namespace ft {
 
 namespace _from_string {
+template <typename To>
+static void
+check_negative_unsigned_integral(const std::string& str,
+                                 const std::string::size_type& endpos);
 template <typename To>
 static void check_unwanted_scientific_notation(const std::string& str,
                                                std::ios::fmtflags fmt,
@@ -58,13 +63,9 @@ To from_string(const std::string& str,
 	if (iss >> res) {
 		endpos = ft::min(static_cast<std::string::size_type>(iss.tellg()),
 		                 str.length());
-		// Check for negative value for unsigned integer types
-		if (ft::is_integral<To>::value && !ft::is_same<To, bool>::value
-		    && std::numeric_limits<To>::min() == 0) {
-			if (std::signbit(
-			        from_string<float>(str, fmt, std::nothrow).value_or(-1))) {
-				throw FromStringRangeException(str, typeid(To));
-			}
+		if (ft::is_integral<To>::value) {
+			// stringstream wraps negative values for unsigend integer types
+			_from_string::check_negative_unsigned_integral<To>(str, endpos);
 		}
 		else if (ft::is_floating_point<To>::value) {
 			_from_string::check_unwanted_scientific_notation<To>(
@@ -160,6 +161,30 @@ from_string(const std::string& str,
 }
 
 namespace _from_string {
+
+template <typename To>
+static void
+check_negative_unsigned_integral(const std::string& str,
+                                 const std::string::size_type& endpos)
+{
+	if (ft::is_integral<To>::value && !ft::is_same<To, bool>::value
+	    && std::numeric_limits<To>::min() == 0) {
+		const std::string::const_iterator end =
+		    str.begin() + static_cast<std::string::difference_type>(endpos);
+		const std::string::const_iterator minus =
+		    std::find(str.begin(), end, '-');
+		if (minus == end) {
+			return;
+		}
+
+		const char not_zero[] = "123456789abcdefABCDEF";
+		if (ft::find_first_of(
+		        minus, end, ft::begin(not_zero), ft::prev(ft::end(not_zero)))
+		    != end) {
+			throw FromStringRangeException(str, typeid(To));
+		}
+	}
+}
 
 template <typename To>
 static void check_unwanted_scientific_notation(const std::string& str,

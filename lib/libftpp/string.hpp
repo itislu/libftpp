@@ -37,9 +37,16 @@ class FromStringInvalidException;
 /**
  * @brief Parses a string and converts it to a value of the specified type `To`
  *
+ * The behavior is mostly the same as `std::istream`, except:
+ * - For unsigned integral types, negative values do not wrap around and are
+ *   considered out of range (`-0` is within range).
+ * - For floating point types, infinity and NaN can be parsed.
+ * - For floating point types, if `std::ios::fixed` is in `fmt` without
+ *   `std::ios::scientific`, scientific notation is considered invalid.
+ *
  * Default rules (when `fmt` is not provided):
  * - Leading whitespace is *not* skipped. Use `std::ios::skipws` in `fmt` to
- * enable skipping.
+ *   enable skipping.
  * - For integral types, the base is auto-detected from prefixes: `0` for octal,
  *   `0x` or `0X` for hexadecimal. If no prefix is present, base 10 is assumed.
  *   A standalone hex-prefix is considered invalid. The base can be explicitly
@@ -71,7 +78,8 @@ class FromStringInvalidException;
  * @tparam To The target type to convert the string to
  * @param str The input string to parse
  * @param endpos_out (optional) Out-parameter which, if not null, is set to the
- * number of characters processed from `str`, even if an error occurs
+ * number of valid characters in `str` before considering range errors, or 0 if
+ * the conversion is *invalid*
  */
 template <typename To>
 To from_string(const std::string& str,
