@@ -2,6 +2,7 @@
 
 #include "../../Expected.hpp"
 #include "../../algorithm.hpp"
+#include "../../iterator.hpp"
 #include "../../string.hpp"
 #include "../../type_traits.hpp"
 #include <cctype>
@@ -167,14 +168,16 @@ static void check_unwanted_scientific_notation(const std::string& str,
 {
 	if (ft::is_floating_point<To>::value
 	    && (fmt & std::ios::floatfield) == std::ios::fixed) {
-		const std::string unwanted("eEpP");
 		const std::string::const_iterator end =
 		    str.begin() + static_cast<std::string::difference_type>(endpos);
 
-		if (ft::find_first_of(
-		        str.begin(), end, unwanted.begin(), unwanted.end())
+		const char scientific_notation[] = "eEpP";
+		if (ft::find_first_of(str.begin(),
+		                      end,
+		                      ft::begin(scientific_notation),
+		                      ft::prev(ft::end(scientific_notation)))
 		    != end) {
-			endpos = 0;
+			endpos = 0; // For consistency with other invalid cases
 			throw FromStringInvalidException(str, typeid(To));
 		}
 	}
