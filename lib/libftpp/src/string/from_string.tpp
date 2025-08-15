@@ -76,6 +76,9 @@ To from_string(const std::string& str,
 
 	/* Error handling */
 
+	if (ft::is_same<To, bool>::value && fmt & std::ios::boolalpha) {
+		throw FromStringInvalidException(str, typeid(To));
+	}
 	if (!(fmt & std::ios::skipws) && std::isspace(*str.c_str())) {
 		throw FromStringInvalidException(str, typeid(To));
 	}
