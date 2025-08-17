@@ -20,14 +20,17 @@
 namespace ft {
 
 namespace _from_string {
-template <typename To>
-static void
-check_negative_unsigned_integral(const std::string& str,
-                                 const std::string::size_type& endpos);
-template <typename To>
-static void check_unwanted_scientific_notation(const std::string& str,
-                                               std::ios::fmtflags fmt,
-                                               std::string::size_type& endpos);
+template <typename To, typename = void>
+struct Impl {
+	static To handle_success(To& res,
+	                         const std::string& str,
+	                         std::ios::fmtflags fmt,
+	                         std::string::size_type& endpos_out);
+	static To handle_error(To& res,
+	                       const std::string& str,
+	                       std::ios::fmtflags fmt,
+	                       std::string::size_type& endpos_out);
+};
 } // namespace _from_string
 
 template <typename To>
@@ -63,75 +66,17 @@ To from_string(const std::string& str,
 	if (iss >> res) {
 		endpos = ft::min(static_cast<std::string::size_type>(iss.tellg()),
 		                 str.length());
-		if (ft::is_integral<To>::value) {
-			// stringstream wraps negative values for unsigend integer types
-			_from_string::check_negative_unsigned_integral<To>(str, endpos);
-		}
-		else if (ft::is_floating_point<To>::value) {
-			_from_string::check_unwanted_scientific_notation<To>(
-			    str, fmt, endpos);
-		}
-		return res;
+		return _from_string::Impl<To>::handle_success(res, str, fmt, endpos);
 	}
 
 	/* Error handling */
-
 	if (ft::is_same<To, bool>::value && fmt & std::ios::boolalpha) {
 		throw FromStringInvalidException(str, typeid(To));
 	}
 	if (!(fmt & std::ios::skipws) && std::isspace(*str.c_str())) {
 		throw FromStringInvalidException(str, typeid(To));
 	}
-
-	// Check if integer type out of range
-	if (ft::is_integral<To>::value) {
-		const char* const start = str.c_str();
-		char* end = NULL;
-
-		// strtol works even for unsigned long since valid numbers between
-		// LONG_MAX and ULONG_MAX would not get here
-		errno = 0;
-		const long test = std::strtol(start, &end, 0);
-		if (errno == ERANGE
-		    || test < static_cast<long>(std::numeric_limits<To>::min())
-		    || static_cast<unsigned long>(test) > static_cast<unsigned long>(
-		           std::numeric_limits<To>::max())) {
-			if (end != NULL) {
-				endpos = end - start;
-			}
-			throw FromStringRangeException(str, typeid(To));
-		}
-	}
-	// Check if floating point type out of range
-	else if (ft::is_floating_point<To>::value) {
-		const char* const start = str.c_str();
-		char* end = NULL;
-
-		errno = 0;
-		if (ft::is_same<To, float>::value) {
-			res = std::strtof(start, &end);
-		}
-		else if (ft::is_same<To, double>::value) {
-			res = std::strtod(start, &end);
-		}
-		else {
-			res = std::strtold(start, &end);
-		}
-		if (end != NULL) {
-			endpos = end - start;
-		}
-
-		_from_string::check_unwanted_scientific_notation<To>(str, fmt, endpos);
-		if (errno == ERANGE) {
-			throw FromStringRangeException(str, typeid(To));
-		}
-		// stringstream does not detect special floating point values
-		if (std::isinf(res) || std::isnan(res)) {
-			return res;
-		}
-	}
-	// Invalid string
-	throw FromStringInvalidException(str, typeid(To));
+	return _from_string::Impl<To>::handle_error(res, str, fmt, endpos);
 }
 
 template <typename To>
@@ -165,13 +110,69 @@ from_string(const std::string& str,
 
 namespace _from_string {
 
-template <typename To>
-static void
-check_negative_unsigned_integral(const std::string& str,
-                                 const std::string::size_type& endpos)
+template <typename To, typename Default /*= void*/>
+To Impl<To, Default>::handle_success(To& res,
+                                     const std::string& /*unused*/,
+                                     std::ios::fmtflags /*unused*/,
+                                     std::string::size_type& /*unused*/)
 {
-	if (ft::is_integral<To>::value && !ft::is_same<To, bool>::value
-	    && std::numeric_limits<To>::min() == 0) {
+	return res;
+}
+
+template <typename To, typename Default /*= void*/>
+To Impl<To, Default>::handle_error(To& /*unused*/,
+                                   const std::string& str,
+                                   std::ios::fmtflags /*unused*/,
+                                   std::string::size_type& /*unused*/)
+{
+	throw FromStringInvalidException(str, typeid(To));
+}
+
+/* integral types */
+template <typename To>
+struct Impl<To, typename ft::enable_if<ft::is_integral<To>::value>::type> {
+	static To handle_success(To& res,
+	                         const std::string& str,
+	                         std::ios::fmtflags /*unused*/,
+	                         std::string::size_type& endpos_out)
+	{
+		// stringstream wraps negative values for unsigend integer types
+		_check_negative_unsigned_integral(str, endpos_out);
+		return res;
+	}
+
+	static To handle_error(To& /*unused*/,
+	                       const std::string& str,
+	                       std::ios::fmtflags /*unused*/,
+	                       std::string::size_type& endpos_out)
+	{
+		const char* const start = str.c_str();
+		char* end = NULL;
+
+		// strtol works even for unsigned long since valid numbers between
+		// LONG_MAX and ULONG_MAX would not get here
+		errno = 0;
+		const long test = std::strtol(start, &end, 0);
+		if (errno == ERANGE
+		    || test < static_cast<long>(std::numeric_limits<To>::min())
+		    || static_cast<unsigned long>(test) > static_cast<unsigned long>(
+		           std::numeric_limits<To>::max())) {
+			if (end != NULL) {
+				endpos_out = end - start;
+			}
+			throw FromStringRangeException(str, typeid(To));
+		}
+		throw FromStringInvalidException(str, typeid(To));
+	}
+
+private:
+	static void _check_negative_unsigned_integral(const std::string& str,
+	                                              std::string::size_type endpos)
+	{
+		if (ft::is_signed<To>::value || ft::is_same<To, bool>::value) {
+			return;
+		}
+
 		const std::string::const_iterator end =
 		    str.begin() + static_cast<std::string::difference_type>(endpos);
 		const std::string::const_iterator minus =
@@ -179,37 +180,95 @@ check_negative_unsigned_integral(const std::string& str,
 		if (minus == end) {
 			return;
 		}
-
-		const char not_zero[] = "123456789abcdefABCDEF";
 		if (ft::find_first_of(
-		        minus, end, ft::begin(not_zero), ft::prev(ft::end(not_zero)))
+		        minus, end, ft::begin(_not_zero), ft::prev(ft::end(_not_zero)))
 		    != end) {
 			throw FromStringRangeException(str, typeid(To));
 		}
 	}
-}
+
+	static const char _not_zero[];
+};
 
 template <typename To>
-static void check_unwanted_scientific_notation(const std::string& str,
-                                               std::ios::fmtflags fmt,
-                                               std::string::size_type& endpos)
-{
-	if (ft::is_floating_point<To>::value
-	    && (fmt & std::ios::floatfield) == std::ios::fixed) {
-		const std::string::const_iterator end =
-		    str.begin() + static_cast<std::string::difference_type>(endpos);
+const char Impl<To, typename ft::enable_if<ft::is_integral<To>::value>::type>::
+    _not_zero[] = "123456789abcdefABCDEF";
 
-		const char scientific_notation[] = "eEpP";
+/* floating point types */
+template <typename To>
+struct Impl<To,
+            typename ft::enable_if<ft::is_floating_point<To>::value>::type> {
+	static To handle_success(To& res,
+	                         const std::string& str,
+	                         std::ios::fmtflags fmt,
+	                         std::string::size_type& endpos_out)
+	{
+		_check_unwanted_scientific_notation(str, fmt, endpos_out);
+		return res;
+	}
+
+	static To handle_error(To& res,
+	                       const std::string& str,
+	                       std::ios::fmtflags fmt,
+	                       std::string::size_type& endpos_out)
+	{
+		const char* const start = str.c_str();
+		char* end = NULL;
+
+		errno = 0;
+		if (ft::is_same<To, float>::value) {
+			res = std::strtof(start, &end);
+		}
+		else if (ft::is_same<To, double>::value) {
+			res = std::strtod(start, &end);
+		}
+		else {
+			res = std::strtold(start, &end);
+		}
+		if (end != NULL) {
+			endpos_out = end - start;
+		}
+
+		_check_unwanted_scientific_notation(str, fmt, endpos_out);
+		if (errno == ERANGE) {
+			throw FromStringRangeException(str, typeid(To));
+		}
+		// stringstream does not detect special floating point values
+		if (std::isinf(res) || std::isnan(res)) {
+			return res;
+		}
+		throw FromStringInvalidException(str, typeid(To));
+	}
+
+private:
+	static void
+	_check_unwanted_scientific_notation(const std::string& str,
+	                                    std::ios::fmtflags fmt,
+	                                    std::string::size_type& endpos_out)
+	{
+		if ((fmt & std::ios::floatfield) != std::ios::fixed) {
+			return;
+		}
+
+		const std::string::const_iterator end =
+		    str.begin() + static_cast<std::string::difference_type>(endpos_out);
 		if (ft::find_first_of(str.begin(),
 		                      end,
-		                      ft::begin(scientific_notation),
-		                      ft::prev(ft::end(scientific_notation)))
+		                      ft::begin(_scientific_notation),
+		                      ft::prev(ft::end(_scientific_notation)))
 		    != end) {
-			endpos = 0; // For consistency with other invalid cases
+			endpos_out = 0; // For consistency with other invalid cases
 			throw FromStringInvalidException(str, typeid(To));
 		}
 	}
-}
+
+	static const char _scientific_notation[];
+};
+
+template <typename To>
+const char
+    Impl<To, typename ft::enable_if<ft::is_floating_point<To>::value>::type>::
+        _scientific_notation[] = "eEpP";
 
 } // namespace _from_string
 
