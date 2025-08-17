@@ -151,9 +151,11 @@ struct Impl<To, typename ft::enable_if<ft::is_integral<To>::value>::type> {
 
 		// strtol works even for unsigned long since valid numbers between
 		// LONG_MAX and ULONG_MAX would not get here
+		int errno_local = errno;
 		errno = 0;
 		const long test = std::strtol(start, &end, 0);
-		if (errno == ERANGE
+		std::swap(errno, errno_local);
+		if (errno_local == ERANGE
 		    || test < static_cast<long>(std::numeric_limits<To>::min())
 		    || static_cast<unsigned long>(test) > static_cast<unsigned long>(
 		           std::numeric_limits<To>::max())) {
@@ -215,6 +217,7 @@ struct Impl<To,
 		const char* const start = str.c_str();
 		char* end = NULL;
 
+		int errno_local = errno;
 		errno = 0;
 		if (ft::is_same<To, float>::value) {
 			res = std::strtof(start, &end);
@@ -225,12 +228,13 @@ struct Impl<To,
 		else {
 			res = std::strtold(start, &end);
 		}
+		std::swap(errno, errno_local);
 		if (end != NULL) {
 			endpos_out = end - start;
 		}
 
 		_check_unwanted_scientific_notation(str, fmt, endpos_out);
-		if (errno == ERANGE) {
+		if (errno_local == ERANGE) {
 			throw FromStringRangeException(str, typeid(To));
 		}
 		// stringstream does not detect special floating point values
