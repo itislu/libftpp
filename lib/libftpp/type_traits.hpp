@@ -124,6 +124,18 @@ template <typename T>
 struct is_abstract;
 
 /**
+ * https://en.cppreference.com/w/cpp/types/is_signed
+ */
+template <typename T>
+struct is_signed;
+
+/**
+ * https://en.cppreference.com/w/cpp/types/is_unsigned
+ */
+template <typename T>
+struct is_unsigned;
+
+/**
  * https://en.cppreference.com/w/cpp/types/is_bounded_array
  */
 template <typename T>

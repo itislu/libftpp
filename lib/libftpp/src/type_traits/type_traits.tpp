@@ -249,6 +249,38 @@ struct Impl<T,
 
 #endif
 
+/* is_signed */
+namespace _is_signed {
+template <typename T>
+struct Impl;
+} // namespace _is_signed
+
+template <typename T>
+struct is_signed : conjunction<is_arithmetic<T>, _is_signed::Impl<T> > {};
+
+namespace _is_signed {
+
+template <typename T>
+struct Impl : bool_constant<T(-1) < T(0)> {};
+
+} // namespace _is_signed
+
+/* is_unsigned */
+namespace _is_unsigned {
+template <typename T>
+struct Impl;
+} // namespace _is_unsigned
+
+template <typename T>
+struct is_unsigned : conjunction<is_arithmetic<T>, _is_unsigned::Impl<T> > {};
+
+namespace _is_unsigned {
+
+template <typename T>
+struct Impl : bool_constant<T(0) < T(-1)> {};
+
+} // namespace _is_unsigned
+
 /* is_bounded_array */
 template <typename>
 struct is_bounded_array : false_type {};
