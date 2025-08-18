@@ -24,6 +24,211 @@ namespace ft {
 template <typename F>
 struct function_traits;
 
+/**
+ * @brief Function object implementing `x == y`
+ *
+ * https://en.cppreference.com/w/cpp/utility/functional/equal_to
+ */
+template <typename T = void>
+struct equal_to {
+	typedef bool result_type;
+	typedef T first_argument_type;
+	typedef T second_argument_type;
+
+	bool operator()(const T& lhs, const T& rhs) const;
+};
+
+/**
+ * @brief Function object implementing `x == y` deducing parameter types
+ *
+ * Adds C++14's `void` specialization which deduces the parameter types from the
+ * arguments.
+ *
+ * @note Unlike C++14's version, the return type is fixed and not deduced.
+ *
+ * https://en.cppreference.com/w/cpp/utility/functional/equal_to_void
+ */
+template <>
+struct equal_to<void> {
+	typedef void is_transparent;
+
+	template <typename T, typename U>
+	bool operator()(const T& lhs, const U& rhs) const;
+	template <class T, class U>
+	bool operator()(T* a, U* b) const;
+};
+
+/**
+ * @brief Function object implementing `x != y`
+ *
+ * https://en.cppreference.com/w/cpp/utility/functional/not_equal_to
+ */
+template <typename T = void>
+struct not_equal_to {
+	typedef bool result_type;
+	typedef T first_argument_type;
+	typedef T second_argument_type;
+
+	bool operator()(const T& lhs, const T& rhs) const;
+};
+
+/**
+ * @brief Function object implementing `x != y` deducing parameter types
+ *
+ * Adds C++14's `void` specialization which deduces the parameter types from the
+ * arguments.
+ *
+ * @note Unlike C++14's version, the return type is fixed and not deduced.
+ *
+ * https://en.cppreference.com/w/cpp/utility/functional/not_equal_to_void
+ */
+template <>
+struct not_equal_to<void> {
+	typedef void is_transparent;
+
+	template <typename T, typename U>
+	bool operator()(const T& lhs, const U& rhs) const;
+	template <class T, class U>
+	bool operator()(T* a, U* b) const;
+};
+
+/**
+ * @brief Function object implementing `x > y`
+ *
+ * https://en.cppreference.com/w/cpp/utility/functional/greater
+ */
+template <typename T = void>
+struct greater {
+	typedef bool result_type;
+	typedef T first_argument_type;
+	typedef T second_argument_type;
+
+	bool operator()(const T& lhs, const T& rhs) const;
+};
+
+/**
+ * @brief Function object implementing `x > y` deducing parameter types
+ *
+ * Adds C++14's `void` specialization which deduces the parameter types from the
+ * arguments.
+ *
+ * @note Unlike C++14's version, the return type is fixed and not deduced.
+ *
+ * https://en.cppreference.com/w/cpp/utility/functional/greater_void
+ */
+template <>
+struct greater<void> {
+	typedef void is_transparent;
+
+	template <typename T, typename U>
+	bool operator()(const T& lhs, const U& rhs) const;
+	template <class T, class U>
+	bool operator()(T* a, U* b) const;
+};
+
+/**
+ * @brief Function object implementing `x < y`
+ *
+ * https://en.cppreference.com/w/cpp/utility/functional/less
+ */
+template <typename T = void>
+struct less {
+	typedef bool result_type;
+	typedef T first_argument_type;
+	typedef T second_argument_type;
+
+	bool operator()(const T& lhs, const T& rhs) const;
+};
+
+/**
+ * @brief Function object implementing `x < y` deducing parameter types
+ *
+ * Adds C++14's `void` specialization which deduces the parameter types from the
+ * arguments.
+ *
+ * @note Unlike C++14's version, the return type is fixed and not deduced.
+ *
+ * https://en.cppreference.com/w/cpp/utility/functional/less_void
+ */
+template <>
+struct less<void> {
+	typedef void is_transparent;
+
+	template <typename T, typename U>
+	bool operator()(const T& lhs, const U& rhs) const;
+	template <class T, class U>
+	bool operator()(T* a, U* b) const;
+};
+
+/**
+ * @brief Function object implementing `x >= y`
+ *
+ * https://en.cppreference.com/w/cpp/utility/functional/greater_equal
+ */
+template <typename T = void>
+struct greater_equal {
+	typedef bool result_type;
+	typedef T first_argument_type;
+	typedef T second_argument_type;
+
+	bool operator()(const T& lhs, const T& rhs) const;
+};
+
+/**
+ * @brief Function object implementing `x >= y` deducing parameter types
+ *
+ * Adds C++14's `void` specialization which deduces the parameter types from the
+ * arguments.
+ *
+ * @note Unlike C++14's version, the return type is fixed and not deduced.
+ *
+ * https://en.cppreference.com/w/cpp/utility/functional/greater_equal_void
+ */
+template <>
+struct greater_equal<void> {
+	typedef void is_transparent;
+
+	template <typename T, typename U>
+	bool operator()(const T& lhs, const U& rhs) const;
+	template <class T, class U>
+	bool operator()(T* a, U* b) const;
+};
+
+/**
+ * @brief Function object implementing `x <= y`
+ *
+ * https://en.cppreference.com/w/cpp/utility/functional/less_equal
+ */
+template <typename T = void>
+struct less_equal {
+	typedef bool result_type;
+	typedef T first_argument_type;
+	typedef T second_argument_type;
+
+	bool operator()(const T& lhs, const T& rhs) const;
+};
+
+/**
+ * @brief Function object implementing `x <= y` deducing parameter types
+ *
+ * Adds C++14's `void` specialization which deduces the parameter types from the
+ * arguments.
+ *
+ * @note Unlike C++14's version, the return type is fixed and not deduced.
+ *
+ * https://en.cppreference.com/w/cpp/utility/functional/less_equal_void
+ */
+template <>
+struct less_equal<void> {
+	typedef void is_transparent;
+
+	template <typename T, typename U>
+	bool operator()(const T& lhs, const U& rhs) const;
+	template <class T, class U>
+	bool operator()(T* a, U* b) const;
+};
+
 } // namespace ft
 
+#include "src/functional/comparisons.tpp"     // IWYU pragma: export
 #include "src/functional/function_traits.tpp" // IWYU pragma: export
