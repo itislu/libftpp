@@ -1,6 +1,7 @@
 #pragma once
 
 #include <iterator>
+#include <utility>
 
 #ifndef MIN
 #	define MIN(a, b) ((b) < (a) ? (b) : (a))
@@ -81,13 +82,102 @@ bool lexicographical_compare(InputIt1 first1,
                              Compare comp);
 
 /**
+ * @brief Optimized version of `std::lower_bound` for non-random-access
+ * iterators
+ *
+ * If the size of the range to search is already known, passing it to this
+ * functions avoids one full iteration over the range, reducing the worst-case
+ * iterations to exactly N.
+ *
+ * https://en.cppreference.com/w/cpp/algorithm/lower_bound
+ */
+template <typename ForwardIt, typename T>
+ForwardIt
+lower_bound(ForwardIt first,
+            typename std::iterator_traits<ForwardIt>::difference_type count,
+            const T& value);
+template <typename ForwardIt, typename T, typename Compare>
+ForwardIt
+lower_bound(ForwardIt first,
+            typename std::iterator_traits<ForwardIt>::difference_type count,
+            const T& value,
+            Compare comp);
+
+/**
+ * @brief Optimized version of `std::upper_bound` for non-random-access
+ * iterators
+ *
+ * If the size of the range to search is already known, passing it to this
+ * functions avoids one full iteration over the range, reducing the worst-case
+ * iterations to exactly N.
+ *
+ * https://en.cppreference.com/w/cpp/algorithm/upper_bound
+ */
+template <typename ForwardIt, typename T>
+ForwardIt
+upper_bound(ForwardIt first,
+            typename std::iterator_traits<ForwardIt>::difference_type count,
+            const T& value);
+template <typename ForwardIt, typename T, typename Compare>
+ForwardIt
+upper_bound(ForwardIt first,
+            typename std::iterator_traits<ForwardIt>::difference_type count,
+            const T& value,
+            Compare comp);
+
+/**
+ * @brief Optimized version of `std::equal_range` for non-random-access
+ * iterators
+ *
+ * If the size of the range to search is already known, passing it to this
+ * functions avoids one full iteration over the range, reducing the worst-case
+ * iterations to exactly N.
+ *
+ * https://en.cppreference.com/w/cpp/algorithm/equal_range
+ */
+template <typename ForwardIt, typename T>
+std::pair<ForwardIt, ForwardIt>
+equal_range(ForwardIt first,
+            typename std::iterator_traits<ForwardIt>::difference_type count,
+            const T& value);
+template <typename ForwardIt, typename T, typename Compare>
+std::pair<ForwardIt, ForwardIt>
+equal_range(ForwardIt first,
+            typename std::iterator_traits<ForwardIt>::difference_type count,
+            const T& value,
+            Compare comp);
+
+/**
+ * @brief Optimized version of `std::binary_search` for non-random-access
+ * iterators
+ *
+ * If the size of the range to search is already known, passing it to this
+ * functions avoids one full iteration over the range, reducing the worst-case
+ * iterations to exactly N.
+ *
+ * https://en.cppreference.com/w/cpp/algorithm/binary_search
+ */
+template <typename ForwardIt, typename T>
+bool
+binary_search(ForwardIt first,
+              typename std::iterator_traits<ForwardIt>::difference_type count,
+              const T& value);
+template <typename ForwardIt, typename T, typename Compare>
+bool
+binary_search(ForwardIt first,
+              typename std::iterator_traits<ForwardIt>::difference_type count,
+              const T& value,
+              Compare comp);
+
+/**
  * https://en.cppreference.com/w/cpp/algorithm/max
  */
 template <typename T>
 const T& max(const T& a, const T& b);
 
 /**
- * Non-standard. Useful for assigning to the result.
+ * @brief Non-standard version of `std::max` which allows assigning to the
+ * result.
  */
 template <typename T>
 T& max(T& a, T& b);
@@ -99,14 +189,15 @@ template <typename T>
 const T& min(const T& a, const T& b);
 
 /**
- * Non-standard. Useful for assigning to the result.
+ * @brief Non-standard version of `std::min` which allows assigning to the
+ * result.
  */
 template <typename T>
 T& min(T& a, T& b);
 
 /**
- * Generic swap implementation which always uses the type's internal swap, if
- * possible, otherwise falls back to copy-and-swap.
+ * @brief Generic swap implementation which always uses the type's internal swap
+ * function, if possible, otherwise falls back to using a temporary variable.
  *
  * https://en.cppreference.com/w/cpp/algorithm/swap
  */
@@ -134,6 +225,7 @@ transform(InputIt first, InputIt last, OutputIt d_result, UnaryOp unary_op);
 
 } // namespace ft
 
+#include "src/algorithm/binary_search.tpp"           // IWYU pragma: export
 #include "src/algorithm/count.tpp"                   // IWYU pragma: export
 #include "src/algorithm/equal.tpp"                   // IWYU pragma: export
 #include "src/algorithm/fill.tpp"                    // IWYU pragma: export
