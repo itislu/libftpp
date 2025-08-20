@@ -208,6 +208,24 @@ template <typename T>
 T& min(T& a, T& b);
 
 /**
+ * https://en.cppreference.com/w/cpp/algorithm/shift
+ */
+template <typename ForwardIt>
+ForwardIt
+shift_left(ForwardIt first,
+           ForwardIt last,
+           typename std::iterator_traits<ForwardIt>::difference_type n);
+
+/**
+ * https://en.cppreference.com/w/cpp/algorithm/shift
+ */
+template <typename ForwardIt>
+ForwardIt
+shift_right(ForwardIt first,
+            ForwardIt last,
+            typename std::iterator_traits<ForwardIt>::difference_type n);
+
+/**
  * @brief Generic swap implementation which always uses the type's internal swap
  * function, if possible, otherwise falls back to using a temporary variable.
  *
@@ -246,5 +264,6 @@ transform(InputIt first, InputIt last, OutputIt d_result, UnaryOp unary_op);
 #include "src/algorithm/iota.tpp"                    // IWYU pragma: export
 #include "src/algorithm/lexicographical_compare.tpp" // IWYU pragma: export
 #include "src/algorithm/min_max.tpp"                 // IWYU pragma: export
+#include "src/algorithm/shift.tpp"                   // IWYU pragma: export
 #include "src/algorithm/swap.tpp"                    // IWYU pragma: export
 #include "src/algorithm/transform.tpp"               // IWYU pragma: export
