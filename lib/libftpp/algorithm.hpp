@@ -13,6 +13,18 @@
 namespace ft {
 
 /**
+ * https://en.cppreference.com/w/cpp/algorithm/copy
+ */
+template <typename InputIt, typename OutputIt, typename UnaryPred>
+OutputIt copy_if(InputIt first, InputIt last, OutputIt d_first, UnaryPred pred);
+
+/**
+ * https://en.cppreference.com/w/cpp/algorithm/copy_n
+ */
+template <typename InputIt, typename Size, typename OutputIt>
+OutputIt copy_n(InputIt first, Size count, OutputIt result);
+
+/**
  * https://en.cppreference.com/w/cpp/algorithm/count
  */
 template <typename InputIt, typename T>
@@ -226,6 +238,7 @@ transform(InputIt first, InputIt last, OutputIt d_result, UnaryOp unary_op);
 } // namespace ft
 
 #include "src/algorithm/binary_search.tpp"           // IWYU pragma: export
+#include "src/algorithm/copy.tpp"                    // IWYU pragma: export
 #include "src/algorithm/count.tpp"                   // IWYU pragma: export
 #include "src/algorithm/equal.tpp"                   // IWYU pragma: export
 #include "src/algorithm/fill.tpp"                    // IWYU pragma: export
