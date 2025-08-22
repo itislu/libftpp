@@ -3,10 +3,10 @@
 #include <stdint.h>
 #include <string>
 
-#if defined(__GNUC__) || defined(__clang__) // GCC, Clang, ICC
+#if defined(__GNUC__) || defined(__clang__)
 #	define SOURCE_LOCATION_CURRENT()                                 \
 		(ft::SourceLocation(__LINE__, __FILE__, __PRETTY_FUNCTION__))
-#elif defined(_MSC_VER) // MSVC
+#elif defined(_MSC_VER)
 #	define SOURCE_LOCATION_CURRENT()                         \
 		(ft::SourceLocation(__LINE__, __FILE__, __FUNCSIG__))
 #else

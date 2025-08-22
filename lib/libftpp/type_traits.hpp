@@ -1,5 +1,52 @@
 #pragma once
 
+#include "src/type_traits/has_member_function.ipp"
+
+/**
+ * @brief Generates type traits that check if a class has a specific public
+ * non-static member function.
+ *
+ * The generated type traits are named has_member_function_<name>.
+ * There can only be 1 trait with the same function name.
+ *
+ * Usage example: `HAS_MEMBER_FUNCTION(void, swap, (T&))`
+ */
+#define HAS_MEMBER_FUNCTION(RETURN_TYPE, NAME, ARGS_IN_PARENS)  \
+	HAS_MEMBER_FUNCTION_IMPL(RETURN_TYPE, NAME, ARGS_IN_PARENS)
+
+/**
+ * @brief A macro that emulates C++20's `requires` clauses in C++98
+ *
+ * `REQUIRES` is used for function template overload resolution. It enables a
+ * function template if and only if the provided compile-time `EXPRESSION`
+ * evaluates to `true` when explicitly converted to `bool`.
+ * The function's return type must be placed in parentheses after the macro.
+ *
+ * The goal of this macro is to make function signatures that would otherwise
+ * use `enable_if` more readable.
+ *
+ * Usage examples:
+ * ```
+ * template <typename T>
+ * REQUIRES((ft::is_integral<T>::value && !ft::is_same<T, int>::value))
+ * (T) function(T x);
+ * ```
+ * Note the double parentheses around the expression to escape the comma.
+ *
+ * ```
+ * template <typename T, unsigned N>
+ * REQUIRES(N < 10)
+ * ((std::pair<T, T>)) function(T x);
+ * ```
+ * Note the double parentheses around the return type to escape the comma.
+ *
+ * Inspiration: https://stackoverflow.com/a/9220563
+ *
+ * `clang-format`: To help `clang-format` format code using this macro better,
+ * add `REQUIRES` to `StatementMacros` in the `clang-format` config.
+ */
+#define REQUIRES(EXPRESSION) REQUIRES_IMPL(EXPRESSION)
+
 namespace ft {
 
 /**
@@ -337,38 +384,6 @@ struct negation;
 template <typename T>
 struct can_be_return_type;
 
-/**
- * @brief Generates type traits that check if a class has a specific public
- * non-static member function.
- *
- * The generated type traits are named has_member_function_<name>.
- * There can only be 1 trait with the same function name.
- *
- * Usage example: `HAS_MEMBER_FUNCTION(void, swap, (T&))`
- */
-// NOLINTBEGIN(bugprone-macro-parentheses)
-#define HAS_MEMBER_FUNCTION(RETURN_TYPE, NAME, ARGS_IN_PARENS)               \
-	namespace detail_has_member_function_##NAME                              \
-	{                                                                        \
-                                                                             \
-		/* 2nd param: member-function pointer non-type template parameter */ \
-		template <typename T, RETURN_TYPE(T::*) ARGS_IN_PARENS>              \
-		struct Sfinae {};                                                    \
-                                                                             \
-		template <typename T, typename = void>                               \
-		struct Impl : ft::false_type {};                                     \
-                                                                             \
-		template <typename T>                                                \
-		struct Impl<T, typename ft::voider<Sfinae<T, &T::NAME> >::type>      \
-		    : ft::true_type {};                                              \
-                                                                             \
-	} /* namespace detail_has_member_function_##NAME */                      \
-                                                                             \
-	template <typename T>                                                    \
-	struct has_member_function_##NAME                                        \
-	    : detail_has_member_function_##NAME::Impl<T> {};
-// NOLINTEND(bugprone-macro-parentheses)
-
 /* has_member_function_swap */
 HAS_MEMBER_FUNCTION(void, swap, (T&))
 
@@ -386,43 +401,5 @@ struct is_nonconst_lvalue_reference;
 
 } // namespace ft
 
-/**
- * @brief A macro that emulates C++20's `requires` clauses in C++98
- *
- * `REQUIRES` is used for function template overload resolution. It enables a
- * function template if and only if the provided compile-time `EXPRESSION`
- * evaluates to `true` when explicitly converted to `bool`.
- * The function's return type must be placed in parentheses after the macro.
- *
- * The goal of this macro is to make function signatures that would otherwise
- * use `enable_if` more readable.
- *
- * Usage examples:
- * ```
- * template <typename T>
- * REQUIRES((ft::is_integral<T>::value && !ft::is_same<T, int>::value))
- * (T) function(T x);
- * ```
- * Note the double parentheses around the expression to escape the comma.
- *
- * ```
- * template <typename T, unsigned N>
- * REQUIRES(N < 10)
- * ((std::pair<T, T>)) function(T x);
- * ```
- * Note the double parentheses around the return type to escape the comma.
- *
- * Inspiration: https://stackoverflow.com/a/9220563
- *
- * `clang-format`: To help `clang-format` format code using this macro better,
- * add `REQUIRES` to `StatementMacros` in the `clang-format` config.
- */
-#define REQUIRES(EXPRESSION)                      \
-	typename ft::enable_if < bool(EXPRESSION),    \
-	    RETURN_TYPE_MUST_BE_PLACED_IN_PARENTHESES
-/* T is put in a function type to remove multiple parentheses. */
-#define RETURN_TYPE_MUST_BE_PLACED_IN_PARENTHESES(T)                   \
-	typename ft::_requires::unpack_return_type<void(T)>::type > ::type
-
-#include "src/type_traits/requires.tpp"    // IWYU pragma: export
+#include "src/type_traits/requires.ipp"    // IWYU pragma: keep
 #include "src/type_traits/type_traits.tpp" // IWYU pragma: export

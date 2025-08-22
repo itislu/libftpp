@@ -2,6 +2,7 @@
 !*/
 !*.cpp
 !*.hpp
+!*.ipp
 !*.tpp
 !*.md
 !*.mk
