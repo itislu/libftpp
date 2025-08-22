@@ -5,8 +5,9 @@
 namespace ft {
 
 /**
- * Class to provide boolean tests for derived class but restricting it from
- * taking participation in unwanted expressions (safe bool problem).
+ * @brief Class to provide boolean tests for the deriving class but restricting
+ * it from taking participation in unwanted expressions (safe bool problem)
+ *
  * Implements the Safe Bool idiom using CRTP (Curiously Recurring Template
  * Pattern).
  * https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Safe_bool
@@ -31,8 +32,9 @@ private:
 };
 
 /**
- * Class to provide boolean tests for derived class but restricting it from
- * taking participation in unwanted expressions (safe bool problem).
+ * @brief Class to provide boolean tests for the deriving class but restricting
+ * it from taking participation in unwanted expressions (safe bool problem)
+ *
  * Implements the Safe Bool idiom using virtual dispatch.
  * https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Safe_bool
  *

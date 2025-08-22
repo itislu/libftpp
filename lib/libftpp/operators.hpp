@@ -5,7 +5,7 @@ namespace operators {
 
 /**
  * @brief Struct to inherit from to generate all remaining comparison operators
- * for the inheriting class.
+ * for the inheriting class
  *
  * The `operator<` has to be defined for the inheriting class.
  * To generate operators which compare with a different type, the `operater<`
