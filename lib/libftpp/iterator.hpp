@@ -6,6 +6,86 @@
 
 namespace ft {
 
+/* Iterator traits */
+
+/**
+ * @brief Checks wether `T` is an iterator
+ *
+ * Provides the member constant `value` which is equal to `true`, if
+ * `std::iterator_traits<T>::iterator_category` exists and is one of the
+ * following:
+ * - `std::input_iterator_tag`
+ * - `std::output_iterator_tag`
+ * - `std::forward_iterator_tag`
+ * - `std::bidirectional_iterator_tag`
+ * - `std::random_access_iterator_tag`
+ * Otherwise, `value` is equal to `false`.
+ *
+ * Non-standard.
+ */
+template <typename T>
+struct is_iterator;
+
+/**
+ * @brief Checks wether `T` is an input iterator
+ *
+ * Provides the member constant `value` which is equal to `true`, if
+ * `std::iterator_traits<T>::iterator_category` is convertible to
+ * `std::input_iterator_tag`. Otherwise, `value` is equal to `false`.
+ *
+ * Non-standard.
+ */
+template <typename T>
+struct is_input_iterator;
+
+/**
+ * @brief Checks wether `T` is an output iterator
+ *
+ * Provides the member constant `value` which is equal to `true`, if
+ * `std::iterator_traits<T>::iterator_category` is convertible to
+ * `std::output_iterator_tag`. Otherwise, `value` is equal to `false`.
+ *
+ * Non-standard.
+ */
+template <typename T>
+struct is_output_iterator;
+
+/**
+ * @brief Checks wether `T` is a forward iterator
+ *
+ * Provides the member constant `value` which is equal to `true`, if
+ * `std::iterator_traits<T>::iterator_category` is convertible to
+ * `std::forward_iterator_tag`. Otherwise, `value` is equal to `false`.
+ *
+ * Non-standard.
+ */
+template <typename T>
+struct is_forward_iterator;
+
+/**
+ * @brief Checks wether `T` is a bidirectional iterator
+ *
+ * Provides the member constant `value` which is equal to `true`, if
+ * `std::iterator_traits<T>::iterator_category` is convertible to
+ * `std::bidirectional_iterator_tag`. Otherwise, `value` is equal to `false`.
+ *
+ * Non-standard.
+ */
+template <typename T>
+struct is_bidirectional_iterator;
+
+/**
+ * @brief Checks wether `T` is a random access iterator
+ *
+ * Provides the member constant `value` which is equal to `true`, if
+ * `std::iterator_traits<T>::iterator_category` is convertible to
+ * `std::random_access_iterator_tag`. Otherwise, `value` is equal to `false`.
+ *
+ * Non-standard.
+ */
+template <typename T>
+struct is_random_access_iterator;
+
 /* Iterator operations */
 
 /**
@@ -168,13 +248,14 @@ T* data(T (&array)[N]) throw();
 
 } // namespace ft
 
-#include "src/iterator/advance.tpp" // IWYU pragma: export
-#include "src/iterator/begin.tpp"   // IWYU pragma: export
-#include "src/iterator/data.tpp"    // IWYU pragma: export
-#include "src/iterator/empty.tpp"   // IWYU pragma: export
-#include "src/iterator/end.tpp"     // IWYU pragma: export
-#include "src/iterator/next.tpp"    // IWYU pragma: export
-#include "src/iterator/prev.tpp"    // IWYU pragma: export
-#include "src/iterator/rbegin.tpp"  // IWYU pragma: export
-#include "src/iterator/rend.tpp"    // IWYU pragma: export
-#include "src/iterator/size.tpp"    // IWYU pragma: export
+#include "src/iterator/advance.tpp"         // IWYU pragma: export
+#include "src/iterator/begin.tpp"           // IWYU pragma: export
+#include "src/iterator/data.tpp"            // IWYU pragma: export
+#include "src/iterator/empty.tpp"           // IWYU pragma: export
+#include "src/iterator/end.tpp"             // IWYU pragma: export
+#include "src/iterator/iterator_traits.tpp" // IWYU pragma: export
+#include "src/iterator/next.tpp"            // IWYU pragma: export
+#include "src/iterator/prev.tpp"            // IWYU pragma: export
+#include "src/iterator/rbegin.tpp"          // IWYU pragma: export
+#include "src/iterator/rend.tpp"            // IWYU pragma: export
+#include "src/iterator/size.tpp"            // IWYU pragma: export
