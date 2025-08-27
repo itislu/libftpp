@@ -73,12 +73,6 @@ InputIt find_first_of(InputIt first,
                       BinaryPred p);
 
 /**
- * https://en.cppreference.com/w/cpp/algorithm/iota
- */
-template <typename ForwardIt, typename T>
-void iota(ForwardIt first, ForwardIt last, T value);
-
-/**
  * https://en.cppreference.com/w/cpp/algorithm/is_sorted
  */
 template <typename ForwardIt>
@@ -277,7 +271,6 @@ transform(InputIt first, InputIt last, OutputIt d_result, UnaryOp unary_op);
 #include "src/algorithm/equal.tpp"                   // IWYU pragma: export
 #include "src/algorithm/fill.tpp"                    // IWYU pragma: export
 #include "src/algorithm/find_first_of.tpp"           // IWYU pragma: export
-#include "src/algorithm/iota.tpp"                    // IWYU pragma: export
 #include "src/algorithm/is_sorted.tpp"               // IWYU pragma: export
 #include "src/algorithm/lexicographical_compare.tpp" // IWYU pragma: export
 #include "src/algorithm/min_max.tpp"                 // IWYU pragma: export

@@ -226,7 +226,16 @@ public:
 	explicit ArithmeticDivisionByZeroException(const std::string& who);
 };
 
+/* Numeric algorithms */
+
+/**
+ * https://en.cppreference.com/w/cpp/algorithm/iota
+ */
+template <typename ForwardIt, typename T>
+void iota(ForwardIt first, ForwardIt last, T value);
+
 } // namespace ft
 
 #include "src/numeric/arithmetic.tpp"   // IWYU pragma: export
+#include "src/numeric/iota.tpp"         // IWYU pragma: export
 #include "src/numeric/numeric_cast.tpp" // IWYU pragma: export
