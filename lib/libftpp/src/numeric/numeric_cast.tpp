@@ -46,7 +46,7 @@ ft::Expected<To, ft::NumericCastException>
 numeric_cast(From from, std::nothrow_t /*unused*/)
 {
 	try {
-		return numeric_cast<To>(from);
+		return ft::numeric_cast<To>(from);
 	}
 	catch (const NumericCastException& e) {
 		return ft::Unexpected<NumericCastException>(e);

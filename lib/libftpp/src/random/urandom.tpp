@@ -23,7 +23,7 @@ template <typename T>
 T urandom()
 {
 	T t;
-	urandom(&t, sizeof(t));
+	ft::urandom(&t, sizeof(t));
 	return t;
 }
 

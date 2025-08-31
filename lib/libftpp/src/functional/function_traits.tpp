@@ -18,7 +18,7 @@ struct argument_type;
 template <typename F>
 struct function_traits {
 	STATIC_ASSERT( // Only functions with up to 10 parameters supported
-	    !is_function<F>::value);
+	    !ft::is_function<F>::value);
 };
 
 template <typename R>
@@ -55,7 +55,7 @@ struct argument_type : function_traits<ReducedFunc>::template argument_type<N> {
 
 template <typename ReducedFunc, unsigned Arity, typename LastArg, unsigned N>
 struct argument_type<ReducedFunc, Arity, LastArg, N, true>
-    : type_identity<LastArg> {};
+    : ft::type_identity<LastArg> {};
 
 /* N >= original arity */
 template <typename ReducedFunc, typename LastArg, unsigned N>

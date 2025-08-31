@@ -37,7 +37,7 @@ template <typename To>
 To from_string(const std::string& str,
                std::string::size_type* endpos_out /*= NULL*/)
 {
-	return from_string<To>(str, std::ios::fmtflags(), endpos_out);
+	return ft::from_string<To>(str, std::ios::fmtflags(), endpos_out);
 }
 
 template <>
@@ -45,10 +45,10 @@ inline bool from_string<bool>(const std::string& str,
                               std::string::size_type* endpos_out /*= NULL*/)
 {
 	try {
-		return from_string<bool>(str, std::ios::boolalpha, endpos_out);
+		return ft::from_string<bool>(str, std::ios::boolalpha, endpos_out);
 	}
 	catch (const FromStringException&) {
-		return from_string<bool>(str, std::ios::fmtflags(), endpos_out);
+		return ft::from_string<bool>(str, std::ios::fmtflags(), endpos_out);
 	}
 }
 
@@ -86,7 +86,7 @@ from_string(const std::string& str,
             std::string::size_type* endpos_out /*= NULL*/)
 {
 	try {
-		return from_string<To>(str, endpos_out);
+		return ft::from_string<To>(str, endpos_out);
 	}
 	catch (const FromStringException& e) {
 		return ft::Unexpected<FromStringException>(e);
@@ -101,7 +101,7 @@ from_string(const std::string& str,
             std::string::size_type* endpos_out /*= NULL*/)
 {
 	try {
-		return from_string<To>(str, fmt, endpos_out);
+		return ft::from_string<To>(str, fmt, endpos_out);
 	}
 	catch (const FromStringException& e) {
 		return ft::Unexpected<FromStringException>(e);

@@ -8,19 +8,19 @@ namespace ft {
 template <typename ForwardIt>
 bool is_sorted(ForwardIt first, ForwardIt last)
 {
-	return is_sorted_until(first, last) == last;
+	return ft::is_sorted_until(first, last) == last;
 }
 
 template <typename ForwardIt, typename Compare>
 bool is_sorted(ForwardIt first, ForwardIt last, Compare comp)
 {
-	return is_sorted_until(first, last, comp) == last;
+	return ft::is_sorted_until(first, last, comp) == last;
 }
 
 template <typename ForwardIt>
 ForwardIt is_sorted_until(ForwardIt first, ForwardIt last)
 {
-	return is_sorted_until(first, last, ft::less<>());
+	return ft::is_sorted_until(first, last, ft::less<>());
 }
 
 template <typename ForwardIt, typename Compare>

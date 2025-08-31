@@ -4,15 +4,15 @@
 namespace ft {
 namespace log {
 
-std::string ok() { return ok(""); }
+std::string ok() { return ft::log::ok(""); }
 
-std::string info() { return info(""); }
+std::string info() { return ft::log::info(""); }
 
-std::string warn() { return warn(""); }
+std::string warn() { return ft::log::warn(""); }
 
-std::string error() { return error(""); }
+std::string error() { return ft::log::error(""); }
 
-std::string line() { return line(""); }
+std::string line() { return ft::log::line(""); }
 
 } // namespace log
 } // namespace ft

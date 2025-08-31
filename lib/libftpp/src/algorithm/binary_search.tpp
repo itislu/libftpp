@@ -16,7 +16,7 @@ lower_bound(ForwardIt first,
             typename std::iterator_traits<ForwardIt>::difference_type count,
             const T& value)
 {
-	return lower_bound(first, count, value, ft::less<>());
+	return ft::lower_bound(first, count, value, ft::less<>());
 }
 
 template <typename ForwardIt, typename T, typename Compare>
@@ -52,7 +52,7 @@ upper_bound(ForwardIt first,
             typename std::iterator_traits<ForwardIt>::difference_type count,
             const T& value)
 {
-	return upper_bound(first, count, value, ft::less<>());
+	return ft::upper_bound(first, count, value, ft::less<>());
 }
 
 template <typename ForwardIt, typename T, typename Compare>
@@ -88,7 +88,7 @@ equal_range(ForwardIt first,
             typename std::iterator_traits<ForwardIt>::difference_type count,
             const T& value)
 {
-	return equal_range(first, count, value, ft::less<>());
+	return ft::equal_range(first, count, value, ft::less<>());
 }
 
 template <typename ForwardIt, typename T, typename Compare>
@@ -114,8 +114,8 @@ equal_range(ForwardIt first,
 		}
 		else {
 			return std::make_pair(
-			    lower_bound(first, half, value, comp),
-			    upper_bound(++mid, count - (half + 1), value, comp));
+			    ft::lower_bound(first, half, value, comp),
+			    ft::upper_bound(++mid, count - (half + 1), value, comp));
 		}
 	}
 	return std::make_pair(first, first);
@@ -129,7 +129,7 @@ binary_search(ForwardIt first,
               typename std::iterator_traits<ForwardIt>::difference_type count,
               const T& value)
 {
-	return binary_search(first, count, value, ft::less<>());
+	return ft::binary_search(first, count, value, ft::less<>());
 }
 
 template <typename ForwardIt, typename T, typename Compare>
