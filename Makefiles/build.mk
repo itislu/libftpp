@@ -103,7 +103,7 @@ re				:
 
 #	Include if building or if no target specified
 ifneq (, $(or $(filter $(BUILD_TARGETS) $(NAME),$(MAKECMDGOALS)),$(if $(MAKECMDGOALS),,all)))
-    -include		$(DEP)
+-include			$(DEP)
 endif
 
 
@@ -230,10 +230,10 @@ clean			:
 					done
 					rm -f $(OBJ) $(DEP)
                     ifneq (, $(wildcard $(OBJ_DIR)))
-						-find $(OBJ_DIR) -type d -empty -delete 2>/dev/null
+					-find $(OBJ_DIR) -type d -empty -delete 2>/dev/null
                     endif
                     ifneq (, $(wildcard $(DEP_DIR)))
-						-find $(DEP_DIR) -type d -empty -delete 2>/dev/null
+					-find $(DEP_DIR) -type d -empty -delete 2>/dev/null
                     endif
 					$(call PRINTLN,"$(MSG_SUCCESS)")
 
