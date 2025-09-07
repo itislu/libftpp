@@ -30,6 +30,8 @@ ENV_VARIABLES	:=	MODE ARGS TERMINAL
 HELP_TARGETS	:=	help help-help help-print print-help \
 					$(addprefix help-,$(PHONY_TARGETS) $(ENV_VARIABLES)) \
 					$(addsuffix -help,$(PHONY_TARGETS) $(ENV_VARIABLES))
+PRINT_TARGETS	:=	$(filter print-%,$(MAKECMDGOALS))
+NO_DEP_TARGETS	:=	$(REBUILD_TARGETS) $(DOC_TARGETS) $(CLEAN_TARGETS) $(HELP_TARGETS) $(PRINT_TARGETS)
 HIDDEN_TARGETS	:=	.bear-image .build .clang-uml .clang-uml-image .doxygen-image .plantuml .plantuml-image
 
 
@@ -101,8 +103,8 @@ re				:
 
 #	Dependency files inclusion
 
-#	Include if building or if no target specified
-ifneq (, $(or $(filter $(BUILD_TARGETS) $(NAME),$(MAKECMDGOALS)),$(if $(MAKECMDGOALS),,all)))
+#	Include if target is not known to not need dependency files
+ifneq (, $(if $(MAKECMDGOALS),$(filter-out $(NO_DEP_TARGETS),$(MAKECMDGOALS) $(MODE)),all))
 -include			$(DEP)
 endif
 
