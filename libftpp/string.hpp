@@ -15,18 +15,30 @@ namespace ft {
 /**
  * https://en.cppreference.com/w/cpp/string/basic_string/starts_with
  */
-bool starts_with(const std::string& str, const std::string& prefix);
-bool starts_with(const std::string& str, char prefix);
-bool starts_with(const std::string& str, unsigned char prefix);
+template <typename CharT, typename Traits, typename Allocator>
+bool starts_with(const std::basic_string<CharT, Traits, Allocator>& str,
+                 const std::basic_string<CharT, Traits, Allocator>& prefix);
+template <typename CharT, typename Traits, typename Allocator>
+bool starts_with(const std::basic_string<CharT, Traits, Allocator>& str,
+                 CharT ch);
+template <typename CharT, typename Traits, typename Allocator>
+bool starts_with(const std::basic_string<CharT, Traits, Allocator>& str,
+                 const CharT* prefix);
 
 /* ends_with */
 
 /**
  * https://en.cppreference.com/w/cpp/string/basic_string/ends_with
  */
-bool ends_with(const std::string& str, const std::string& suffix);
-bool ends_with(const std::string& str, char suffix);
-bool ends_with(const std::string& str, unsigned char suffix);
+template <typename CharT, typename Traits, typename Allocator>
+bool ends_with(const std::basic_string<CharT, Traits, Allocator>& str,
+               const std::basic_string<CharT, Traits, Allocator>& suffix);
+template <typename CharT, typename Traits, typename Allocator>
+bool ends_with(const std::basic_string<CharT, Traits, Allocator>& str,
+               CharT ch);
+template <typename CharT, typename Traits, typename Allocator>
+bool ends_with(const std::basic_string<CharT, Traits, Allocator>& str,
+               const CharT* suffix);
 
 /* from_string */
 
@@ -189,5 +201,7 @@ std::string trim(const std::string& str);
 } // namespace ft
 
 #include "libftpp/string/FromString.tpp"  // IWYU pragma: export
+#include "libftpp/string/ends_with.tpp"   // IWYU pragma: export
 #include "libftpp/string/from_string.tpp" // IWYU pragma: export
+#include "libftpp/string/starts_with.tpp" // IWYU pragma: export
 #include "libftpp/string/to_string.tpp"   // IWYU pragma: export
