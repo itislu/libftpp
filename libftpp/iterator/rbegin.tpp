@@ -9,13 +9,13 @@ namespace ft {
 template <typename C>
 typename C::reverse_iterator rbegin(C& c)
 {
-	c.rbegin();
+	return c.rbegin();
 }
 
 template <typename C>
 typename C::const_reverse_iterator rbegin(const C& c)
 {
-	c.rbegin();
+	return c.rbegin();
 }
 
 template <typename T, std::size_t N>
@@ -28,6 +28,12 @@ template <typename C>
 typename C::const_reverse_iterator crbegin(const C& c)
 {
 	return ft::rbegin(c);
+}
+
+template <typename T, std::size_t N>
+std::reverse_iterator<const T*> crbegin(const T (&array)[N])
+{
+	return ft::rbegin(array);
 }
 
 } // namespace ft

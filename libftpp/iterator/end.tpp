@@ -8,13 +8,13 @@ namespace ft {
 template <typename C>
 typename C::iterator end(C& c)
 {
-	c.end();
+	return c.end();
 }
 
 template <typename C>
 typename C::const_iterator end(const C& c)
 {
-	c.end();
+	return c.end();
 }
 
 template <typename T, std::size_t N>
@@ -27,6 +27,12 @@ template <typename C>
 typename C::const_iterator cend(const C& c)
 {
 	return ft::end(c);
+}
+
+template <typename T, std::size_t N>
+const T* cend(const T (&array)[N])
+{
+	return ft::end(array);
 }
 
 } // namespace ft

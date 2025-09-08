@@ -9,13 +9,13 @@ namespace ft {
 template <typename C>
 typename C::reverse_iterator rend(C& c)
 {
-	c.rend();
+	return c.rend();
 }
 
 template <typename C>
 typename C::const_reverse_iterator rend(const C& c)
 {
-	c.rend();
+	return c.rend();
 }
 
 template <typename T, std::size_t N>
@@ -28,6 +28,12 @@ template <typename C>
 typename C::const_reverse_iterator crend(const C& c)
 {
 	return ft::rend(c);
+}
+
+template <typename T, std::size_t N>
+std::reverse_iterator<const T*> crend(const T (&array)[N])
+{
+	return ft::rend(array);
 }
 
 } // namespace ft

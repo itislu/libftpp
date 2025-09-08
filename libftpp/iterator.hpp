@@ -179,6 +179,8 @@ template <typename T, std::size_t N>
 T* begin(T (&array)[N]);
 template <typename C>
 typename C::const_iterator cbegin(const C& c);
+template <typename T, std::size_t N>
+const T* cbegin(const T (&array)[N]);
 
 /**
  * https://en.cppreference.com/w/cpp/iterator/end
@@ -191,6 +193,8 @@ template <typename T, std::size_t N>
 T* end(T (&array)[N]);
 template <typename C>
 typename C::const_iterator cend(const C& c);
+template <typename T, std::size_t N>
+const T* cend(const T (&array)[N]);
 
 /**
  * https://en.cppreference.com/w/cpp/iterator/rbegin
@@ -203,6 +207,8 @@ template <typename T, std::size_t N>
 std::reverse_iterator<T*> rbegin(T (&array)[N]);
 template <typename C>
 typename C::const_reverse_iterator crbegin(const C& c);
+template <typename T, std::size_t N>
+std::reverse_iterator<const T*> crbegin(const T (&array)[N]);
 
 /**
  * https://en.cppreference.com/w/cpp/iterator/rend
@@ -215,6 +221,8 @@ template <typename T, std::size_t N>
 std::reverse_iterator<T*> rend(T (&array)[N]);
 template <typename C>
 typename C::const_reverse_iterator crend(const C& c);
+template <typename T, std::size_t N>
+std::reverse_iterator<const T*> crend(const T (&array)[N]);
 
 /**
  * https://en.cppreference.com/w/cpp/iterator/size

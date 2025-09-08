@@ -8,13 +8,13 @@ namespace ft {
 template <typename C>
 typename C::iterator begin(C& c)
 {
-	c.begin();
+	return c.begin();
 }
 
 template <typename C>
 typename C::const_iterator begin(const C& c)
 {
-	c.begin();
+	return c.begin();
 }
 
 template <typename T, std::size_t N>
@@ -27,6 +27,12 @@ template <typename C>
 typename C::const_iterator cbegin(const C& c)
 {
 	return ft::begin(c);
+}
+
+template <typename T, std::size_t N>
+const T* cbegin(const T (&array)[N])
+{
+	return ft::begin(array);
 }
 
 } // namespace ft
