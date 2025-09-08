@@ -145,23 +145,20 @@ binary_search(ForwardIt first,
               Compare comp);
 
 /**
- * https://en.cppreference.com/w/cpp/algorithm/max
- */
-template <typename T>
-const T& max(const T& a, const T& b);
-
-/**
  * @brief Non-standard version of `std::max` which allows assigning to the
  * result.
  */
 template <typename T>
 T& max(T& a, T& b);
-
+template <typename T, typename Compare>
+T& max(T& a, T& b, Compare comp);
 /**
- * https://en.cppreference.com/w/cpp/algorithm/min
+ * https://en.cppreference.com/w/cpp/algorithm/max
  */
 template <typename T>
-const T& min(const T& a, const T& b);
+const T& max(const T& a, const T& b);
+template <typename T, typename Compare>
+const T& max(const T& a, const T& b, Compare comp);
 
 /**
  * @brief Non-standard version of `std::min` which allows assigning to the
@@ -169,6 +166,15 @@ const T& min(const T& a, const T& b);
  */
 template <typename T>
 T& min(T& a, T& b);
+template <typename T, typename Compare>
+T& min(T& a, T& b, Compare comp);
+/**
+ * https://en.cppreference.com/w/cpp/algorithm/min
+ */
+template <typename T>
+const T& min(const T& a, const T& b);
+template <typename T, typename Compare>
+const T& min(const T& a, const T& b, Compare comp);
 
 /**
  * https://en.cppreference.com/w/cpp/algorithm/shift
