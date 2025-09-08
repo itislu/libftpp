@@ -9,7 +9,6 @@ CompileFlags:
       -Wdocumentation,
       -std=c++98,
       --language=c++,
-      -Ilib,
       -ftemplate-depth=100,
     ]
   Compiler: c++

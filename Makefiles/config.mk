@@ -24,10 +24,10 @@ BUILDFILES		=	$(filter-out %.d,$(MAKEFILE_LIST))
 
 #	Directories
 
-SRC_DIR			:=	src
+SRC_DIR			:=	libftpp
 LIB_ROOT_DIR	:=	$(REPO_ROOT)/lib
 LIB_DIRS		:=	$(dir $(LIBS_LOCAL))
-INC_DIRS		:=	inc $(SRC_DIR) $(LIB_ROOT_DIR)
+INC_DIRS		:=	. include $(LIB_ROOT_DIR)
 BUILD_DIR		:=	build
 OBJ_DIR			:=	$(BUILD_DIR)/_obj
 DEP_DIR			:=	$(BUILD_DIR)/_dep
