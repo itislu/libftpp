@@ -25,6 +25,12 @@ template <typename InputIt, typename Size, typename OutputIt>
 OutputIt copy_n(InputIt first, Size count, OutputIt result);
 
 /**
+ * @brief Determines if two sets of elements are the same
+ *
+ * Adds C++14's overload set for `std::equal` which supports passing an end for
+ * the second range as argument, instead of using
+ * `std::distance(first1, last1)`.
+ *
  * https://en.cppreference.com/w/cpp/algorithm/equal
  */
 template <typename InputIt1, typename InputIt2>

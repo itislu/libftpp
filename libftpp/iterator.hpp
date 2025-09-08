@@ -91,7 +91,7 @@ struct is_random_access_iterator;
 /**
  * @brief Advances an iterator by a given distance or to a given bound
  *
- * Adds C++20's overload set for `advance` from the ranges library which
+ * Adds C++20's overload set for `std::advance` from the ranges library which
  * supports bounds as arguments.
  *
  * @note Unlike the standard implementation:
@@ -118,8 +118,8 @@ advance(InputIt& it,
 /**
  * @brief Increment an iterator by a given distance or to a given bound
  *
- * Adds C++20's overload set for C++11's `next` from the ranges library which
- * supports bounds as arguments.
+ * Adds C++20's overload set for C++11's `std::next` from the ranges library
+ * which supports bounds as arguments.
  *
  * @note Unlike the standard implementation:
  * - If `it` is a random-access iterator, it is always assumed to be able to
@@ -146,8 +146,8 @@ InputIt next(InputIt it,
 /**
  * @brief Decrement an iterator by a given distance or to a given bound
  *
- * Adds C++20's overload set for C++11's `prev` from the ranges library which
- * supports bounds as arguments.
+ * Adds C++20's overload set for C++11's `std::prev` from the ranges library
+ * which supports bounds as arguments.
  *
  * @note Unlike the standard implementation:
  * - If `it` is a random-access iterator, it is always assumed to be able to
