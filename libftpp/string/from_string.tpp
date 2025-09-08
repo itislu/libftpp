@@ -1,7 +1,6 @@
 #pragma once
 
 #include "libftpp/Expected.hpp"
-#include "libftpp/algorithm.hpp"
 #include "libftpp/iterator.hpp"
 #include "libftpp/string.hpp"
 #include "libftpp/type_traits.hpp"
@@ -64,8 +63,8 @@ To from_string(const std::string& str,
 	iss.flags(fmt);
 
 	if (iss >> res) {
-		endpos = ft::min(static_cast<std::string::size_type>(iss.tellg()),
-		                 str.length());
+		endpos = std::min(static_cast<std::string::size_type>(iss.tellg()),
+		                  str.length());
 		return _from_string::Impl<To>::handle_success(res, str, fmt, endpos);
 	}
 
@@ -182,7 +181,7 @@ private:
 		if (minus == end) {
 			return;
 		}
-		if (ft::find_first_of(
+		if (std::find_first_of(
 		        minus, end, ft::begin(_not_zero), ft::prev(ft::end(_not_zero)))
 		    != end) {
 			throw FromStringRangeException(str, typeid(To));
@@ -256,10 +255,10 @@ private:
 
 		const std::string::const_iterator end =
 		    str.begin() + static_cast<std::string::difference_type>(endpos_out);
-		if (ft::find_first_of(str.begin(),
-		                      end,
-		                      ft::begin(_scientific_notation),
-		                      ft::prev(ft::end(_scientific_notation)))
+		if (std::find_first_of(str.begin(),
+		                       end,
+		                       ft::begin(_scientific_notation),
+		                       ft::prev(ft::end(_scientific_notation)))
 		    != end) {
 			endpos_out = 0; // For consistency with other invalid cases
 			throw FromStringInvalidException(str, typeid(To));

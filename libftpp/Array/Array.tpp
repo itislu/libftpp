@@ -5,6 +5,7 @@
 #include "libftpp/assert.hpp"
 #include "libftpp/string.hpp"
 #include "libftpp/type_traits.hpp"
+#include <algorithm>
 #include <cassert>
 #include <cstddef>
 #include <stdexcept>
@@ -220,7 +221,7 @@ typename Array<T, N>::size_type Array<T, N>::max_size() const throw()
 template <typename T, std::size_t N>
 void Array<T, N>::fill(const T& value)
 {
-	ft::fill(begin(), end(), value);
+	std::fill(begin(), end(), value);
 }
 
 template <typename T, std::size_t N>
@@ -246,7 +247,7 @@ bool operator!=(const Array<T, N>& lhs, const Array<T, N>& rhs)
 template <typename T, std::size_t N>
 bool operator<(const Array<T, N>& lhs, const Array<T, N>& rhs)
 {
-	return ft::lexicographical_compare(
+	return std::lexicographical_compare(
 	    lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 }
 
