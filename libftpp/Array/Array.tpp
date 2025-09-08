@@ -234,7 +234,7 @@ void Array<T, N>::swap(Array& other)
 template <typename T, std::size_t N>
 bool operator==(const Array<T, N>& lhs, const Array<T, N>& rhs)
 {
-	return ft::equal(lhs.begin(), lhs.end(), rhs.begin());
+	return ft::equal(lhs.begin(), lhs.end(), rhs.begin(), rhs.end());
 }
 
 template <typename T, std::size_t N>
