@@ -9,26 +9,25 @@ namespace ft {
 
 namespace _advance {
 template <typename InputIt, typename Sentinel>
-static void
-advance(InputIt& it, Sentinel bound, std::input_iterator_tag /*unused*/);
+void advance(InputIt& it, Sentinel bound, std::input_iterator_tag /*unused*/);
 template <typename InputIt, typename Sentinel>
-static void advance(InputIt& it,
-                    Sentinel bound,
-                    std::random_access_iterator_tag /*unused*/);
+void advance(InputIt& it,
+             Sentinel bound,
+             std::random_access_iterator_tag /*unused*/);
 template <typename InputIt>
-static typename std::iterator_traits<InputIt>::difference_type
+typename std::iterator_traits<InputIt>::difference_type
 advance(InputIt& it,
         typename std::iterator_traits<InputIt>::difference_type n,
         InputIt bound,
         std::input_iterator_tag /*unused*/);
 template <typename BidirIt>
-static typename std::iterator_traits<BidirIt>::difference_type
+typename std::iterator_traits<BidirIt>::difference_type
 advance(BidirIt& it,
         typename std::iterator_traits<BidirIt>::difference_type n,
         BidirIt bound,
         std::bidirectional_iterator_tag /*unused*/);
 template <typename RandomIt>
-static typename std::iterator_traits<RandomIt>::difference_type
+typename std::iterator_traits<RandomIt>::difference_type
 advance(RandomIt& it,
         typename std::iterator_traits<RandomIt>::difference_type n,
         RandomIt bound,
@@ -68,8 +67,7 @@ advance(InputIt& it,
 namespace _advance {
 
 template <typename InputIt, typename Sentinel>
-static void
-advance(InputIt& it, Sentinel bound, std::input_iterator_tag /*unused*/)
+void advance(InputIt& it, Sentinel bound, std::input_iterator_tag /*unused*/)
 {
 	while (it != bound) {
 		++it;
@@ -77,14 +75,14 @@ advance(InputIt& it, Sentinel bound, std::input_iterator_tag /*unused*/)
 }
 
 template <typename InputIt, typename Sentinel>
-static void
+void
 advance(InputIt& it, Sentinel bound, std::random_access_iterator_tag /*unused*/)
 {
 	ft::advance(it, bound - it);
 }
 
 template <typename InputIt>
-static typename std::iterator_traits<InputIt>::difference_type
+typename std::iterator_traits<InputIt>::difference_type
 advance(InputIt& it,
         typename std::iterator_traits<InputIt>::difference_type n,
         InputIt bound,
@@ -99,7 +97,7 @@ advance(InputIt& it,
 }
 
 template <typename BidirIt>
-static typename std::iterator_traits<BidirIt>::difference_type
+typename std::iterator_traits<BidirIt>::difference_type
 advance(BidirIt& it,
         typename std::iterator_traits<BidirIt>::difference_type n,
         BidirIt bound,
@@ -117,7 +115,7 @@ advance(BidirIt& it,
 }
 
 template <typename RandomIt>
-static typename std::iterator_traits<RandomIt>::difference_type
+typename std::iterator_traits<RandomIt>::difference_type
 advance(RandomIt& it,
         typename std::iterator_traits<RandomIt>::difference_type n,
         RandomIt bound,

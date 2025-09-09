@@ -9,17 +9,16 @@ namespace ft {
 
 namespace _shift {
 template <typename ForwardIt>
-static ForwardIt
+ForwardIt
 shift_right(ForwardIt first,
             ForwardIt last,
             typename std::iterator_traits<ForwardIt>::difference_type n,
             std::forward_iterator_tag /*unused*/);
 template <typename BidirIt>
-static BidirIt
-shift_right(BidirIt first,
-            BidirIt last,
-            typename std::iterator_traits<BidirIt>::difference_type n,
-            std::bidirectional_iterator_tag /*unused*/);
+BidirIt shift_right(BidirIt first,
+                    BidirIt last,
+                    typename std::iterator_traits<BidirIt>::difference_type n,
+                    std::bidirectional_iterator_tag /*unused*/);
 } // namespace _shift
 
 template <typename ForwardIt>
@@ -59,7 +58,7 @@ shift_right(ForwardIt first,
 namespace _shift {
 
 template <typename ForwardIt>
-static ForwardIt
+ForwardIt
 shift_right(ForwardIt first,
             ForwardIt last,
             typename std::iterator_traits<ForwardIt>::difference_type n,
@@ -97,11 +96,10 @@ shift_right(ForwardIt first,
 }
 
 template <typename BidirIt>
-static BidirIt
-shift_right(BidirIt first,
-            BidirIt last,
-            typename std::iterator_traits<BidirIt>::difference_type n,
-            std::bidirectional_iterator_tag /*unused*/)
+BidirIt shift_right(BidirIt first,
+                    BidirIt last,
+                    typename std::iterator_traits<BidirIt>::difference_type n,
+                    std::bidirectional_iterator_tag /*unused*/)
 {
 	const BidirIt mid = ft::next(last, -n, first);
 	if (mid == first) {

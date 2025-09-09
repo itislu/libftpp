@@ -13,13 +13,13 @@ namespace ft {
 
 namespace _numeric_cast {
 template <typename To, typename From>
-static To int_to_int(From from);
+To int_to_int(From from);
 template <typename To, typename From>
-static To fp_to_int(From from);
+To fp_to_int(From from);
 template <typename To, typename From>
-static To fp_to_fp(From from);
+To fp_to_fp(From from);
 template <typename To, typename From>
-static To int_to_fp(From from);
+To int_to_fp(From from);
 template <typename To, typename From>
 struct Impl {
 	static To try_cast(From from);
@@ -56,7 +56,7 @@ numeric_cast(From from, std::nothrow_t /*unused*/)
 namespace _numeric_cast {
 
 template <typename To, typename From>
-static To int_to_int(From from)
+To int_to_int(From from)
 {
 	if (!std::numeric_limits<To>::is_signed && from < 0) {
 		throw NumericCastNegativeOverflowException();
@@ -65,7 +65,7 @@ static To int_to_int(From from)
 }
 
 template <typename To, typename From>
-static To fp_to_int(From from)
+To fp_to_int(From from)
 {
 	if (std::isnan(from)) {
 		throw NumericCastException();
@@ -77,7 +77,7 @@ static To fp_to_int(From from)
 }
 
 template <typename To, typename From>
-static To fp_to_fp(From from)
+To fp_to_fp(From from)
 {
 	if (std::isinf(from) || std::isnan(from)) {
 		return static_cast<To>(from);
@@ -86,7 +86,7 @@ static To fp_to_fp(From from)
 }
 
 template <typename To, typename From>
-static To int_to_fp(From from)
+To int_to_fp(From from)
 {
 	return Impl<To, From>::try_cast(from);
 }

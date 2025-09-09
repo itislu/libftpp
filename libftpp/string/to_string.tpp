@@ -10,9 +10,9 @@ namespace ft {
 
 namespace _to_string {
 template <typename T>
-static std::string to_string(T v, std::ios::fmtflags fmt);
+std::string to_string(T v, std::ios::fmtflags fmt);
 template <typename T>
-static std::string to_string(T* v, std::ios::fmtflags fmt);
+std::string to_string(T* v, std::ios::fmtflags fmt);
 } // namespace _to_string
 
 template <typename T>
@@ -24,7 +24,7 @@ std::string to_string(T v, std::ios::fmtflags fmt /*= std::ios::fmtflags()*/)
 namespace _to_string {
 
 template <typename T>
-static std::string to_string(T v, std::ios::fmtflags fmt)
+std::string to_string(T v, std::ios::fmtflags fmt)
 {
 	std::ostringstream oss;
 	oss.flags(fmt);
@@ -33,7 +33,7 @@ static std::string to_string(T v, std::ios::fmtflags fmt)
 }
 
 template <typename T>
-static std::string to_string(T* v, std::ios::fmtflags fmt)
+std::string to_string(T* v, std::ios::fmtflags fmt)
 {
 	std::ostringstream oss;
 	oss.flags(fmt);

@@ -8,15 +8,15 @@ namespace ft {
 
 namespace _copy {
 template <typename InputIt, typename Size, typename OutputIt>
-static OutputIt copy_n(InputIt first,
-                       Size count,
-                       OutputIt result,
-                       std::input_iterator_tag /*unused*/);
+OutputIt copy_n(InputIt first,
+                Size count,
+                OutputIt result,
+                std::input_iterator_tag /*unused*/);
 template <typename InputIt, typename Size, typename OutputIt>
-static OutputIt copy_n(InputIt first,
-                       Size count,
-                       OutputIt result,
-                       std::random_access_iterator_tag /*unused*/);
+OutputIt copy_n(InputIt first,
+                Size count,
+                OutputIt result,
+                std::random_access_iterator_tag /*unused*/);
 } // namespace _copy
 
 template <typename InputIt, typename OutputIt, typename UnaryPred>
@@ -44,10 +44,10 @@ OutputIt copy_n(InputIt first, Size count, OutputIt result)
 namespace _copy {
 
 template <typename InputIt, typename Size, typename OutputIt>
-static OutputIt copy_n(InputIt first,
-                       Size count,
-                       OutputIt result,
-                       std::input_iterator_tag /*unused*/)
+OutputIt copy_n(InputIt first,
+                Size count,
+                OutputIt result,
+                std::input_iterator_tag /*unused*/)
 {
 	for (Size i = 0; i < count; ++result, ++first, ++i) {
 		*result = *first;
@@ -59,10 +59,10 @@ static OutputIt copy_n(InputIt first,
  * Use `std::copy` since it is more optimized.
  */
 template <typename InputIt, typename Size, typename OutputIt>
-static OutputIt copy_n(InputIt first,
-                       Size count,
-                       OutputIt result,
-                       std::random_access_iterator_tag /*unused*/)
+OutputIt copy_n(InputIt first,
+                Size count,
+                OutputIt result,
+                std::random_access_iterator_tag /*unused*/)
 {
 	return std::copy(first, first + count, result);
 }

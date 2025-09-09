@@ -27,7 +27,8 @@ Diagnostics:
         "performance-*",
         "readability-*",
       ]
-    Remove: [
+    Remove: 
+      [
         bugprone-easily-swappable-parameters,
         misc-use-anonymous-namespace,
         readability-identifier-length,
@@ -70,3 +71,12 @@ InlayHints:
   Enabled: Yes
   ParameterNames: Yes
   DeducedTypes: Yes
+
+---
+
+If:
+  PathMatch: .*\.tpp
+
+Diagnostics:
+  ClangTidy:
+    Remove: misc-use-internal-linkage
