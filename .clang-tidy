@@ -1,0 +1,63 @@
+Checks:
+  # Add
+  - bugprone-*,
+    cert-*,
+    clang-analyzer-*,
+    cppcoreguidelines-*,
+    google-explicit-constructor,
+    hicpp-*,
+    misc-*,
+    performance-*,
+    readability-*,
+  # Remove
+  - -bugprone-easily-swappable-parameters,
+    -misc-use-anonymous-namespace,
+    -readability-identifier-length,
+  # Aliases
+  - -cert-dcl37-c,
+    -cert-dcl51-cpp,
+    -cert-dcl59-cpp,
+    -cert-err09-cpp,
+    -cert-err61-cpp,
+    -cert-exp42-c,
+    -cert-oop54-cpp,
+    -cppcoreguidelines-avoid-magic-numbers,
+    -cppcoreguidelines-c-copy-assignment-signature,
+    -cppcoreguidelines-non-private-member-variables-in-classes,
+    -hicpp-avoid-goto,
+    -hicpp-braces-around-statements,
+    -hicpp-deprecated-headers,
+    -hicpp-explicit-conversions,
+    -hicpp-member-init,
+    -hicpp-no-array-decay,
+    -hicpp-no-malloc,
+    -hicpp-special-member-functions,
+    -hicpp-uppercase-literal-suffix,
+    -hicpp-use-auto,
+    -hicpp-use-equals-delete,
+    -hicpp-use-nullptr,
+
+CheckOptions:
+  - key: bugprone-empty-catch.IgnoreCatchWithKeywords
+    value: 'EMPTY: '
+  - key: modernize-deprecated-headers.CheckHeaderFile
+    value: 'true'
+  - key: readability-implicit-bool-conversion.AllowPointerConditions
+    value: 'true'
+  - key: readability-magic-numbers.IgnoredIntegerValues
+    value: '1;2;3;4;10;42'
+  - key: readability-magic-numbers.IgnorePowersOf2IntegerValues
+    value: 'Yes'
+  - key: readability-magic-numbers.IgnoredFloatingPointValues
+    value: '0.1'
+
+ExtraArgsBefore:
+  - -Wall
+  - -Wextra
+  - -Wpedantic
+  - -Wshadow
+  - -Wdocumentation
+  - -std=c++98
+  - --language=c++
+
+HeaderFileExtensions: ['', 'h', 'hh', 'hpp', 'hxx', 'ipp', 'tpp']
