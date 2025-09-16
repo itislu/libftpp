@@ -33,7 +33,7 @@ endef
 
 
 bear			:	.bear-image
-					$(call PRINTLN,Running 'bear -- make re; make fclean' ...)
+					$(call PRINTLN,Generating compile_commands.json ...)
 					$(call DOCKER_RUN,$(BEAR_IMG), \
 						bash -c ' \
 							bear -- make re; \
@@ -49,7 +49,7 @@ bear			:	.bear-image
 					$(call PRINTLN,Built bear image.)
 
 doxygen			:	.doxygen-image bear $(DOXYFILE)
-					$(call PRINTLN,Running 'doxygen -q -' ...)
+					$(call PRINTLN,Generating Doxygen documentation ...)
 					mkdir -p $(DOXYGEN_OUTDIR)
 					$(call DOCKER_RUN,$(DOXYGEN_IMG), \
 						bash -c '{ \
@@ -63,7 +63,7 @@ doxygen			:	.doxygen-image bear $(DOXYFILE)
 					open $(DOXYGEN_OUTDIR)/html/index.html
 
 $(DOXYFILE)		:	| .doxygen-image
-					$(call PRINTLN,Running 'doxygen -g $(DOXYFILE)' ...)
+					$(call PRINTLN,Creating default Doxyfile ...)
 					$(call DOCKER_RUN,$(DOXYGEN_IMG),doxygen -g $(DOXYFILE))
 					echo
 					$(call PRINTLN,Created default Doxyfile. Please review and adjust settings as needed$(COMMA) then rerun.)
@@ -78,14 +78,14 @@ uml				:	.clang-uml .plantuml-image
 					$(MAKE) .plantuml
 
 .clang-uml		:	.clang-uml-image bear $(CLANG_UML_CFG)
-					$(call PRINTLN,Running 'clang-uml --progress --paths-relative-to-pwd --config=$(CLANG_UML_CFG) --output-directory=$(UML_OUTDIR)' ...)
+					$(call PRINTLN,Generating PlantUML files ...)
 					mkdir -p $(UML_OUTDIR)
 					$(call DOCKER_RUN,$(CLANG_UML_IMG),clang-uml --progress --paths-relative-to-pwd --config=$(CLANG_UML_CFG) --output-directory=$(UML_OUTDIR))
 					echo
 					$(call PRINTLN,Generated PlantUML files in $(UML_OUTDIR).)
 
 $(CLANG_UML_CFG):	| .clang-uml-image
-					$(call PRINTLN,Running 'clang-uml --init' ...)
+					$(call PRINTLN,Creating default .clang-uml configuration file ...)
 					$(call DOCKER_RUN,$(CLANG_UML_IMG),clang-uml --init)
 					mv .clang-uml $(CLANG_UML_CFG)
 					echo
@@ -98,13 +98,16 @@ $(CLANG_UML_CFG):	| .clang-uml-image
 					$(call PRINTLN,Built clang-uml image.)
 
 .plantuml		:	.plantuml-image
-					$(call PRINTLN,Running 'plantuml -tpng -tsvg "$(UML_OUTDIR)/*.puml"' ...)
+					$(call PRINTLN,Converting PlantUML files to PNG and SVG ...)
 					mkdir -p $(UML_OUTDIR)
 					$(call DOCKER_RUN,$(PLANTUML_IMG),plantuml -tpng -tsvg "$(UML_OUTDIR)/*.puml")
+					echo
 					$(call PRINTLN,Generated PNG and SVG files in $(UML_OUTDIR).)
 					open $(UML_OUTDIR)
-					$(call PRINTLN,Running 'plantuml -tpdf "$(UML_OUTDIR)/*.puml"' (this may take a moment) ...)
+					echo
+					$(call PRINTLN,Converting PlantUML files to PDF (this may take a moment) ...)
 					$(call DOCKER_RUN,$(PLANTUML_IMG),plantuml -tpdf "$(UML_OUTDIR)/*.puml")
+					echo
 					$(call PRINTLN,Generated PDF files in $(UML_OUTDIR).)
 
 .plantuml-image	:
