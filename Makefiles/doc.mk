@@ -18,6 +18,7 @@ UML_OUTDIR		:=	$(DOC_DIR)/uml
 
 
 bear			:	.bear-image
+					$(call PRINTLN,Running 'bear -- make re; make fclean' ...)
 					if ! docker run --rm \
 						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
@@ -38,12 +39,15 @@ bear			:	.bear-image
 							} >/dev/null'; \
 					fi
 					echo
-					$(call PRINTLN,"Generated compile_commands.json.")
+					$(call PRINTLN,Generated compile_commands.json.)
 
 .bear-image		:
+					$(call PRINTLN,Building bear image ...)
 					docker build -t $(BEAR_IMG) $(DOCKER_DIR)/$(BEAR_IMG)
+					$(call PRINTLN,Built bear image.)
 
 doxygen			:	.doxygen-image bear $(DOXYFILE)
+					$(call PRINTLN,Running 'doxygen -q -' ...)
 					mkdir -p $(DOXYGEN_OUTDIR)
 					if ! docker run --rm \
 						-u $(shell id -u):$(shell id -g) \
@@ -67,10 +71,11 @@ doxygen			:	.doxygen-image bear $(DOXYFILE)
 							} | doxygen -q -'; \
 					fi
 					echo
-					$(call PRINTLN,"Generated Doxygen documentation in $(DOXYGEN_OUTDIR).")
+					$(call PRINTLN,Generated Doxygen documentation in $(DOXYGEN_OUTDIR).)
 					open $(DOXYGEN_OUTDIR)/html/index.html
 
 $(DOXYFILE)		:	| .doxygen-image
+					$(call PRINTLN,Running 'doxygen -g $(DOXYFILE)' ...)
 					if ! docker run --rm \
 						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
@@ -85,16 +90,19 @@ $(DOXYFILE)		:	| .doxygen-image
 							doxygen -g $(DOXYFILE); \
 					fi
 					echo
-					$(call PRINTLN,"Created default Doxyfile. Please review and adjust settings as needed$(COMMA) then rerun.")
+					$(call PRINTLN,Created default Doxyfile. Please review and adjust settings as needed$(COMMA) then rerun.)
 					exit 1
 
 .doxygen-image	:
+					$(call PRINTLN,Building doxygen image ...)
 					docker build -t $(DOXYGEN_IMG) $(DOCKER_DIR)/$(DOXYGEN_IMG)
+					$(call PRINTLN,Built doxygen image.)
 
 uml				:	.clang-uml .plantuml-image
 					$(MAKE) .plantuml
 
 .clang-uml		:	.clang-uml-image bear $(CLANG_UML_CFG)
+					$(call PRINTLN,Running 'clang-uml --progress --paths-relative-to-pwd --config=$(CLANG_UML_CFG) --output-directory=$(UML_OUTDIR)' ...)
 					mkdir -p $(UML_OUTDIR)
 					if ! docker run --rm \
 						-u $(shell id -u):$(shell id -g) \
@@ -110,9 +118,10 @@ uml				:	.clang-uml .plantuml-image
 							clang-uml --progress --paths-relative-to-pwd --config=$(CLANG_UML_CFG) --output-directory=$(UML_OUTDIR); \
 					fi
 					echo
-					$(call PRINTLN,"Generated PlantUML files in $(UML_OUTDIR).")
+					$(call PRINTLN,Generated PlantUML files in $(UML_OUTDIR).)
 
 $(CLANG_UML_CFG):	| .clang-uml-image
+					$(call PRINTLN,Running 'clang-uml --init' ...)
 					if ! docker run --rm \
 						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
@@ -128,14 +137,16 @@ $(CLANG_UML_CFG):	| .clang-uml-image
 					fi
 					mv .clang-uml $(CLANG_UML_CFG)
 					echo
-					$(call PRINTLN,"Created default .clang-uml configuration file. Please review and adjust settings as needed$(COMMA) then rerun.")
+					$(call PRINTLN,Created default .clang-uml configuration file. Please review and adjust settings as needed$(COMMA) then rerun.)
 					exit 1
 
-.clang-uml-image	:
+.clang-uml-image:
+					$(call PRINTLN,Building clang-uml image ...)
 					docker build -t $(CLANG_UML_IMG) $(DOCKER_DIR)/$(CLANG_UML_IMG)
+					$(call PRINTLN,Built clang-uml image.)
 
 .plantuml		:	.plantuml-image
-					$(call PRINTLN,"Converting PlantUML files to PNG and SVG ...")
+					$(call PRINTLN,Running 'plantuml -tpng -tsvg "$(UML_OUTDIR)/*.puml"' ...)
 					mkdir -p $(UML_OUTDIR)
 					if ! docker run --rm \
 						-u $(shell id -u):$(shell id -g) \
@@ -150,9 +161,9 @@ $(CLANG_UML_CFG):	| .clang-uml-image
 							$(PLANTUML_IMG) \
 							plantuml -tpng -tsvg "$(UML_OUTDIR)/*.puml"; \
 					fi
-					$(call PRINTLN,"Generated PNG and SVG files in $(UML_OUTDIR).")
+					$(call PRINTLN,Generated PNG and SVG files in $(UML_OUTDIR).)
 					open $(UML_OUTDIR)
-					$(call PRINTLN,"Converting PlantUML files to PDF '('this may take a moment')' ...")
+					$(call PRINTLN,Running 'plantuml -tpdf "$(UML_OUTDIR)/*.puml"' (this may take a moment) ...)
 					if ! docker run --rm \
 						-u $(shell id -u):$(shell id -g) \
 						-v $(REPO_ROOT):$(REPO_ROOT) \
@@ -166,10 +177,12 @@ $(CLANG_UML_CFG):	| .clang-uml-image
 							$(PLANTUML_IMG) \
 							plantuml -tpdf "$(UML_OUTDIR)/*.puml"; \
 					fi
-					$(call PRINTLN,"Generated PDF files in $(UML_OUTDIR).")
+					$(call PRINTLN,Generated PDF files in $(UML_OUTDIR).)
 
 .plantuml-image	:
+					$(call PRINTLN,Building plantuml image ...)
 					docker build -t $(PLANTUML_IMG) $(DOCKER_DIR)/$(PLANTUML_IMG)
+					$(call PRINTLN,Built plantuml image.)
 
 
 endif
