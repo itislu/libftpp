@@ -40,6 +40,8 @@ Checks:
 CheckOptions:
   - key: bugprone-empty-catch.IgnoreCatchWithKeywords
     value: 'EMPTY: '
+  - key: misc-header-include-cycle.IgnoredFilesList
+    value: '.tpp'
   - key: modernize-deprecated-headers.CheckHeaderFile
     value: 'true'
   - key: readability-implicit-bool-conversion.AllowPointerConditions
