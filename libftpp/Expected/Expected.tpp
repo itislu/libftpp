@@ -1,5 +1,4 @@
-// NOLINTBEGIN(cppcoreguidelines-pro-type-union-access)
-
+// IWYU pragma: private; include "libftpp/Expected.hpp"
 #pragma once
 
 #include "libftpp/Expected.hpp"
@@ -8,6 +7,8 @@
 #include <cassert>
 
 namespace ft {
+
+// NOLINTBEGIN(cppcoreguidelines-pro-type-union-access)
 
 template <typename T, typename E>
 Expected<T, E>::Expected()
@@ -306,6 +307,6 @@ bool operator!=(const Expected<T, E>& lhs, const T2& val)
 	return !(lhs == val);
 }
 
-} // namespace ft
-
 // NOLINTEND(cppcoreguidelines-pro-type-union-access)
+
+} // namespace ft

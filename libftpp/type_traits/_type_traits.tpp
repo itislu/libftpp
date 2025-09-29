@@ -1,3 +1,4 @@
+// IWYU pragma: private; include "_type_traits.hpp"
 #pragma once
 
 #include "_type_traits.hpp"

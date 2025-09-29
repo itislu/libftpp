@@ -1,3 +1,4 @@
+// IWYU pragma: private; include "libftpp/functional.hpp"
 #pragma once
 
 #include "libftpp/assert.hpp"

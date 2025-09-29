@@ -1,5 +1,4 @@
-// NOLINTBEGIN(cppcoreguidelines-pro-type-union-access)
-
+// IWYU pragma: private; include "libftpp/Expected.hpp"
 #pragma once
 
 #include "libftpp/Expected.hpp"
@@ -187,5 +186,3 @@ bool operator==(const Expected<void, E>& lhs, const Expected<T2, E2>& rhs)
 }
 
 } // namespace ft
-
-// NOLINTEND(cppcoreguidelines-pro-type-union-access)

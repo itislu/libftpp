@@ -1,3 +1,4 @@
+// IWYU pragma: private; include "libftpp/Expected.hpp"
 #include "libftpp/Expected.hpp"
 
 namespace ft {

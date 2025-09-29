@@ -1,3 +1,4 @@
+// IWYU pragma: private; include "libftpp/iterator.hpp"
 #pragma once
 
 #include "libftpp/iterator.hpp"

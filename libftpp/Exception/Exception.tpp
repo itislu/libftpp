@@ -1,3 +1,4 @@
+// IWYU pragma: private; include "libftpp/Exception.hpp"
 #pragma once
 
 #include "libftpp/Exception.hpp"

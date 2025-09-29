@@ -1,3 +1,4 @@
+// IWYU pragma: private; include "libftpp/SafeBool.hpp"
 #pragma once
 
 #include "SafeBoolBase.hpp"

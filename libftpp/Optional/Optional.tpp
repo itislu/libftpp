@@ -1,3 +1,4 @@
+// IWYU pragma: private; include "libftpp/Optional.hpp"
 #pragma once
 
 #include "libftpp/Optional.hpp"
