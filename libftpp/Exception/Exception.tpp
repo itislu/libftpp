@@ -148,11 +148,11 @@ template <typename BaseException>
 void StdException<BaseException>::_update_what_output()
 {
 	_what_output.clear();
-	if (_where) {
+	if (_where.has_value()) {
 		_what_output.append(_where->format());
 		_what_output.append(": ");
 	}
-	if (_who) {
+	if (_who.has_value()) {
 		_what_output.append(*_who);
 		_what_output.append(": ");
 	}

@@ -88,7 +88,7 @@ T& Optional<T>::operator*() throw()
 template <typename T>
 bool Optional<T>::boolean_test() const throw()
 {
-	return _value != NULL;
+	return has_value();
 }
 
 template <typename T>

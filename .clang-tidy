@@ -44,8 +44,6 @@ CheckOptions:
     value: '.tpp'
   - key: modernize-deprecated-headers.CheckHeaderFile
     value: 'true'
-  - key: readability-implicit-bool-conversion.AllowPointerConditions
-    value: 'true'
   - key: readability-magic-numbers.IgnoredIntegerValues
     value: '1;2;3;4;10'
   - key: readability-magic-numbers.IgnoredFloatingPointValues
