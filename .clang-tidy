@@ -10,9 +10,9 @@ Checks:
     performance-*,
     readability-*,
   # Remove
-  - -bugprone-easily-swappable-parameters,
-    -misc-use-anonymous-namespace,
-    -readability-identifier-length,
+  - -bugprone-easily-swappable-parameters # C++98 is too limited to deal with this (no designated initializers, no compound literals, no scoped enums).
+  - -misc-use-anonymous-namespace # static for functions is more visible.
+  - -readability-identifier-length # cppreference.com uses short names too often.
   # Aliases
   - -cert-dcl37-c,
     -cert-dcl51-cpp,
@@ -41,13 +41,13 @@ CheckOptions:
   - key: bugprone-empty-catch.IgnoreCatchWithKeywords
     value: 'EMPTY: '
   - key: misc-header-include-cycle.IgnoredFilesList
-    value: '.tpp'
+    value: '.tpp' # pragma once does not seem to be recognized by clang-tidy.
   - key: modernize-deprecated-headers.CheckHeaderFile
     value: 'true'
   - key: readability-magic-numbers.IgnoredIntegerValues
-    value: '1;2;3;4;10'
+    value: '1;2;3;4;10' # 1-4 are default, 10 for decimal base operations.
   - key: readability-magic-numbers.IgnoredFloatingPointValues
-    value: '1.0;100.0;0.1'
+    value: '1.0;100.0;0.1' # 1.0 and 100.0 are default, 0.1 for decimal base operations.
 
 ExtraArgsBefore:
   - -Wall
