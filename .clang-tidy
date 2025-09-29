@@ -47,11 +47,9 @@ CheckOptions:
   - key: readability-implicit-bool-conversion.AllowPointerConditions
     value: 'true'
   - key: readability-magic-numbers.IgnoredIntegerValues
-    value: '1;2;3;4;10;42'
-  - key: readability-magic-numbers.IgnorePowersOf2IntegerValues
-    value: 'Yes'
+    value: '1;2;3;4;10'
   - key: readability-magic-numbers.IgnoredFloatingPointValues
-    value: '0.1'
+    value: '1.0;100.0;0.1'
 
 ExtraArgsBefore:
   - -Wall
