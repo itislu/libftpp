@@ -9,18 +9,20 @@ CompileFlags:
       -Wdocumentation,
       -std=c++98,
       --language=c++,
-      -ftemplate-depth=100,
+      -ftemplate-depth=100, # Prevent crash when infinite template recursion.
     ]
   Compiler: c++
 
 Diagnostics:
   ClangTidy:
     FastCheckFilter: None
+  Includes:
+    AnalyzeAngledIncludes: true
   MissingIncludes: Strict
 
 InlayHints:
-  BlockEnd: No
-  Designators: Yes
-  Enabled: Yes
-  ParameterNames: Yes
-  DeducedTypes: Yes
+  BlockEnd: true
+  DefaultArguments: true
+
+Documentation:
+  CommentFormat: Doxygen
