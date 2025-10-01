@@ -30,7 +30,7 @@ struct Impl {
  * https://en.cppreference.com/w/cpp/container/array
  */
 template <typename T, std::size_t N>
-struct Array {
+struct array {
 	typedef T value_type;
 	typedef std::size_t size_type;
 	typedef std::ptrdiff_t difference_type;
@@ -78,36 +78,36 @@ struct Array {
 
 	/* Operations */
 	void fill(const T& value);
-	void swap(Array& other);
+	void swap(array& other);
 
 	typename _array::Impl<T, N>::Type
 	    _elems; // NOLINT: Public to allow aggregate initialization
 };
 
 template <typename T, std::size_t N>
-bool operator==(const Array<T, N>& lhs, const Array<T, N>& rhs);
+bool operator==(const array<T, N>& lhs, const array<T, N>& rhs);
 template <typename T, std::size_t N>
-bool operator!=(const Array<T, N>& lhs, const Array<T, N>& rhs);
+bool operator!=(const array<T, N>& lhs, const array<T, N>& rhs);
 template <typename T, std::size_t N>
-bool operator<(const Array<T, N>& lhs, const Array<T, N>& rhs);
+bool operator<(const array<T, N>& lhs, const array<T, N>& rhs);
 template <typename T, std::size_t N>
-bool operator<=(const Array<T, N>& lhs, const Array<T, N>& rhs);
+bool operator<=(const array<T, N>& lhs, const array<T, N>& rhs);
 template <typename T, std::size_t N>
-bool operator>(const Array<T, N>& lhs, const Array<T, N>& rhs);
+bool operator>(const array<T, N>& lhs, const array<T, N>& rhs);
 template <typename T, std::size_t N>
-bool operator>=(const Array<T, N>& lhs, const Array<T, N>& rhs);
+bool operator>=(const array<T, N>& lhs, const array<T, N>& rhs);
 
 template <std::size_t I, typename T, std::size_t N>
-T& get(Array<T, N>& a);
+T& get(array<T, N>& a);
 template <std::size_t I, typename T, std::size_t N>
-const T& get(const Array<T, N>& a);
+const T& get(const array<T, N>& a);
 
 template <typename T, std::size_t N>
-void swap(Array<T, N>& lhs, Array<T, N>& rhs);
+void swap(array<T, N>& lhs, array<T, N>& rhs);
 
 template <typename T, std::size_t N>
-Array<typename ft::remove_cv<T>::type, N> to_array(T (&a)[N]);
+array<typename ft::remove_cv<T>::type, N> to_array(T (&a)[N]);
 
 } // namespace ft
 
-#include "libftpp/Array/Array.tpp" // IWYU pragma: export
+#include "libftpp/array/array.tpp" // IWYU pragma: export

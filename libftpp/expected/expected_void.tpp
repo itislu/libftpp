@@ -1,95 +1,95 @@
-// IWYU pragma: private; include "libftpp/Expected.hpp"
+// IWYU pragma: private; include "libftpp/expected.hpp"
 #pragma once
 
-#include "libftpp/Expected.hpp"
 #include "libftpp/SafeBool.hpp"
 #include "libftpp/algorithm.hpp"
+#include "libftpp/expected.hpp"
 #include <cassert>
 #include <cstddef>
 
 namespace ft {
 
 template <typename E>
-Expected<void, E>::Expected() throw()
+expected<void, E>::expected() throw()
     : _error(NULL),
       _has_value(true)
 {}
 
 template <typename E>
-Expected<void, E>::Expected(const Expected& other)
-    : ft::SafeBool<Expected<void, E> >(),
+expected<void, E>::expected(const expected& other)
+    : ft::SafeBool<expected<void, E> >(),
       _error(other._has_value ? NULL : new E(*other._error)),
       _has_value(other._has_value)
 {}
 
 template <typename E>
 template <typename U, typename G>
-Expected<void, E>::Expected(const Expected<U, G>& other)
+expected<void, E>::expected(const expected<U, G>& other)
     : _error(other.has_value() ? NULL : new E(other.error())),
       _has_value(other._has_value())
 {}
 
 template <typename E>
 template <typename G>
-Expected<void, E>::Expected(const Unexpected<G>& e)
+expected<void, E>::expected(const unexpected<G>& e)
     : _error(new E(e.error())),
       _has_value(false)
 {}
 
 template <typename E>
-Expected<void, E>::Expected(unexpect_t /*unused*/)
+expected<void, E>::expected(unexpect_t /*unused*/)
     : _error(new E()),
       _has_value(false)
 {}
 
 template <typename E>
-Expected<void, E>::~Expected()
+expected<void, E>::~expected()
 {
 	delete _error;
 }
 
 template <typename E>
-Expected<void, E>& Expected<void, E>::operator=(Expected other) throw()
+expected<void, E>& expected<void, E>::operator=(expected other) throw()
 {
 	swap(other);
 	return *this;
 }
 
 template <typename E>
-void Expected<void, E>::operator*() const throw()
+void expected<void, E>::operator*() const throw()
 {
 	assert(_has_value);
 }
 
 template <typename E>
-bool Expected<void, E>::boolean_test() const throw()
+bool expected<void, E>::boolean_test() const throw()
 {
 	return _has_value;
 }
 
 template <typename E>
-bool Expected<void, E>::has_value() const throw()
+bool expected<void, E>::has_value() const throw()
 {
 	return _has_value;
 }
 
 template <typename E>
-void Expected<void, E>::value() const
+void expected<void, E>::value() const
 {
 	if (!_has_value) {
-		throw BadExpectedAccess<E>(*_error);
+		throw bad_expected_access<E>(*_error);
 	}
 }
 
 template <typename E>
-const E& Expected<void, E>::error() const throw()
+const E& expected<void, E>::error() const throw()
 {
 	assert(!_has_value);
 	return *_error;
 }
 
 template <typename E>
-E& Expected<void, E>::error() throw()
+E& expected<void, E>::error() throw()
 {
 	assert(!_has_value);
 	return *_error;
@@ -97,7 +97,7 @@ E& Expected<void, E>::error() throw()
 
 template <typename E>
 template <typename G>
-E Expected<void, E>::error_or(const G& default_value) const
+E expected<void, E>::error_or(const G& default_value) const
 {
 	if (!_has_value) {
 		return *_error;
@@ -114,11 +114,11 @@ E Expected<void, E>::error_or(const G& default_value) const
  */
 
 /**
- * f should return an Expected<void, E>
+ * f should return an expected<void, E>
  */
 template <typename E>
 template <typename F>
-Expected<void, E> Expected<void, E>::and_then(const F& f) const
+expected<void, E> expected<void, E>::and_then(const F& f) const
 {
 	if (_has_value) {
 		return f();
@@ -131,21 +131,21 @@ Expected<void, E> Expected<void, E>::and_then(const F& f) const
  */
 template <typename E>
 template <typename F>
-Expected<void, E> Expected<void, E>::transform(const F& f) const
+expected<void, E> expected<void, E>::transform(const F& f) const
 {
 	if (_has_value) {
 		f();
-		return Expected();
+		return expected();
 	}
 	return *this;
 }
 
 /**
- * f should return an Expected<void, E>
+ * f should return an expected<void, E>
  */
 template <typename E>
 template <typename F>
-Expected<void, E> Expected<void, E>::or_else(const F& f) const
+expected<void, E> expected<void, E>::or_else(const F& f) const
 {
 	if (!_has_value) {
 		return f(*_error);
@@ -158,23 +158,23 @@ Expected<void, E> Expected<void, E>::or_else(const F& f) const
  */
 template <typename E>
 template <typename F>
-Expected<void, E> Expected<void, E>::transform_error(const F& f) const
+expected<void, E> expected<void, E>::transform_error(const F& f) const
 {
 	if (!_has_value) {
-		return Expected(Unexpected<E>(f(*_error)));
+		return expected(unexpected<E>(f(*_error)));
 	}
 	return *this;
 }
 
 template <typename E>
-void Expected<void, E>::swap(Expected& other) throw()
+void expected<void, E>::swap(expected& other) throw()
 {
 	ft::swap(_error, other._error);
 	ft::swap(_has_value, other._has_value);
 }
 
 template <typename E, typename T2, typename E2>
-bool operator==(const Expected<void, E>& lhs, const Expected<T2, E2>& rhs)
+bool operator==(const expected<void, E>& lhs, const expected<T2, E2>& rhs)
 {
 	if (lhs.has_value() != rhs.has_value()) {
 		return false;

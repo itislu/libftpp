@@ -2,9 +2,9 @@
 #pragma once
 
 #include "libftpp/Exception.hpp"
-#include "libftpp/Optional.hpp"
-#include "libftpp/SourceLocation.hpp"
 #include "libftpp/algorithm.hpp"
+#include "libftpp/optional.hpp"
+#include "libftpp/source_location.hpp"
 #include <string>
 
 namespace ft {
@@ -18,7 +18,7 @@ StdException<BaseException>::StdException(const std::string& error)
 
 template <typename BaseException>
 StdException<BaseException>::StdException(const std::string& error,
-                                          const ft::SourceLocation& where)
+                                          const ft::source_location& where)
     : _error(error),
       _where(where)
 {
@@ -29,18 +29,18 @@ template <typename BaseException>
 StdException<BaseException>::StdException(const std::string& error,
                                           const std::string& who)
     : _error(error),
-      _who(!who.empty() ? ft::Optional<std::string>(who) : ft::nullopt)
+      _who(!who.empty() ? ft::optional<std::string>(who) : ft::nullopt)
 {
 	_update_what_output();
 }
 
 template <typename BaseException>
 StdException<BaseException>::StdException(const std::string& error,
-                                          const ft::SourceLocation& where,
+                                          const ft::source_location& where,
                                           const std::string& who)
     : _error(error),
       _where(where),
-      _who(!who.empty() ? ft::Optional<std::string>(who) : ft::nullopt)
+      _who(!who.empty() ? ft::optional<std::string>(who) : ft::nullopt)
 {
 	_update_what_output();
 }
@@ -103,7 +103,7 @@ void StdException<BaseException>::swap(StdException& other) throw()
 
 template <typename BaseException>
 StdException<BaseException>&
-StdException<BaseException>::set_where(const ft::SourceLocation& where)
+StdException<BaseException>::set_where(const ft::source_location& where)
 {
 	_where = where;
 	_update_what_output();
@@ -131,14 +131,14 @@ const std::string& StdException<BaseException>::error() const throw()
 }
 
 template <typename BaseException>
-const ft::Optional<ft::SourceLocation>&
+const ft::optional<ft::source_location>&
 StdException<BaseException>::where() const throw()
 {
 	return _where;
 }
 
 template <typename BaseException>
-const ft::Optional<std::string>& StdException<BaseException>::who() const
+const ft::optional<std::string>& StdException<BaseException>::who() const
     throw()
 {
 	return _who;

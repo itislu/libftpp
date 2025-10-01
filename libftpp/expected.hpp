@@ -8,9 +8,9 @@
 namespace ft {
 
 template <typename E>
-class Unexpected;
+class unexpected;
 template <typename E>
-class BadExpectedAccess;
+class bad_expected_access;
 struct unexpect_t;
 
 namespace _unexpected {
@@ -22,7 +22,7 @@ struct is_unexpected;
  * https://en.cppreference.com/w/cpp/utility/expected
  */
 template <typename T, typename E>
-class Expected : public ft::SafeBool<Expected<T, E> > {
+class expected : public ft::SafeBool<expected<T, E> > {
 private:
 	STATIC_ASSERT( // T must not be an array type
 	    !ft::is_array<T>::value);
@@ -30,7 +30,7 @@ private:
 	    !ft::is_reference<T>::value);
 	STATIC_ASSERT( // T must not be a function type
 	    !ft::is_function<T>::value);
-	STATIC_ASSERT( // T must not be a specialization of ft::Unexpected
+	STATIC_ASSERT( // T must not be a specialization of ft::unexpected
 	    !_unexpected::is_unexpected<typename ft::remove_cv<T>::type>::value);
 	STATIC_ASSERT( // T must not be ft::unexpect_t
 	    (!ft::is_same<typename ft::remove_cv<T>::type, ft::unexpect_t>::value));
@@ -38,23 +38,23 @@ private:
 	    ft::is_object<E>::value);
 	STATIC_ASSERT( // E must not be an array type
 	    !ft::is_array<E>::value);
-	STATIC_ASSERT( // E must not be a specialization of ft::Unexpected
+	STATIC_ASSERT( // E must not be a specialization of ft::unexpected
 	    !_unexpected::is_unexpected<typename ft::remove_cv<E>::type>::value);
 	STATIC_ASSERT( // E must not be cv-qualified type
 	    !ft::is_const<E>::value && !ft::is_volatile<E>::value);
 
 public:
-	Expected();
-	Expected(const Expected& other);
+	expected();
+	expected(const expected& other);
 	template <typename U, typename G>
-	Expected(const Expected<U, G>& other);
+	expected(const expected<U, G>& other);
 	template <typename U>
-	Expected(const U& v);
+	expected(const U& v);
 	template <typename G>
-	Expected(const Unexpected<G>& e);
-	explicit Expected(unexpect_t /*unused*/);
-	~Expected();
-	Expected& operator=(Expected other) throw();
+	expected(const unexpected<G>& e);
+	explicit expected(unexpect_t /*unused*/);
+	~expected();
+	expected& operator=(expected other) throw();
 
 	const T* operator->() const throw();
 	T* operator->() throw();
@@ -72,15 +72,15 @@ public:
 	E error_or(const G& default_value) const;
 
 	template <typename F>
-	Expected and_then(const F& f) const;
+	expected and_then(const F& f) const;
 	template <typename F>
-	Expected transform(const F& f) const;
+	expected transform(const F& f) const;
 	template <typename F>
-	Expected or_else(const F& f) const;
+	expected or_else(const F& f) const;
 	template <typename F>
-	Expected transform_error(const F& f) const;
+	expected transform_error(const F& f) const;
 
-	void swap(Expected& other) throw();
+	void swap(expected& other) throw();
 
 private:
 	union {
@@ -91,46 +91,46 @@ private:
 };
 
 template <typename T, typename E>
-void swap(Expected<T, E>& lhs, Expected<T, E>& rhs) throw();
+void swap(expected<T, E>& lhs, expected<T, E>& rhs) throw();
 
 template <typename T, typename E, typename T2, typename E2>
-bool operator==(const Expected<T, E>& lhs, const Expected<T2, E2>& rhs);
+bool operator==(const expected<T, E>& lhs, const expected<T2, E2>& rhs);
 template <typename T, typename E, typename E2>
-bool operator==(const Expected<T, E>& lhs, const Unexpected<E2>& unex);
+bool operator==(const expected<T, E>& lhs, const unexpected<E2>& unex);
 template <typename T, typename E, typename T2>
-bool operator==(const Expected<T, E>& lhs, const T2& val);
+bool operator==(const expected<T, E>& lhs, const T2& val);
 template <typename T, typename E, typename T2, typename E2>
-bool operator!=(const Expected<T, E>& lhs, const Expected<T2, E2>& rhs);
+bool operator!=(const expected<T, E>& lhs, const expected<T2, E2>& rhs);
 template <typename T, typename E, typename E2>
-bool operator!=(const Expected<T, E>& lhs, const Unexpected<E2>& unex);
+bool operator!=(const expected<T, E>& lhs, const unexpected<E2>& unex);
 template <typename T, typename E, typename T2>
-bool operator!=(const Expected<T, E>& lhs, const T2& val);
+bool operator!=(const expected<T, E>& lhs, const T2& val);
 
 /**
  * https://en.cppreference.com/w/cpp/utility/expected
  */
 template <typename E>
-class Expected<void, E> : public ft::SafeBool<Expected<void, E> > {
+class expected<void, E> : public ft::SafeBool<expected<void, E> > {
 private:
 	STATIC_ASSERT( // E must be an object type
 	    ft::is_object<E>::value);
 	STATIC_ASSERT( // E must not be an array type
 	    !ft::is_array<E>::value);
-	STATIC_ASSERT( // E must not be a specialization of ft::Unexpected
+	STATIC_ASSERT( // E must not be a specialization of ft::unexpected
 	    !_unexpected::is_unexpected<typename ft::remove_cv<E>::type>::value);
 	STATIC_ASSERT( // E must not be cv-qualified type
 	    !ft::is_const<E>::value && !ft::is_volatile<E>::value);
 
 public:
-	Expected() throw();
-	Expected(const Expected& other);
+	expected() throw();
+	expected(const expected& other);
 	template <typename U, typename G>
-	Expected(const Expected<U, G>& other);
+	expected(const expected<U, G>& other);
 	template <typename G>
-	Expected(const Unexpected<G>& e);
-	explicit Expected(unexpect_t /*unused*/);
-	~Expected();
-	Expected& operator=(Expected other) throw();
+	expected(const unexpected<G>& e);
+	explicit expected(unexpect_t /*unused*/);
+	~expected();
+	expected& operator=(expected other) throw();
 
 	void operator*() const throw();
 	bool boolean_test() const throw();
@@ -142,15 +142,15 @@ public:
 	E error_or(const G& default_value) const;
 
 	template <typename F>
-	Expected and_then(const F& f) const;
+	expected and_then(const F& f) const;
 	template <typename F>
-	Expected transform(const F& f) const;
+	expected transform(const F& f) const;
 	template <typename F>
-	Expected or_else(const F& f) const;
+	expected or_else(const F& f) const;
 	template <typename F>
-	Expected transform_error(const F& f) const;
+	expected transform_error(const F& f) const;
 
-	void swap(Expected& other) throw();
+	void swap(expected& other) throw();
 
 private:
 	E* _error;
@@ -158,63 +158,63 @@ private:
 };
 
 template <typename E, typename T2, typename E2>
-bool operator==(const Expected<void, E>& lhs, const Expected<T2, E2>& rhs);
+bool operator==(const expected<void, E>& lhs, const expected<T2, E2>& rhs);
 
 /**
  * https://en.cppreference.com/w/cpp/utility/expected/unexpected
  */
 template <typename E>
-class Unexpected {
+class unexpected {
 private:
 	STATIC_ASSERT( // E must be an object type
 	    ft::is_object<E>::value);
 	STATIC_ASSERT( // E must not be an array type
 	    !ft::is_array<E>::value);
-	STATIC_ASSERT( // E must not be a specialization of ft::Unexpected
+	STATIC_ASSERT( // E must not be a specialization of ft::unexpected
 	    !_unexpected::is_unexpected<typename ft::remove_cv<E>::type>::value);
 	STATIC_ASSERT( // E must not be cv-qualified type
 	    !ft::is_const<E>::value && !ft::is_volatile<E>::value);
 
 public:
-	Unexpected(const Unexpected& other);
+	unexpected(const unexpected& other);
 	template <typename Err>
-	explicit Unexpected(const Err& e);
-	~Unexpected();
-	Unexpected& operator=(Unexpected other);
+	explicit unexpected(const Err& e);
+	~unexpected();
+	unexpected& operator=(unexpected other);
 
 	const E& error() const throw();
 	E& error() throw();
 
-	void swap(Unexpected& other);
+	void swap(unexpected& other);
 
 private:
-	Unexpected();
+	unexpected();
 
 	E _error;
 };
 
 template <typename E>
-void swap(Unexpected<E>& x, Unexpected<E>& y);
+void swap(unexpected<E>& x, unexpected<E>& y);
 
 template <typename E, typename E2>
-bool operator==(const Unexpected<E>& x, const Unexpected<E2>& y);
+bool operator==(const unexpected<E>& x, const unexpected<E2>& y);
 template <typename E, typename E2>
-bool operator!=(const Unexpected<E>& x, const Unexpected<E2>& y);
+bool operator!=(const unexpected<E>& x, const unexpected<E2>& y);
 
 // NOLINTBEGIN(cppcoreguidelines-virtual-class-destructor)
 /**
  * https://en.cppreference.com/w/cpp/utility/expected/bad_expected_access
  */
 template <>
-class BadExpectedAccess<void> : public std::exception {
+class bad_expected_access<void> : public std::exception {
 public:
 	const char* what() const throw();
 
 protected:
-	BadExpectedAccess() throw();
-	BadExpectedAccess(const BadExpectedAccess& /*unused*/);
-	~BadExpectedAccess() throw();
-	BadExpectedAccess& operator=(const BadExpectedAccess& /*unused*/);
+	bad_expected_access() throw();
+	bad_expected_access(const bad_expected_access& /*unused*/);
+	~bad_expected_access() throw();
+	bad_expected_access& operator=(const bad_expected_access& /*unused*/);
 };
 // NOLINTEND(cppcoreguidelines-virtual-class-destructor)
 
@@ -222,12 +222,12 @@ protected:
  * https://en.cppreference.com/w/cpp/utility/expected/bad_expected_access
  */
 template <typename E>
-class BadExpectedAccess : public BadExpectedAccess<void> {
+class bad_expected_access : public bad_expected_access<void> {
 public:
-	explicit BadExpectedAccess(const E& e);
-	BadExpectedAccess(const BadExpectedAccess& other);
-	~BadExpectedAccess() throw();
-	BadExpectedAccess& operator=(const BadExpectedAccess& other);
+	explicit bad_expected_access(const E& e);
+	bad_expected_access(const bad_expected_access& other);
+	~bad_expected_access() throw();
+	bad_expected_access& operator=(const bad_expected_access& other);
 
 	const E& error() const throw();
 	E& error() throw();
@@ -250,7 +250,7 @@ extern const unexpect_t unexpect;
 
 } // namespace ft
 
-#include "libftpp/Expected/BadExpectedAccess.tpp" // IWYU pragma: export
-#include "libftpp/Expected/Expected.tpp"          // IWYU pragma: export
-#include "libftpp/Expected/Expected_void.tpp"     // IWYU pragma: export
-#include "libftpp/Expected/Unexpected.tpp"        // IWYU pragma: export
+#include "libftpp/expected/bad_expected_access.tpp" // IWYU pragma: export
+#include "libftpp/expected/expected.tpp"            // IWYU pragma: export
+#include "libftpp/expected/expected_void.tpp"       // IWYU pragma: export
+#include "libftpp/expected/unexpected.tpp"          // IWYU pragma: export

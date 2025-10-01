@@ -1,7 +1,7 @@
 // IWYU pragma: private; include "libftpp/string.hpp"
 #pragma once
 
-#include "libftpp/Expected.hpp"
+#include "libftpp/expected.hpp"
 #include "libftpp/iterator.hpp"
 #include "libftpp/string.hpp"
 #include "libftpp/type_traits.hpp"
@@ -80,7 +80,7 @@ To from_string(const std::string& str,
 }
 
 template <typename To>
-ft::Expected<To, ft::FromStringException>
+ft::expected<To, ft::FromStringException>
 from_string(const std::string& str,
             std::nothrow_t /*nothrow*/,
             std::string::size_type* endpos_out /*= NULL*/)
@@ -89,12 +89,12 @@ from_string(const std::string& str,
 		return ft::from_string<To>(str, endpos_out);
 	}
 	catch (const FromStringException& e) {
-		return ft::Unexpected<FromStringException>(e);
+		return ft::unexpected<FromStringException>(e);
 	}
 }
 
 template <typename To>
-ft::Expected<To, ft::FromStringException>
+ft::expected<To, ft::FromStringException>
 from_string(const std::string& str,
             std::ios::fmtflags fmt,
             std::nothrow_t /*nothrow*/,
@@ -104,7 +104,7 @@ from_string(const std::string& str,
 		return ft::from_string<To>(str, fmt, endpos_out);
 	}
 	catch (const FromStringException& e) {
-		return ft::Unexpected<FromStringException>(e);
+		return ft::unexpected<FromStringException>(e);
 	}
 }
 

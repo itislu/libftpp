@@ -1,7 +1,7 @@
 #pragma once
 
-#include "libftpp/Optional.hpp"
-#include "libftpp/SourceLocation.hpp"
+#include "libftpp/optional.hpp"
+#include "libftpp/source_location.hpp"
 #include <exception>
 #include <string>
 
@@ -38,10 +38,10 @@ template <typename BaseException>
 class StdException : public BaseException {
 public:
 	explicit StdException(const std::string& error);
-	StdException(const std::string& error, const ft::SourceLocation& where);
+	StdException(const std::string& error, const ft::source_location& where);
 	StdException(const std::string& error, const std::string& who);
 	StdException(const std::string& error,
-	             const ft::SourceLocation& where,
+	             const ft::source_location& where,
 	             const std::string& who);
 	StdException(const StdException& other) throw();
 	virtual ~StdException() throw();
@@ -54,15 +54,15 @@ public:
 	const char* what() const throw();
 	void swap(StdException& other) throw();
 
-	StdException& set_where(const ft::SourceLocation& where);
+	StdException& set_where(const ft::source_location& where);
 	StdException& set_who(const std::string& who);
 	/**
 	 * @return The unformatted error message, not including information from
 	 * `where()` and `who()`
 	 */
 	const std::string& error() const throw();
-	const ft::Optional<ft::SourceLocation>& where() const throw();
-	const ft::Optional<std::string>& who() const throw();
+	const ft::optional<ft::source_location>& where() const throw();
+	const ft::optional<std::string>& who() const throw();
 
 private:
 	StdException();
@@ -71,8 +71,8 @@ private:
 
 	std::string _what_output;
 	std::string _error;
-	ft::Optional<ft::SourceLocation> _where;
-	ft::Optional<std::string> _who;
+	ft::optional<ft::source_location> _where;
+	ft::optional<std::string> _who;
 };
 
 template <typename BaseException>
