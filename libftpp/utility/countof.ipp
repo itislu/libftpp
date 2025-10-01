@@ -2,7 +2,7 @@
 
 /**
  * Inspiration:
- * https://drdobbs.com/cpp/counting-array-elements-at-compile-time/197800525?pgno=6
+ * https://web.archive.org/web/20141223215212/http://www.drdobbs.com/cpp/counting-array-elements-at-compile-time/197800525?pgno=6
  */
 // clang-format off
 // NOLINTBEGIN
@@ -18,11 +18,11 @@ namespace _countof {
 
 struct Bad_arg_to_COUNTOF {
 public:
-	struct IsPointer; // intentionally incomplete type
+	struct IsPointer; // Intentionally incomplete type.
 	struct IsArray {};
 
 	template <typename T>
-	static IsPointer check_type(const volatile T*, const volatile T**);
+	static IsPointer check_type(T*, T* const volatile*);
 	static IsArray check_type(const volatile void*, const volatile void*);
 };
 

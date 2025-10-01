@@ -20,7 +20,7 @@
  * manner
  *
  * Inspiration:
- * https://drdobbs.com/cpp/counting-array-elements-at-compile-time/197800525?pgno=6
+ * https://web.archive.org/web/20141223215212/http://www.drdobbs.com/cpp/counting-array-elements-at-compile-time/197800525?pgno=6
  */
 #define COUNTOF(ARRAY) COUNTOF_IMPL(ARRAY)
 
