@@ -1,7 +1,7 @@
 // IWYU pragma: private; include "libftpp/numeric.hpp"
 #pragma once
 
-#include "libftpp/Expected.hpp"
+#include "libftpp/expected.hpp"
 #include "libftpp/numeric.hpp"
 #include "libftpp/type_traits.hpp"
 #include <cmath>
@@ -43,14 +43,14 @@ To numeric_cast(From from)
 }
 
 template <typename To, typename From>
-ft::Expected<To, ft::NumericCastException>
+ft::expected<To, ft::NumericCastException>
 numeric_cast(From from, std::nothrow_t /*unused*/)
 {
 	try {
 		return ft::numeric_cast<To>(from);
 	}
 	catch (const NumericCastException& e) {
-		return ft::Unexpected<NumericCastException>(e);
+		return ft::unexpected<NumericCastException>(e);
 	}
 }
 

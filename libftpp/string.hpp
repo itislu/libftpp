@@ -1,7 +1,7 @@
 #pragma once
 
 #include "libftpp/Exception.hpp"
-#include "libftpp/Expected.hpp"
+#include "libftpp/expected.hpp"
 #include <cstddef>
 #include <ios>
 #include <new>
@@ -70,11 +70,11 @@ class FromStringInvalidException;
  * Parsing stops at the first invalid character for the expected format, target
  * type or base.
  *
- * Overloads with the `nothrow` parameter return a `ft::Expected` and do not
+ * Overloads with the `nothrow` parameter return a `ft::expected` and do not
  * throw exceptions on conversion errors.
  *
  * @return For throwing overloads: The converted value of type `To`
- * @return For non-throwing overloads: A `ft::Expected<To,
+ * @return For non-throwing overloads: A `ft::expected<To,
  * ft::FromStringException>` containing the converted value on success, or a
  * `ft::FromStringException` on failure
  *
@@ -113,7 +113,7 @@ To from_string(const std::string& str,
  * overload
  */
 template <typename To>
-ft::Expected<To, ft::FromStringException>
+ft::expected<To, ft::FromStringException>
 from_string(const std::string& str,
             std::nothrow_t nothrow,
             std::string::size_type* endpos_out = NULL);
@@ -126,7 +126,7 @@ from_string(const std::string& str,
  * overload
  */
 template <typename To>
-ft::Expected<To, ft::FromStringException>
+ft::expected<To, ft::FromStringException>
 from_string(const std::string& str,
             std::ios::fmtflags fmt,
             std::nothrow_t nothrow,

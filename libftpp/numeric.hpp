@@ -1,7 +1,7 @@
 #pragma once
 
 #include "libftpp/Exception.hpp"
-#include "libftpp/Expected.hpp"
+#include "libftpp/expected.hpp"
 #include "libftpp/type_traits.hpp"
 #include <new>
 #include <string>
@@ -51,18 +51,18 @@ To numeric_cast(From from);
  * undefined behavior.
  *
  * This is the non-throwing version of the `numeric_cast` function.
- * Instead of throwing exceptions on failure, it returns a `ft::Expected`.
+ * Instead of throwing exceptions on failure, it returns a `ft::expected`.
  * To use it, pass `std::nothrow` as a tag to indicate the non-throwing
  * behavior.
  *
  * @tparam To The target type to convert to
  * @tparam From The source type to convert from
  * @param from The value to be converted
- * @return A `ft::Expected<To, ft::NumericCastException>` with the converted
+ * @return A `ft::expected<To, ft::NumericCastException>` with the converted
  * value on success, or a `ft::NumericCastException` on failure
  */
 template <typename To, typename From>
-ft::Expected<To, ft::NumericCastException>
+ft::expected<To, ft::NumericCastException>
 numeric_cast(From from, std::nothrow_t /*nothrow*/);
 
 class NumericCastException : public ft::Exception {
@@ -93,43 +93,43 @@ class ArithmeticDivisionByZeroException;
 /**
  * @brief Checked integer addition, guaranteeing no undefined behavior
  *
- * @return A `ft::Expected<T, ft::ArithmeticException>` with the result of the
+ * @return A `ft::expected<T, ft::ArithmeticException>` with the result of the
  * addition on success, or a `ft::ArithmeticException` if the addition would
  * overflow
  */
 template <typename T>
 REQUIRES(ft::is_integral<T>::value)
-((ft::Expected<T, ArithmeticException>)) add_checked(T x, T y);
+((ft::expected<T, ArithmeticException>)) add_checked(T x, T y);
 /**
  * @brief Checked integer subtraction, guaranteeing no undefined behavior
  *
- * @return A `ft::Expected<T, ft::ArithmeticException>` with the result of the
+ * @return A `ft::expected<T, ft::ArithmeticException>` with the result of the
  * subtraction on success, or a `ft::ArithmeticException` if the subtraction
  * would overflow
  */
 template <typename T>
 REQUIRES(ft::is_integral<T>::value)
-((ft::Expected<T, ArithmeticException>)) sub_checked(T x, T y);
+((ft::expected<T, ArithmeticException>)) sub_checked(T x, T y);
 /**
  * @brief Checked integer multiplication, guaranteeing no undefined behavior
  *
- * @return A `ft::Expected<T, ft::ArithmeticException>` with the result of the
+ * @return A `ft::expected<T, ft::ArithmeticException>` with the result of the
  * multiplication on success, or a `ft::ArithmeticException` if the
  * multiplication would overflow
  */
 template <typename T>
 REQUIRES(ft::is_integral<T>::value)
-((ft::Expected<T, ArithmeticException>)) mul_checked(T x, T y);
+((ft::expected<T, ArithmeticException>)) mul_checked(T x, T y);
 /**
  * @brief Checked integer division, guaranteeing no undefined behavior
  *
- * @return A `ft::Expected<T, ft::ArithmeticException>` with the result of the
+ * @return A `ft::expected<T, ft::ArithmeticException>` with the result of the
  * division on success, or a `ft::ArithmeticException` if the division would
  * overflow or `y == 0`
  */
 template <typename T>
 REQUIRES(ft::is_integral<T>::value)
-((ft::Expected<T, ArithmeticException>)) div_checked(T x, T y);
+((ft::expected<T, ArithmeticException>)) div_checked(T x, T y);
 
 /**
  * https://en.cppreference.com/w/cpp/numeric/add_sat
