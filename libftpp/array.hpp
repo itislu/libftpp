@@ -17,7 +17,7 @@ namespace ft {
 namespace _array {
 
 template <typename T, std::size_t N>
-struct Impl {
+struct impl {
 	typedef T Type[MAX(N, 1)];
 
 	static T& ref(const Type& t, std::size_t n) throw();
@@ -80,7 +80,7 @@ struct array {
 	void fill(const T& value);
 	void swap(array& other);
 
-	typename _array::Impl<T, N>::Type
+	typename _array::impl<T, N>::Type
 	    _elems; // NOLINT: Public to allow aggregate initialization
 };
 

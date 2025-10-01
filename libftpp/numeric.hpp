@@ -1,6 +1,6 @@
 #pragma once
 
-#include "libftpp/Exception.hpp"
+#include "libftpp/exception.hpp"
 #include "libftpp/expected.hpp"
 #include "libftpp/type_traits.hpp"
 #include <new>
@@ -17,9 +17,9 @@ unsigned long abs_diff(long a, long b) throw();
 
 /* numeric_cast */
 
-class NumericCastException;
-class NumericCastNegativeOverflowException;
-class NumericCastPositiveOverflowException;
+class numeric_cast_exception;
+class numeric_cast_negative_overflow_exception;
+class numeric_cast_positive_overflow_exception;
 
 /**
  * @brief Safely converts numeric values between different types
@@ -33,12 +33,12 @@ class NumericCastPositiveOverflowException;
  * @param from The value to be converted
  * @return The converted value
  *
- * @throws ft::NumericCastException When the conversion is invalid (e.g., NaN to
- * integer)
- * @throws ft::NumericCastNegativeOverflowException When a value is too low for
- * the target type
- * @throws ft::NumericCastPositiveOverflowException When a value is too high for
- * the target type
+ * @throws ft::numeric_cast_exception When the conversion is invalid (e.g., NaN
+ * to integer)
+ * @throws ft::numeric_cast_negative_overflow_exception When a value is too low
+ * for the target type
+ * @throws ft::numeric_cast_positive_overflow_exception When a value is too high
+ * for the target type
  */
 template <typename To, typename From>
 To numeric_cast(From from);
@@ -58,78 +58,78 @@ To numeric_cast(From from);
  * @tparam To The target type to convert to
  * @tparam From The source type to convert from
  * @param from The value to be converted
- * @return A `ft::expected<To, ft::NumericCastException>` with the converted
- * value on success, or a `ft::NumericCastException` on failure
+ * @return A `ft::expected<To, ft::numeric_cast_exception>` with the converted
+ * value on success, or a `ft::numeric_cast_exception` on failure
  */
 template <typename To, typename From>
-ft::expected<To, ft::NumericCastException>
+ft::expected<To, ft::numeric_cast_exception>
 numeric_cast(From from, std::nothrow_t /*nothrow*/);
 
-class NumericCastException : public ft::Exception {
+class numeric_cast_exception : public ft::exception {
 public:
-	NumericCastException();
-	explicit NumericCastException(const std::string& msg);
+	numeric_cast_exception();
+	explicit numeric_cast_exception(const std::string& msg);
 };
 
-class NumericCastNegativeOverflowException : public NumericCastException {
+class numeric_cast_negative_overflow_exception : public numeric_cast_exception {
 public:
-	NumericCastNegativeOverflowException();
+	numeric_cast_negative_overflow_exception();
 };
 
-class NumericCastPositiveOverflowException : public NumericCastException {
+class numeric_cast_positive_overflow_exception : public numeric_cast_exception {
 public:
-	NumericCastPositiveOverflowException();
+	numeric_cast_positive_overflow_exception();
 };
 
 /* Arithmetic */
 
 // https://wiki.sei.cmu.edu/confluence/display/c/INT32-C.+Ensure+that+operations+on+signed+integers+do+not+result+in+overflow
 
-class ArithmeticException;
-class ArithmeticNegativeOverflowException;
-class ArithmeticPositiveOverflowException;
-class ArithmeticDivisionByZeroException;
+class arithmetic_exception;
+class arithmetic_negative_overflow_exception;
+class arithmetic_positive_overflow_exception;
+class arithmetic_division_by_zero_exception;
 
 /**
  * @brief Checked integer addition, guaranteeing no undefined behavior
  *
- * @return A `ft::expected<T, ft::ArithmeticException>` with the result of the
- * addition on success, or a `ft::ArithmeticException` if the addition would
+ * @return A `ft::expected<T, ft::arithmetic_exception>` with the result of the
+ * addition on success, or a `ft::arithmetic_exception` if the addition would
  * overflow
  */
 template <typename T>
 REQUIRES(ft::is_integral<T>::value)
-((ft::expected<T, ArithmeticException>)) add_checked(T x, T y);
+((ft::expected<T, arithmetic_exception>)) add_checked(T x, T y);
 /**
  * @brief Checked integer subtraction, guaranteeing no undefined behavior
  *
- * @return A `ft::expected<T, ft::ArithmeticException>` with the result of the
- * subtraction on success, or a `ft::ArithmeticException` if the subtraction
+ * @return A `ft::expected<T, ft::arithmetic_exception>` with the result of the
+ * subtraction on success, or a `ft::arithmetic_exception` if the subtraction
  * would overflow
  */
 template <typename T>
 REQUIRES(ft::is_integral<T>::value)
-((ft::expected<T, ArithmeticException>)) sub_checked(T x, T y);
+((ft::expected<T, arithmetic_exception>)) sub_checked(T x, T y);
 /**
  * @brief Checked integer multiplication, guaranteeing no undefined behavior
  *
- * @return A `ft::expected<T, ft::ArithmeticException>` with the result of the
- * multiplication on success, or a `ft::ArithmeticException` if the
+ * @return A `ft::expected<T, ft::arithmetic_exception>` with the result of the
+ * multiplication on success, or a `ft::arithmetic_exception` if the
  * multiplication would overflow
  */
 template <typename T>
 REQUIRES(ft::is_integral<T>::value)
-((ft::expected<T, ArithmeticException>)) mul_checked(T x, T y);
+((ft::expected<T, arithmetic_exception>)) mul_checked(T x, T y);
 /**
  * @brief Checked integer division, guaranteeing no undefined behavior
  *
- * @return A `ft::expected<T, ft::ArithmeticException>` with the result of the
- * division on success, or a `ft::ArithmeticException` if the division would
+ * @return A `ft::expected<T, ft::arithmetic_exception>` with the result of the
+ * division on success, or a `ft::arithmetic_exception` if the division would
  * overflow or `y == 0`
  */
 template <typename T>
 REQUIRES(ft::is_integral<T>::value)
-((ft::expected<T, ArithmeticException>)) div_checked(T x, T y);
+((ft::expected<T, arithmetic_exception>)) div_checked(T x, T y);
 
 /**
  * https://en.cppreference.com/w/cpp/numeric/add_sat
@@ -165,9 +165,9 @@ REQUIRES(ft::is_integral<T>::value)
 /**
  * @brief Throwing integer addition, guaranteeing no undefined behavior
  *
- * @throws ft::ArithmeticNegativeOverflowException When the result of the
+ * @throws ft::arithmetic_negative_overflow_exception When the result of the
  * addition would be lower than the lowest representable value of `T`
- * @throws ft::ArithmeticPositiveOverflowException When the result of the
+ * @throws ft::arithmetic_positive_overflow_exception When the result of the
  * addition would be greater than the highest representable value of `T`
  */
 template <typename T>
@@ -176,9 +176,9 @@ REQUIRES(ft::is_integral<T>::value)
 /**
  * @brief Throwing integer subtraction, guaranteeing no undefined behavior
  *
- * @throws ft::ArithmeticNegativeOverflowException When the result of the
+ * @throws ft::arithmetic_negative_overflow_exception When the result of the
  * subtraction would be lower than the lowest representable value of `T`
- * @throws ft::ArithmeticPositiveOverflowException When the result of the
+ * @throws ft::arithmetic_positive_overflow_exception When the result of the
  * subtraction would be greater than the highest representable value of `T`
  */
 template <typename T>
@@ -187,9 +187,9 @@ REQUIRES(ft::is_integral<T>::value)
 /**
  * @brief Throwing integer multiplication, guaranteeing no undefined behavior
  *
- * @throws ft::ArithmeticNegativeOverflowException When the result of the
+ * @throws ft::arithmetic_negative_overflow_exception When the result of the
  * multiplication would be lower than the lowest representable value of `T`
- * @throws ft::ArithmeticPositiveOverflowException When the result of the
+ * @throws ft::arithmetic_positive_overflow_exception When the result of the
  * multiplication would be greater than the highest representable value of `T`
  */
 template <typename T>
@@ -198,32 +198,32 @@ REQUIRES(ft::is_integral<T>::value)
 /**
  * @brief Throwing integer division, guaranteeing no undefined behavior
  *
- * @throws ft::ArithmeticPositiveOverflowException When the result of the
+ * @throws ft::arithmetic_positive_overflow_exception When the result of the
  * division would be greater than the highest representable value of `T`
- * @throws ft::ArithmeticDivisionByZeroException When `y == 0`
+ * @throws ft::arithmetic_division_by_zero_exception When `y == 0`
  */
 template <typename T>
 REQUIRES(ft::is_integral<T>::value)
 (T) div_throw(T x, T y);
 
-class ArithmeticException : public ft::Exception {
+class arithmetic_exception : public ft::exception {
 public:
-	ArithmeticException(const std::string& msg, const std::string& who);
+	arithmetic_exception(const std::string& msg, const std::string& who);
 };
 
-class ArithmeticNegativeOverflowException : public ArithmeticException {
+class arithmetic_negative_overflow_exception : public arithmetic_exception {
 public:
-	explicit ArithmeticNegativeOverflowException(const std::string& who);
+	explicit arithmetic_negative_overflow_exception(const std::string& who);
 };
 
-class ArithmeticPositiveOverflowException : public ArithmeticException {
+class arithmetic_positive_overflow_exception : public arithmetic_exception {
 public:
-	explicit ArithmeticPositiveOverflowException(const std::string& who);
+	explicit arithmetic_positive_overflow_exception(const std::string& who);
 };
 
-class ArithmeticDivisionByZeroException : public ArithmeticException {
+class arithmetic_division_by_zero_exception : public arithmetic_exception {
 public:
-	explicit ArithmeticDivisionByZeroException(const std::string& who);
+	explicit arithmetic_division_by_zero_exception(const std::string& who);
 };
 
 /* Numeric algorithms */

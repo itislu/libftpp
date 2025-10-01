@@ -1,7 +1,7 @@
 #pragma once
 
-#include "libftpp/SafeBool.hpp"
 #include "libftpp/assert.hpp"
+#include "libftpp/safe_bool.hpp"
 #include "libftpp/type_traits.hpp"
 #include <exception>
 
@@ -14,7 +14,7 @@ class bad_optional_access;
  * https://en.cppreference.com/w/cpp/utility/optional
  */
 template <typename T>
-class optional : public ft::SafeBool<optional<T> > {
+class optional : public ft::safe_bool<optional<T> > {
 private:
 	STATIC_ASSERT( // T must not be a reference type
 	    !ft::is_reference<T>::value);

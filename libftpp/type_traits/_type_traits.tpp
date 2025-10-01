@@ -9,19 +9,19 @@ namespace _type_traits {
 
 namespace _type_or_null {
 template <typename T, typename = void>
-struct Impl;
+struct impl;
 } // namespace _type_or_null
 
 template <typename T>
-struct type_or_null : _type_or_null::Impl<T> {};
+struct type_or_null : _type_or_null::impl<T> {};
 
 namespace _type_or_null {
 
 template <typename T, typename /*= void*/>
-struct Impl : type_identity<null_type> {};
+struct impl : type_identity<null_type> {};
 
 template <typename T>
-struct Impl<T, typename voider<typename T::type>::type>
+struct impl<T, typename voider<typename T::type>::type>
     : type_identity<typename T::type> {};
 
 } // namespace _type_or_null

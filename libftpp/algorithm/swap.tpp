@@ -8,7 +8,7 @@ namespace ft {
 
 namespace _swap {
 template <typename T, bool HasSwap>
-struct Impl {
+struct impl {
 	static void swap(T& a, T& b);
 };
 } // namespace _swap
@@ -16,7 +16,7 @@ struct Impl {
 template <typename T>
 void swap(T& a, T& b)
 {
-	_swap::Impl<T, ft::has_member_function_swap<T>::value>::swap(a, b);
+	_swap::impl<T, ft::has_member_function_swap<T>::value>::swap(a, b);
 }
 
 template <typename ForwardIt1, typename ForwardIt2>
@@ -40,7 +40,7 @@ namespace _swap {
  * Use the type's swap method.
  */
 template <typename T>
-struct Impl<T, true> {
+struct impl<T, true> {
 	static void swap(T& a, T& b) { a.swap(b); }
 };
 
@@ -48,7 +48,7 @@ struct Impl<T, true> {
  * Manual swap implementation for types that do not have a swap method.
  */
 template <typename T>
-struct Impl<T, false> {
+struct impl<T, false> {
 	static void swap(T& a, T& b)
 	{
 		T tmp = a;

@@ -22,7 +22,7 @@ To fp_to_fp(From from);
 template <typename To, typename From>
 To int_to_fp(From from);
 template <typename To, typename From>
-struct Impl {
+struct impl {
 	static To try_cast(From from);
 };
 } // namespace _numeric_cast
@@ -43,14 +43,14 @@ To numeric_cast(From from)
 }
 
 template <typename To, typename From>
-ft::expected<To, ft::NumericCastException>
+ft::expected<To, ft::numeric_cast_exception>
 numeric_cast(From from, std::nothrow_t /*unused*/)
 {
 	try {
 		return ft::numeric_cast<To>(from);
 	}
-	catch (const NumericCastException& e) {
-		return ft::unexpected<NumericCastException>(e);
+	catch (const numeric_cast_exception& e) {
+		return ft::unexpected<numeric_cast_exception>(e);
 	}
 }
 
@@ -60,21 +60,21 @@ template <typename To, typename From>
 To int_to_int(From from)
 {
 	if (!std::numeric_limits<To>::is_signed && from < 0) {
-		throw NumericCastNegativeOverflowException();
+		throw numeric_cast_negative_overflow_exception();
 	}
-	return Impl<To, From>::try_cast(from);
+	return impl<To, From>::try_cast(from);
 }
 
 template <typename To, typename From>
 To fp_to_int(From from)
 {
 	if (std::isnan(from)) {
-		throw NumericCastException();
+		throw numeric_cast_exception();
 	}
 	if (!std::numeric_limits<To>::is_signed && from < 0) {
-		throw NumericCastNegativeOverflowException();
+		throw numeric_cast_negative_overflow_exception();
 	}
-	return Impl<To, From>::try_cast(from);
+	return impl<To, From>::try_cast(from);
 }
 
 template <typename To, typename From>
@@ -83,24 +83,24 @@ To fp_to_fp(From from)
 	if (std::isinf(from) || std::isnan(from)) {
 		return static_cast<To>(from);
 	}
-	return Impl<To, From>::try_cast(from);
+	return impl<To, From>::try_cast(from);
 }
 
 template <typename To, typename From>
 To int_to_fp(From from)
 {
-	return Impl<To, From>::try_cast(from);
+	return impl<To, From>::try_cast(from);
 }
 
 template <typename To, typename From>
-To Impl<To, From>::try_cast(From from)
+To impl<To, From>::try_cast(From from)
 {
 	To to;
 	std::stringstream ss;
 	ss << std::fixed << from;
 	if (!(ss >> to)) {
-		from < 0 ? throw NumericCastNegativeOverflowException()
-		         : throw NumericCastPositiveOverflowException();
+		from < 0 ? throw numeric_cast_negative_overflow_exception()
+		         : throw numeric_cast_positive_overflow_exception();
 	}
 	return static_cast<To>(from);
 }
@@ -112,68 +112,68 @@ To Impl<To, From>::try_cast(From from)
  */
 
 template <typename From>
-struct Impl<char, From> {
+struct impl<char, From> {
 	static char try_cast(From from)
 	{
 		int to; // NOLINT(cppcoreguidelines-init-variables)
 		std::stringstream ss;
 		ss << std::fixed << from;
 		if (!(ss >> to)) {
-			from < 0 ? throw NumericCastNegativeOverflowException()
-			         : throw NumericCastPositiveOverflowException();
+			from < 0 ? throw numeric_cast_negative_overflow_exception()
+			         : throw numeric_cast_positive_overflow_exception();
 		}
 		if (to > std::numeric_limits<char>::max()) {
-			throw NumericCastPositiveOverflowException();
+			throw numeric_cast_positive_overflow_exception();
 		}
 		if (to < std::numeric_limits<char>::min()) {
-			throw NumericCastNegativeOverflowException();
+			throw numeric_cast_negative_overflow_exception();
 		}
 		return static_cast<char>(from);
 	}
 };
 
 template <typename From>
-struct Impl<unsigned char, From> {
+struct impl<unsigned char, From> {
 	static unsigned char try_cast(From from)
 	{
 		unsigned int to; // NOLINT(cppcoreguidelines-init-variables)
 		std::stringstream ss;
 		ss << std::fixed << from;
 		if (!(ss >> to)) {
-			from < 0 ? throw NumericCastNegativeOverflowException()
-			         : throw NumericCastPositiveOverflowException();
+			from < 0 ? throw numeric_cast_negative_overflow_exception()
+			         : throw numeric_cast_positive_overflow_exception();
 		}
 		if (to > std::numeric_limits<unsigned char>::max()) {
-			throw NumericCastPositiveOverflowException();
+			throw numeric_cast_positive_overflow_exception();
 		}
 		return static_cast<unsigned char>(from);
 	}
 };
 
 template <typename To>
-struct Impl<To, char> {
+struct impl<To, char> {
 	static To try_cast(char from)
 	{
 		To to;
 		std::stringstream ss;
 		ss << static_cast<int>(from);
 		if (!(ss >> to)) {
-			from < 0 ? throw NumericCastNegativeOverflowException()
-			         : throw NumericCastPositiveOverflowException();
+			from < 0 ? throw numeric_cast_negative_overflow_exception()
+			         : throw numeric_cast_positive_overflow_exception();
 		}
 		return static_cast<To>(from);
 	}
 };
 
 template <typename To>
-struct Impl<To, unsigned char> {
+struct impl<To, unsigned char> {
 	static To try_cast(unsigned char from)
 	{
 		To to;
 		std::stringstream ss;
 		ss << static_cast<unsigned int>(from);
 		if (!(ss >> to)) {
-			throw NumericCastPositiveOverflowException();
+			throw numeric_cast_positive_overflow_exception();
 		}
 		return static_cast<To>(from);
 	}
