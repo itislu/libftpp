@@ -1,8 +1,8 @@
-// IWYU pragma: private; include "libftpp/Exception.hpp"
+// IWYU pragma: private; include "libftpp/exception.hpp"
 #pragma once
 
-#include "libftpp/Exception.hpp"
 #include "libftpp/algorithm.hpp"
+#include "libftpp/exception.hpp"
 #include "libftpp/optional.hpp"
 #include "libftpp/source_location.hpp"
 #include <string>
@@ -10,15 +10,15 @@
 namespace ft {
 
 template <typename BaseException>
-StdException<BaseException>::StdException(const std::string& error)
+std_exception<BaseException>::std_exception(const std::string& error)
     : _error(error)
 {
 	_update_what_output();
 }
 
 template <typename BaseException>
-StdException<BaseException>::StdException(const std::string& error,
-                                          const ft::source_location& where)
+std_exception<BaseException>::std_exception(const std::string& error,
+                                            const ft::source_location& where)
     : _error(error),
       _where(where)
 {
@@ -26,8 +26,8 @@ StdException<BaseException>::StdException(const std::string& error,
 }
 
 template <typename BaseException>
-StdException<BaseException>::StdException(const std::string& error,
-                                          const std::string& who)
+std_exception<BaseException>::std_exception(const std::string& error,
+                                            const std::string& who)
     : _error(error),
       _who(!who.empty() ? ft::optional<std::string>(who) : ft::nullopt)
 {
@@ -35,9 +35,9 @@ StdException<BaseException>::StdException(const std::string& error,
 }
 
 template <typename BaseException>
-StdException<BaseException>::StdException(const std::string& error,
-                                          const ft::source_location& where,
-                                          const std::string& who)
+std_exception<BaseException>::std_exception(const std::string& error,
+                                            const ft::source_location& where,
+                                            const std::string& who)
     : _error(error),
       _where(where),
       _who(!who.empty() ? ft::optional<std::string>(who) : ft::nullopt)
@@ -46,54 +46,54 @@ StdException<BaseException>::StdException(const std::string& error,
 }
 
 template <typename BaseException>
-StdException<BaseException>::StdException(const StdException& other) throw()
+std_exception<BaseException>::std_exception(const std_exception& other) throw()
 {
 	try {
 		_what_output = other._what_output;
 	}
 	catch (...) {
-		// EMPTY: Exception objects should be nothrow constructable
+		// EMPTY: Exception objects should be nothrow constructable.
 	}
 	try {
 		_error = other._error;
 	}
 	catch (...) {
-		// EMPTY: Exception objects should be nothrow constructable
+		// EMPTY: Exception objects should be nothrow constructable.
 	}
 	try {
 		_where = other._where;
 	}
 	catch (...) {
-		// EMPTY: Exception objects should be nothrow constructable
+		// EMPTY: Exception objects should be nothrow constructable.
 	}
 	try {
 		_who = other._who;
 	}
 	catch (...) {
-		// EMPTY: Exception objects should be nothrow constructable
+		// EMPTY: Exception objects should be nothrow constructable.
 	}
 }
 
 template <typename BaseException>
-StdException<BaseException>::~StdException() throw()
+std_exception<BaseException>::~std_exception() throw()
 {}
 
 template <typename BaseException>
-StdException<BaseException>&
-StdException<BaseException>::operator=(StdException other) throw()
+std_exception<BaseException>&
+std_exception<BaseException>::operator=(std_exception other) throw()
 {
 	swap(other);
 	return *this;
 }
 
 template <typename BaseException>
-const char* StdException<BaseException>::what() const throw()
+const char* std_exception<BaseException>::what() const throw()
 {
 	return _what_output.c_str();
 }
 
 template <typename BaseException>
-void StdException<BaseException>::swap(StdException& other) throw()
+void std_exception<BaseException>::swap(std_exception& other) throw()
 {
 	ft::swap(_what_output, other._what_output);
 	ft::swap(_error, other._error);
@@ -102,8 +102,8 @@ void StdException<BaseException>::swap(StdException& other) throw()
 }
 
 template <typename BaseException>
-StdException<BaseException>&
-StdException<BaseException>::set_where(const ft::source_location& where)
+std_exception<BaseException>&
+std_exception<BaseException>::set_where(const ft::source_location& where)
 {
 	_where = where;
 	_update_what_output();
@@ -111,8 +111,8 @@ StdException<BaseException>::set_where(const ft::source_location& where)
 }
 
 template <typename BaseException>
-StdException<BaseException>&
-StdException<BaseException>::set_who(const std::string& who)
+std_exception<BaseException>&
+std_exception<BaseException>::set_who(const std::string& who)
 {
 	if (who.empty()) {
 		_who.reset();
@@ -125,27 +125,27 @@ StdException<BaseException>::set_who(const std::string& who)
 }
 
 template <typename BaseException>
-const std::string& StdException<BaseException>::error() const throw()
+const std::string& std_exception<BaseException>::error() const throw()
 {
 	return _error;
 }
 
 template <typename BaseException>
 const ft::optional<ft::source_location>&
-StdException<BaseException>::where() const throw()
+std_exception<BaseException>::where() const throw()
 {
 	return _where;
 }
 
 template <typename BaseException>
-const ft::optional<std::string>& StdException<BaseException>::who() const
+const ft::optional<std::string>& std_exception<BaseException>::who() const
     throw()
 {
 	return _who;
 }
 
 template <typename BaseException>
-void StdException<BaseException>::_update_what_output()
+void std_exception<BaseException>::_update_what_output()
 {
 	_what_output.clear();
 	if (_where.has_value()) {
@@ -160,8 +160,8 @@ void StdException<BaseException>::_update_what_output()
 }
 
 template <typename BaseException>
-void swap(StdException<BaseException>& lhs,
-          StdException<BaseException>& rhs) throw()
+void swap(std_exception<BaseException>& lhs,
+          std_exception<BaseException>& rhs) throw()
 {
 	lhs.swap(rhs);
 }

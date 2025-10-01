@@ -1,6 +1,6 @@
 #pragma once
 
-#include "libftpp/Exception.hpp"
+#include "libftpp/exception.hpp"
 #include "libftpp/expected.hpp"
 #include <cstddef>
 #include <ios>
@@ -42,9 +42,9 @@ bool ends_with(const std::basic_string<CharT, Traits, Allocator>& str,
 
 /* from_string */
 
-class FromStringException;
-class FromStringRangeException;
-class FromStringInvalidException;
+class from_string_exception;
+class from_string_range_exception;
+class from_string_invalid_exception;
 
 /**
  * @brief Parses a string and converts it to a value of the specified type `To`
@@ -75,17 +75,17 @@ class FromStringInvalidException;
  *
  * @return For throwing overloads: The converted value of type `To`
  * @return For non-throwing overloads: A `ft::expected<To,
- * ft::FromStringException>` containing the converted value on success, or a
- * `ft::FromStringException` on failure
+ * ft::from_string_exception>` containing the converted value on success, or a
+ * `ft::from_string_exception` on failure
  *
- * @throws ft::FromStringInvalidException (Throwing overloads only) If the
+ * @throws ft::from_string_invalid_exception (Throwing overloads only) If the
  * string `str` does not represent a valid value for type `To` according to the
  * specified format (e.g., non-numeric characters for an integer, invalid base
  * prefix, or non-boolean string for `bool`)
- * @throws ft::FromStringRangeException (Throwing overloads only) If the parsed
- * value is valid but falls outside the representable range of type `To`. For
- * `bool` using numeric format, this is thrown if the value is numeric but not 1
- * or 0
+ * @throws ft::from_string_range_exception (Throwing overloads only) If the
+ * parsed value is valid but falls outside the representable range of type `To`.
+ * For `bool` using numeric format, this is thrown if the value is numeric but
+ * not 1 or 0
  *
  * @tparam To The target type to convert the string to
  * @param str The input string to parse
@@ -113,7 +113,7 @@ To from_string(const std::string& str,
  * overload
  */
 template <typename To>
-ft::expected<To, ft::FromStringException>
+ft::expected<To, ft::from_string_exception>
 from_string(const std::string& str,
             std::nothrow_t nothrow,
             std::string::size_type* endpos_out = NULL);
@@ -126,56 +126,56 @@ from_string(const std::string& str,
  * overload
  */
 template <typename To>
-ft::expected<To, ft::FromStringException>
+ft::expected<To, ft::from_string_exception>
 from_string(const std::string& str,
             std::ios::fmtflags fmt,
             std::nothrow_t nothrow,
             std::string::size_type* endpos_out = NULL);
 
-class FromStringException : public ft::Exception {
+class from_string_exception : public ft::exception {
 public:
-	FromStringException(const std::string& msg,
-	                    const std::string& input,
-	                    const std::type_info& type_id);
-	FromStringException(const FromStringException& other) throw();
-	~FromStringException() throw();
-	FromStringException& operator=(FromStringException other) throw();
+	from_string_exception(const std::string& msg,
+	                      const std::string& input,
+	                      const std::type_info& type_id);
+	from_string_exception(const from_string_exception& other) throw();
+	~from_string_exception() throw();
+	from_string_exception& operator=(from_string_exception other) throw();
 
 	const std::string& input() const throw();
 	const std::type_info& type_id() const throw();
-	void swap(FromStringException& other) throw();
+	void swap(from_string_exception& other) throw();
 
 private:
-	FromStringException();
+	from_string_exception();
 
 	std::string _input;
 	const std::type_info* _type_id;
 };
 
-class FromStringRangeException : public FromStringException {
+class from_string_range_exception : public from_string_exception {
 public:
-	FromStringRangeException(const std::string& input,
-	                         const std::type_info& type_id);
+	from_string_range_exception(const std::string& input,
+	                            const std::type_info& type_id);
 };
 
-class FromStringInvalidException : public FromStringException {
+class from_string_invalid_exception : public from_string_exception {
 public:
-	FromStringInvalidException(const std::string& input,
-	                           const std::type_info& type_id);
+	from_string_invalid_exception(const std::string& input,
+	                              const std::type_info& type_id);
 };
 
 // NOLINTBEGIN(misc-non-private-member-variables-in-classes)
 
 // Functor
 template <typename T>
-struct FromString {
+struct from_string_fn {
 	T operator()(const std::string& str);
 };
 
 // Functor
 template <typename T>
-struct FromStringFmt {
-	explicit FromStringFmt(std::ios::fmtflags fmt_);
+struct from_string_fmt_fn {
+	explicit from_string_fmt_fn(std::ios::fmtflags fmt_);
 
 	T operator()(const std::string& str);
 
@@ -200,8 +200,8 @@ std::string trim(const std::string& str);
 
 } // namespace ft
 
-#include "libftpp/string/FromString.tpp"  // IWYU pragma: export
-#include "libftpp/string/ends_with.tpp"   // IWYU pragma: export
-#include "libftpp/string/from_string.tpp" // IWYU pragma: export
-#include "libftpp/string/starts_with.tpp" // IWYU pragma: export
-#include "libftpp/string/to_string.tpp"   // IWYU pragma: export
+#include "libftpp/string/ends_with.tpp"      // IWYU pragma: export
+#include "libftpp/string/from_string.tpp"    // IWYU pragma: export
+#include "libftpp/string/from_string_fn.tpp" // IWYU pragma: export
+#include "libftpp/string/starts_with.tpp"    // IWYU pragma: export
+#include "libftpp/string/to_string.tpp"      // IWYU pragma: export

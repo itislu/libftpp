@@ -1,6 +1,6 @@
 #pragma once
 
-#include "libftpp/SafeBool/SafeBoolBase.hpp"
+#include "libftpp/safe_bool/safe_bool_base.hpp"
 
 namespace ft {
 
@@ -14,21 +14,21 @@ namespace ft {
  *
  * Usage:
  * 1. Derive from this class using CRTP idiom:
- *    `class YourClass : public SafeBool<YourClass>`
+ *    `class YourClass : public safe_bool<YourClass>`
  * 2. Implement `bool boolean_test() const throw();`
  */
 template <typename Derived = void>
-class SafeBool : private _safe_bool::SafeBoolBase {
+class safe_bool : private _safe_bool::safe_bool_base {
 public:
 	operator safe_bool_t() const;
 
 protected:
-	SafeBool();
-	~SafeBool();
+	safe_bool();
+	~safe_bool();
 
 private:
-	SafeBool(const SafeBool& /*unused*/);
-	SafeBool& operator=(const SafeBool& /*unused*/);
+	safe_bool(const safe_bool& /*unused*/);
+	safe_bool& operator=(const safe_bool& /*unused*/);
 };
 
 /**
@@ -40,53 +40,53 @@ private:
  *
  * Usage:
  * 1. Derive from this class with no template parameter:
- *    `class YourClass : public SafeBool<>`
+ *    `class YourClass : public safe_bool<>`
  * 2. Implement `bool boolean_test() const throw();`
  *
  * @note If your class is not virtual yet, prefer to give your class as template
  * parameter (CRTP idiom) to avoid your class becoming virtual.
  */
 template <>
-class SafeBool<void> // NOLINT(cppcoreguidelines-virtual-class-destructor)
-    : private _safe_bool::SafeBoolBase {
+class safe_bool<void> // NOLINT(cppcoreguidelines-virtual-class-destructor)
+    : private _safe_bool::safe_bool_base {
 public:
 	operator safe_bool_t() const;
 
 protected:
-	SafeBool();
-	virtual ~SafeBool();
+	safe_bool();
+	virtual ~safe_bool();
 	virtual bool boolean_test() const = 0;
 
 private:
-	SafeBool(const SafeBool& /*unused*/);
-	SafeBool& operator=(const SafeBool& /*unused*/);
+	safe_bool(const safe_bool& /*unused*/);
+	safe_bool& operator=(const safe_bool& /*unused*/);
 };
 
 /**
  * To allow explicit comparison with bool.
  */
 template <typename T>
-bool operator==(const SafeBool<T>& lhs, bool b);
+bool operator==(const safe_bool<T>& lhs, bool b);
 template <typename T>
-bool operator==(bool b, const SafeBool<T>& rhs);
+bool operator==(bool b, const safe_bool<T>& rhs);
 template <typename T>
-bool operator!=(const SafeBool<T>& lhs, bool b);
+bool operator!=(const safe_bool<T>& lhs, bool b);
 template <typename T>
-bool operator!=(bool b, const SafeBool<T>& rhs);
+bool operator!=(bool b, const safe_bool<T>& rhs);
 
 /**
  * To avoid unwanted comparisons with other types.
  */
 template <typename T, typename U>
-bool operator==(const SafeBool<T>& lhs, const U& /*rhs*/);
+bool operator==(const safe_bool<T>& lhs, const U& /*rhs*/);
 template <typename T, typename U>
-bool operator==(const U& /*lhs*/, const SafeBool<T>& rhs);
+bool operator==(const U& /*lhs*/, const safe_bool<T>& rhs);
 template <typename T, typename U>
-bool operator!=(const SafeBool<T>& lhs, const U& /*rhs*/);
+bool operator!=(const safe_bool<T>& lhs, const U& /*rhs*/);
 template <typename T, typename U>
-bool operator!=(const U& /*lhs*/, const SafeBool<T>& rhs);
+bool operator!=(const U& /*lhs*/, const safe_bool<T>& rhs);
 
 } // namespace ft
 
-#include "libftpp/SafeBool/SafeBool.tpp"      // IWYU pragma: export
-#include "libftpp/SafeBool/SafeBool_void.tpp" // IWYU pragma: export
+#include "libftpp/safe_bool/safe_bool.tpp"      // IWYU pragma: export
+#include "libftpp/safe_bool/safe_bool_void.tpp" // IWYU pragma: export

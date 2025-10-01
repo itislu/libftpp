@@ -1,9 +1,9 @@
 // IWYU pragma: private; include "libftpp/optional.hpp"
 #pragma once
 
-#include "libftpp/SafeBool.hpp"
 #include "libftpp/algorithm.hpp"
 #include "libftpp/optional.hpp"
+#include "libftpp/safe_bool.hpp"
 #include <cassert>
 #include <cstddef>
 
@@ -21,7 +21,7 @@ optional<T>::optional(nullopt_t /*unused*/) throw()
 
 template <typename T>
 optional<T>::optional(const optional& other)
-    : ft::SafeBool<optional<T> >(),
+    : ft::safe_bool<optional<T> >(),
       _value(other.has_value() ? new T(*other._value) : NULL)
 {}
 

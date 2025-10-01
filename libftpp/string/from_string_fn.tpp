@@ -8,18 +8,18 @@
 namespace ft {
 
 template <typename T>
-T FromString<T>::operator()(const std::string& str)
+T from_string_fn<T>::operator()(const std::string& str)
 {
 	return ft::from_string<T>(str);
 }
 
 template <typename T>
-FromStringFmt<T>::FromStringFmt(std::ios::fmtflags fmt_)
+from_string_fmt_fn<T>::from_string_fmt_fn(std::ios::fmtflags fmt_)
     : fmt(fmt_)
 {}
 
 template <typename T>
-T FromStringFmt<T>::operator()(const std::string& str)
+T from_string_fmt_fn<T>::operator()(const std::string& str)
 {
 	return ft::from_string<T>(str, fmt);
 }

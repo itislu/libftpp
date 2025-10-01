@@ -1,9 +1,9 @@
 // IWYU pragma: private; include "libftpp/expected.hpp"
 #pragma once
 
-#include "libftpp/SafeBool.hpp"
 #include "libftpp/algorithm.hpp"
 #include "libftpp/expected.hpp"
+#include "libftpp/safe_bool.hpp"
 #include <cassert>
 
 namespace ft {
@@ -18,7 +18,7 @@ expected<T, E>::expected()
 
 template <typename T, typename E>
 expected<T, E>::expected(const expected& other)
-    : ft::SafeBool<expected<T, E> >(),
+    : ft::safe_bool<expected<T, E> >(),
       _has_value(false)
 {
 	if (other._has_value) {

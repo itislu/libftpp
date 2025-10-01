@@ -34,18 +34,18 @@ REQUIRES(ft::is_integral<T>::value)
 
 template <typename T>
 REQUIRES(ft::is_integral<T>::value)
-((ft::expected<T, ArithmeticException>)) add_checked(T x, T y)
+((ft::expected<T, arithmetic_exception>)) add_checked(T x, T y)
 {
 	T result;
 	switch (_arithmetic::add(x, y, &result)) {
 	case _arithmetic::OK:
 		return result;
 	case _arithmetic::NEGATIVE_OVERFLOW:
-		return ft::unexpected<ArithmeticException>(
-		    ArithmeticNegativeOverflowException("ft::add_checked"));
+		return ft::unexpected<arithmetic_exception>(
+		    arithmetic_negative_overflow_exception("ft::add_checked"));
 	case _arithmetic::POSITIVE_OVERFLOW:
-		return ft::unexpected<ArithmeticException>(
-		    ArithmeticPositiveOverflowException("ft::add_checked"));
+		return ft::unexpected<arithmetic_exception>(
+		    arithmetic_positive_overflow_exception("ft::add_checked"));
 	case _arithmetic::DIVISION_BY_ZERO:
 		UNREACHABLE();
 	}
@@ -54,18 +54,18 @@ REQUIRES(ft::is_integral<T>::value)
 
 template <typename T>
 REQUIRES(ft::is_integral<T>::value)
-((ft::expected<T, ArithmeticException>)) sub_checked(T x, T y)
+((ft::expected<T, arithmetic_exception>)) sub_checked(T x, T y)
 {
 	T result;
 	switch (_arithmetic::sub(x, y, &result)) {
 	case _arithmetic::OK:
 		return result;
 	case _arithmetic::NEGATIVE_OVERFLOW:
-		return ft::unexpected<ArithmeticException>(
-		    ArithmeticNegativeOverflowException("ft::sub_checked"));
+		return ft::unexpected<arithmetic_exception>(
+		    arithmetic_negative_overflow_exception("ft::sub_checked"));
 	case _arithmetic::POSITIVE_OVERFLOW:
-		return ft::unexpected<ArithmeticException>(
-		    ArithmeticPositiveOverflowException("ft::sub_checked"));
+		return ft::unexpected<arithmetic_exception>(
+		    arithmetic_positive_overflow_exception("ft::sub_checked"));
 	case _arithmetic::DIVISION_BY_ZERO:
 		UNREACHABLE();
 	}
@@ -74,18 +74,18 @@ REQUIRES(ft::is_integral<T>::value)
 
 template <typename T>
 REQUIRES(ft::is_integral<T>::value)
-((ft::expected<T, ArithmeticException>)) mul_checked(T x, T y)
+((ft::expected<T, arithmetic_exception>)) mul_checked(T x, T y)
 {
 	T result;
 	switch (_arithmetic::mul(x, y, &result)) {
 	case _arithmetic::OK:
 		return result;
 	case _arithmetic::NEGATIVE_OVERFLOW:
-		return ft::unexpected<ArithmeticException>(
-		    ArithmeticNegativeOverflowException("ft::mul_checked"));
+		return ft::unexpected<arithmetic_exception>(
+		    arithmetic_negative_overflow_exception("ft::mul_checked"));
 	case _arithmetic::POSITIVE_OVERFLOW:
-		return ft::unexpected<ArithmeticException>(
-		    ArithmeticPositiveOverflowException("ft::mul_checked"));
+		return ft::unexpected<arithmetic_exception>(
+		    arithmetic_positive_overflow_exception("ft::mul_checked"));
 	case _arithmetic::DIVISION_BY_ZERO:
 		UNREACHABLE();
 	}
@@ -94,7 +94,7 @@ REQUIRES(ft::is_integral<T>::value)
 
 template <typename T>
 REQUIRES(ft::is_integral<T>::value)
-((ft::expected<T, ArithmeticException>)) div_checked(T x, T y)
+((ft::expected<T, arithmetic_exception>)) div_checked(T x, T y)
 {
 	T result;
 	switch (_arithmetic::div(x, y, &result)) {
@@ -103,11 +103,11 @@ REQUIRES(ft::is_integral<T>::value)
 	case _arithmetic::NEGATIVE_OVERFLOW:
 		UNREACHABLE();
 	case _arithmetic::POSITIVE_OVERFLOW:
-		return ft::unexpected<ArithmeticException>(
-		    ArithmeticPositiveOverflowException("ft::div_checked"));
+		return ft::unexpected<arithmetic_exception>(
+		    arithmetic_positive_overflow_exception("ft::div_checked"));
 	case _arithmetic::DIVISION_BY_ZERO:
-		return ft::unexpected<ArithmeticException>(
-		    ArithmeticDivisionByZeroException("ft::div_checked"));
+		return ft::unexpected<arithmetic_exception>(
+		    arithmetic_division_by_zero_exception("ft::div_checked"));
 	}
 	UNREACHABLE();
 }
@@ -203,9 +203,9 @@ REQUIRES(ft::is_integral<T>::value)
 	case _arithmetic::OK:
 		return result;
 	case _arithmetic::NEGATIVE_OVERFLOW:
-		throw ArithmeticNegativeOverflowException("ft::add_throw");
+		throw arithmetic_negative_overflow_exception("ft::add_throw");
 	case _arithmetic::POSITIVE_OVERFLOW:
-		throw ArithmeticPositiveOverflowException("ft::add_throw");
+		throw arithmetic_positive_overflow_exception("ft::add_throw");
 	case _arithmetic::DIVISION_BY_ZERO:
 		UNREACHABLE();
 	}
@@ -221,9 +221,9 @@ REQUIRES(ft::is_integral<T>::value)
 	case _arithmetic::OK:
 		return result;
 	case _arithmetic::NEGATIVE_OVERFLOW:
-		throw ArithmeticNegativeOverflowException("ft::sub_throw");
+		throw arithmetic_negative_overflow_exception("ft::sub_throw");
 	case _arithmetic::POSITIVE_OVERFLOW:
-		throw ArithmeticPositiveOverflowException("ft::sub_throw");
+		throw arithmetic_positive_overflow_exception("ft::sub_throw");
 	case _arithmetic::DIVISION_BY_ZERO:
 		UNREACHABLE();
 	}
@@ -239,9 +239,9 @@ REQUIRES(ft::is_integral<T>::value)
 	case _arithmetic::OK:
 		return result;
 	case _arithmetic::NEGATIVE_OVERFLOW:
-		throw ArithmeticNegativeOverflowException("ft::mul_throw");
+		throw arithmetic_negative_overflow_exception("ft::mul_throw");
 	case _arithmetic::POSITIVE_OVERFLOW:
-		throw ArithmeticPositiveOverflowException("ft::mul_throw");
+		throw arithmetic_positive_overflow_exception("ft::mul_throw");
 	case _arithmetic::DIVISION_BY_ZERO:
 		UNREACHABLE();
 	}
@@ -259,9 +259,9 @@ REQUIRES(ft::is_integral<T>::value)
 	case _arithmetic::NEGATIVE_OVERFLOW:
 		UNREACHABLE();
 	case _arithmetic::POSITIVE_OVERFLOW:
-		throw ArithmeticPositiveOverflowException("ft::div_throw");
+		throw arithmetic_positive_overflow_exception("ft::div_throw");
 	case _arithmetic::DIVISION_BY_ZERO:
-		throw ArithmeticDivisionByZeroException("ft::div_throw");
+		throw arithmetic_division_by_zero_exception("ft::div_throw");
 	}
 	UNREACHABLE();
 }

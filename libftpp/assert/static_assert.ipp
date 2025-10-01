@@ -7,8 +7,8 @@
  * assertion by making it work in all scopes.
  *
  * How it works:
- * 1. `ft::static_assert::Impl<bool(EXPR)>::static_assertion_failure`:
- * The `Impl` template is intentionally left incomplete for the false case.
+ * 1. `ft::static_assert::impl<bool(EXPR)>::static_assertion_failure`:
+ * The `impl` template is intentionally left incomplete for the false case.
  *   - When `EXPR` is true, it resolves to a complete type with a member
  *     `static_assertion_failure` (its value is irrelevant);
  *   - when `EXPR` is false, it resolves to an incomplete type and trying to
@@ -38,17 +38,17 @@
 #define STATIC_ASSERT_IMPL(EXPR)                                          \
 	enum {                                                                \
 		APPEND_UNIQUE_NUM(static_assert_) =                               \
-		    ft::_static_assert::Impl<bool(EXPR)>::static_assertion_failed \
+		    ft::_static_assert::impl<bool(EXPR)>::static_assertion_failed \
 	}
 
 namespace ft {
 namespace _static_assert {
 
 template <bool>
-struct Impl;
+struct impl;
 
 template <>
-struct Impl<true> {
+struct impl<true> {
 	static const bool static_assertion_failed = false;
 };
 

@@ -1,7 +1,7 @@
 #pragma once
 
-#include "libftpp/SafeBool.hpp"
 #include "libftpp/assert.hpp"
+#include "libftpp/safe_bool.hpp"
 #include "libftpp/type_traits.hpp"
 #include <exception>
 
@@ -22,7 +22,7 @@ struct is_unexpected;
  * https://en.cppreference.com/w/cpp/utility/expected
  */
 template <typename T, typename E>
-class expected : public ft::SafeBool<expected<T, E> > {
+class expected : public ft::safe_bool<expected<T, E> > {
 private:
 	STATIC_ASSERT( // T must not be an array type
 	    !ft::is_array<T>::value);
@@ -110,7 +110,7 @@ bool operator!=(const expected<T, E>& lhs, const T2& val);
  * https://en.cppreference.com/w/cpp/utility/expected
  */
 template <typename E>
-class expected<void, E> : public ft::SafeBool<expected<void, E> > {
+class expected<void, E> : public ft::safe_bool<expected<void, E> > {
 private:
 	STATIC_ASSERT( // E must be an object type
 	    ft::is_object<E>::value);

@@ -21,7 +21,7 @@ namespace ft {
 
 namespace _from_string {
 template <typename To, typename = void>
-struct Impl {
+struct impl {
 	static To handle_success(To& res,
 	                         const std::string& str,
 	                         std::ios::fmtflags fmt,
@@ -47,7 +47,7 @@ inline bool from_string<bool>(const std::string& str,
 	try {
 		return ft::from_string<bool>(str, std::ios::boolalpha, endpos_out);
 	}
-	catch (const FromStringException&) {
+	catch (const from_string_exception&) {
 		return ft::from_string<bool>(str, std::ios::fmtflags(), endpos_out);
 	}
 }
@@ -66,21 +66,21 @@ To from_string(const std::string& str,
 	if (iss >> res) {
 		endpos = std::min(static_cast<std::string::size_type>(iss.tellg()),
 		                  str.length());
-		return _from_string::Impl<To>::handle_success(res, str, fmt, endpos);
+		return _from_string::impl<To>::handle_success(res, str, fmt, endpos);
 	}
 
 	/* Error handling */
 	if (ft::is_same<To, bool>::value && fmt & std::ios::boolalpha) {
-		throw FromStringInvalidException(str, typeid(To));
+		throw from_string_invalid_exception(str, typeid(To));
 	}
 	if (!(fmt & std::ios::skipws) && std::isspace(*str.c_str())) {
-		throw FromStringInvalidException(str, typeid(To));
+		throw from_string_invalid_exception(str, typeid(To));
 	}
-	return _from_string::Impl<To>::handle_error(res, str, fmt, endpos);
+	return _from_string::impl<To>::handle_error(res, str, fmt, endpos);
 }
 
 template <typename To>
-ft::expected<To, ft::FromStringException>
+ft::expected<To, ft::from_string_exception>
 from_string(const std::string& str,
             std::nothrow_t /*nothrow*/,
             std::string::size_type* endpos_out /*= NULL*/)
@@ -88,13 +88,13 @@ from_string(const std::string& str,
 	try {
 		return ft::from_string<To>(str, endpos_out);
 	}
-	catch (const FromStringException& e) {
-		return ft::unexpected<FromStringException>(e);
+	catch (const from_string_exception& e) {
+		return ft::unexpected<from_string_exception>(e);
 	}
 }
 
 template <typename To>
-ft::expected<To, ft::FromStringException>
+ft::expected<To, ft::from_string_exception>
 from_string(const std::string& str,
             std::ios::fmtflags fmt,
             std::nothrow_t /*nothrow*/,
@@ -103,15 +103,15 @@ from_string(const std::string& str,
 	try {
 		return ft::from_string<To>(str, fmt, endpos_out);
 	}
-	catch (const FromStringException& e) {
-		return ft::unexpected<FromStringException>(e);
+	catch (const from_string_exception& e) {
+		return ft::unexpected<from_string_exception>(e);
 	}
 }
 
 namespace _from_string {
 
 template <typename To, typename Default /*= void*/>
-To Impl<To, Default>::handle_success(To& res,
+To impl<To, Default>::handle_success(To& res,
                                      const std::string& /*unused*/,
                                      std::ios::fmtflags /*unused*/,
                                      std::string::size_type& /*unused*/)
@@ -120,17 +120,17 @@ To Impl<To, Default>::handle_success(To& res,
 }
 
 template <typename To, typename Default /*= void*/>
-To Impl<To, Default>::handle_error(To& /*unused*/,
+To impl<To, Default>::handle_error(To& /*unused*/,
                                    const std::string& str,
                                    std::ios::fmtflags /*unused*/,
                                    std::string::size_type& /*unused*/)
 {
-	throw FromStringInvalidException(str, typeid(To));
+	throw from_string_invalid_exception(str, typeid(To));
 }
 
 /* integral types */
 template <typename To>
-struct Impl<To, typename ft::enable_if<ft::is_integral<To>::value>::type> {
+struct impl<To, typename ft::enable_if<ft::is_integral<To>::value>::type> {
 	static To handle_success(To& res,
 	                         const std::string& str,
 	                         std::ios::fmtflags /*unused*/,
@@ -162,9 +162,9 @@ struct Impl<To, typename ft::enable_if<ft::is_integral<To>::value>::type> {
 			if (end != NULL) {
 				endpos_out = end - start;
 			}
-			throw FromStringRangeException(str, typeid(To));
+			throw from_string_range_exception(str, typeid(To));
 		}
-		throw FromStringInvalidException(str, typeid(To));
+		throw from_string_invalid_exception(str, typeid(To));
 	}
 
 private:
@@ -185,7 +185,7 @@ private:
 		if (std::find_first_of(
 		        minus, end, ft::begin(_not_zero), ft::prev(ft::end(_not_zero)))
 		    != end) {
-			throw FromStringRangeException(str, typeid(To));
+			throw from_string_range_exception(str, typeid(To));
 		}
 	}
 
@@ -193,12 +193,12 @@ private:
 };
 
 template <typename To>
-const char Impl<To, typename ft::enable_if<ft::is_integral<To>::value>::type>::
+const char impl<To, typename ft::enable_if<ft::is_integral<To>::value>::type>::
     _not_zero[] = "123456789abcdefABCDEF";
 
 /* floating point types */
 template <typename To>
-struct Impl<To,
+struct impl<To,
             typename ft::enable_if<ft::is_floating_point<To>::value>::type> {
 	static To handle_success(To& res,
 	                         const std::string& str,
@@ -235,13 +235,13 @@ struct Impl<To,
 
 		_check_unwanted_scientific_notation(str, fmt, endpos_out);
 		if (errno_local == ERANGE) {
-			throw FromStringRangeException(str, typeid(To));
+			throw from_string_range_exception(str, typeid(To));
 		}
 		// stringstream does not detect special floating point values
 		if (std::isinf(res) || std::isnan(res)) {
 			return res;
 		}
-		throw FromStringInvalidException(str, typeid(To));
+		throw from_string_invalid_exception(str, typeid(To));
 	}
 
 private:
@@ -262,7 +262,7 @@ private:
 		                       ft::prev(ft::end(_scientific_notation)))
 		    != end) {
 			endpos_out = 0; // For consistency with other invalid cases
-			throw FromStringInvalidException(str, typeid(To));
+			throw from_string_invalid_exception(str, typeid(To));
 		}
 	}
 
@@ -271,7 +271,7 @@ private:
 
 template <typename To>
 const char
-    Impl<To, typename ft::enable_if<ft::is_floating_point<To>::value>::type>::
+    impl<To, typename ft::enable_if<ft::is_floating_point<To>::value>::type>::
         _scientific_notation[] = "eEpP";
 
 } // namespace _from_string

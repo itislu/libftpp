@@ -9,19 +9,19 @@ namespace ft {
 /* is_iterator */
 namespace _is_iterator {
 template <typename T, typename = void>
-struct Impl;
+struct impl;
 } // namespace _is_iterator
 
 template <typename T>
-struct is_iterator : _is_iterator::Impl<T> {};
+struct is_iterator : _is_iterator::impl<T> {};
 
 namespace _is_iterator {
 
 template <typename, typename /*= void*/>
-struct Impl : ft::false_type {};
+struct impl : ft::false_type {};
 
 template <typename T>
-struct Impl<T, typename ft::voider<typename T::iterator_category>::type>
+struct impl<T, typename ft::voider<typename T::iterator_category>::type>
     : ft::bool_constant<
           ft::is_same<typename std::iterator_traits<T>::iterator_category,
                       std::input_iterator_tag>::value
@@ -39,17 +39,17 @@ struct Impl<T, typename ft::voider<typename T::iterator_category>::type>
 /* is_input_iterator */
 namespace _is_input_iterator {
 template <typename T>
-struct Impl;
+struct impl;
 } // namespace _is_input_iterator
 
 template <typename T>
 struct is_input_iterator
-    : ft::conjunction<is_iterator<T>, _is_input_iterator::Impl<T> > {};
+    : ft::conjunction<is_iterator<T>, _is_input_iterator::impl<T> > {};
 
 namespace _is_input_iterator {
 
 template <typename T>
-struct Impl
+struct impl
     : ft::is_convertible<typename std::iterator_traits<T>::iterator_category,
                          std::input_iterator_tag> {};
 
@@ -58,17 +58,17 @@ struct Impl
 /* is_output_iterator */
 namespace _is_output_iterator {
 template <typename T>
-struct Impl;
+struct impl;
 } // namespace _is_output_iterator
 
 template <typename T>
 struct is_output_iterator
-    : ft::conjunction<is_iterator<T>, _is_output_iterator::Impl<T> > {};
+    : ft::conjunction<is_iterator<T>, _is_output_iterator::impl<T> > {};
 
 namespace _is_output_iterator {
 
 template <typename T>
-struct Impl
+struct impl
     : ft::is_convertible<typename std::iterator_traits<T>::iterator_category,
                          std::output_iterator_tag> {};
 
@@ -77,17 +77,17 @@ struct Impl
 /* is_forward_iterator */
 namespace _is_forward_iterator {
 template <typename T>
-struct Impl;
+struct impl;
 } // namespace _is_forward_iterator
 
 template <typename T>
 struct is_forward_iterator
-    : ft::conjunction<is_iterator<T>, _is_forward_iterator::Impl<T> > {};
+    : ft::conjunction<is_iterator<T>, _is_forward_iterator::impl<T> > {};
 
 namespace _is_forward_iterator {
 
 template <typename T>
-struct Impl
+struct impl
     : ft::is_convertible<typename std::iterator_traits<T>::iterator_category,
                          std::forward_iterator_tag> {};
 
@@ -96,17 +96,17 @@ struct Impl
 /* is_bidirectional_iterator */
 namespace _is_bidirectional_iterator {
 template <typename T>
-struct Impl;
+struct impl;
 } // namespace _is_bidirectional_iterator
 
 template <typename T>
 struct is_bidirectional_iterator
-    : ft::conjunction<is_iterator<T>, _is_bidirectional_iterator::Impl<T> > {};
+    : ft::conjunction<is_iterator<T>, _is_bidirectional_iterator::impl<T> > {};
 
 namespace _is_bidirectional_iterator {
 
 template <typename T>
-struct Impl
+struct impl
     : ft::is_convertible<typename std::iterator_traits<T>::iterator_category,
                          std::bidirectional_iterator_tag> {};
 
@@ -115,17 +115,17 @@ struct Impl
 /* is_random_access_iterator */
 namespace _is_random_access_iterator {
 template <typename T>
-struct Impl;
+struct impl;
 } // namespace _is_random_access_iterator
 
 template <typename T>
 struct is_random_access_iterator
-    : ft::conjunction<is_iterator<T>, _is_random_access_iterator::Impl<T> > {};
+    : ft::conjunction<is_iterator<T>, _is_random_access_iterator::impl<T> > {};
 
 namespace _is_random_access_iterator {
 
 template <typename T>
-struct Impl
+struct impl
     : ft::is_convertible<typename std::iterator_traits<T>::iterator_category,
                          std::random_access_iterator_tag> {};
 

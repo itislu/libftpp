@@ -16,11 +16,11 @@ namespace operators {
  * 1. Implement `operator<` for your class.
  * 2. Inherit from this struct.
  *
- * This works because `Comparison` acts like a tag, and by inheriting from it it
+ * This works because `comparison` acts like a tag, and by inheriting from it it
  * gives the inheriting class access to the ft::operators namespace, which
  * contains the function templates for the operators.
  */
-struct Comparison {};
+struct comparison {};
 
 template <typename T, typename U>
 bool operator==(const T& lhs, const U& rhs);

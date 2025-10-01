@@ -16,7 +16,7 @@ namespace ft {
 namespace _array {
 
 template <typename T, std::size_t N>
-T& Impl<T, N>::ref(const Type& t, std::size_t n) throw()
+T& impl<T, N>::ref(const Type& t, std::size_t n) throw()
 {
 	STATIC_ASSERT(N > 0); // Cannot index into a zero-sized array
 	/*
@@ -29,7 +29,7 @@ T& Impl<T, N>::ref(const Type& t, std::size_t n) throw()
 }
 
 template <typename T, std::size_t N>
-T* Impl<T, N>::ptr(const Type& t) throw()
+T* impl<T, N>::ptr(const Type& t) throw()
 {
 	if (N == 0) {
 		return NULL;
@@ -55,7 +55,7 @@ typename array<T, N>::reference array<T, N>::at(size_type pos)
 		                        + ft::to_string(pos) + ") >= array size ("
 		                        + ft::to_string(N) + ")");
 	}
-	return _array::Impl<T, MAX(N, 1)>::ref(_elems, pos);
+	return _array::impl<T, MAX(N, 1)>::ref(_elems, pos);
 }
 
 template <typename T, std::size_t N>
@@ -66,14 +66,14 @@ typename array<T, N>::const_reference array<T, N>::at(size_type pos) const
 		                        + ft::to_string(pos) + ") >= array size ("
 		                        + ft::to_string(N) + ")");
 	}
-	return _array::Impl<T, MAX(N, 1)>::ref(_elems, pos);
+	return _array::impl<T, MAX(N, 1)>::ref(_elems, pos);
 }
 
 template <typename T, std::size_t N>
 typename array<T, N>::reference array<T, N>::operator[](size_type pos)
 {
 	assert(pos < N);
-	return _array::Impl<T, N>::ref(_elems, pos);
+	return _array::impl<T, N>::ref(_elems, pos);
 }
 
 template <typename T, std::size_t N>
@@ -81,45 +81,45 @@ typename array<T, N>::const_reference
 array<T, N>::operator[](size_type pos) const
 {
 	assert(pos < N);
-	return _array::Impl<T, N>::ref(_elems, pos);
+	return _array::impl<T, N>::ref(_elems, pos);
 }
 
 template <typename T, std::size_t N>
 typename array<T, N>::reference array<T, N>::front()
 {
-	return _array::Impl<T, N>::ref(_elems, 0);
+	return _array::impl<T, N>::ref(_elems, 0);
 }
 
 template <typename T, std::size_t N>
 typename array<T, N>::const_reference array<T, N>::front() const
 {
-	return _array::Impl<T, N>::ref(_elems, 0);
+	return _array::impl<T, N>::ref(_elems, 0);
 }
 
 template <typename T, std::size_t N>
 typename array<T, N>::reference array<T, N>::back()
 {
-	return N > 0 ? _array::Impl<T, N>::ref(_elems, N - 1)
-	             : _array::Impl<T, N>::ref(_elems, 0);
+	return N > 0 ? _array::impl<T, N>::ref(_elems, N - 1)
+	             : _array::impl<T, N>::ref(_elems, 0);
 }
 
 template <typename T, std::size_t N>
 typename array<T, N>::const_reference array<T, N>::back() const
 {
-	return N > 0 ? _array::Impl<T, N>::ref(_elems, N - 1)
-	             : _array::Impl<T, N>::ref(_elems, 0);
+	return N > 0 ? _array::impl<T, N>::ref(_elems, N - 1)
+	             : _array::impl<T, N>::ref(_elems, 0);
 }
 
 template <typename T, std::size_t N>
 T* array<T, N>::data() throw()
 {
-	return _array::Impl<T, N>::ptr(_elems);
+	return _array::impl<T, N>::ptr(_elems);
 }
 
 template <typename T, std::size_t N>
 const T* array<T, N>::data() const throw()
 {
-	return _array::Impl<T, N>::ptr(_elems);
+	return _array::impl<T, N>::ptr(_elems);
 }
 
 /* Iterators */

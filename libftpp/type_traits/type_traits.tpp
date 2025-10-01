@@ -68,7 +68,7 @@ struct is_void : is_same<typename remove_cv<T>::type, void> {};
 /* is_integral */
 namespace _is_integral {
 template <typename T>
-struct Impl;
+struct impl;
 } // namespace _is_integral
 
 /**
@@ -76,19 +76,19 @@ struct Impl;
  */
 template <typename T>
 struct is_integral
-    : conjunction<can_be_return_type<T>, _is_integral::Impl<T> > {};
+    : conjunction<can_be_return_type<T>, _is_integral::impl<T> > {};
 
 namespace _is_integral {
 
 template <typename T>
-struct Impl : bool_constant<std::numeric_limits<T>::is_integer> {};
+struct impl : bool_constant<std::numeric_limits<T>::is_integer> {};
 
 } // namespace _is_integral
 
 /* is_floating_point */
 namespace _is_floating_point {
 template <typename T>
-struct Impl;
+struct impl;
 } // namespace _is_floating_point
 
 /**
@@ -96,12 +96,12 @@ struct Impl;
  */
 template <typename T>
 struct is_floating_point
-    : conjunction<can_be_return_type<T>, _is_floating_point::Impl<T> > {};
+    : conjunction<can_be_return_type<T>, _is_floating_point::impl<T> > {};
 
 namespace _is_floating_point {
 
 template <typename T>
-struct Impl : bool_constant<std::numeric_limits<T>::is_specialized
+struct impl : bool_constant<std::numeric_limits<T>::is_specialized
                             && !std::numeric_limits<T>::is_integer> {};
 
 } // namespace _is_floating_point
@@ -209,16 +209,16 @@ struct is_abstract : bool_constant<BUILTIN_IS_ABSTRACT(T)> {};
  */
 namespace _is_abstract {
 template <typename T, typename = void>
-struct Impl;
+struct impl;
 } // namespace _is_abstract
 
 template <typename T>
-struct is_abstract : bool_constant<_is_abstract::Impl<T>::value> {};
+struct is_abstract : bool_constant<_is_abstract::impl<T>::value> {};
 
 namespace _is_abstract {
 
 template <typename T, typename /*= void*/>
-struct Impl {
+struct impl {
 private:
 	/**
 	 * T must be a complete type. Further, if T is a template then this also
@@ -241,7 +241,7 @@ public:
  * which also cannot form arrays.
  */
 template <typename T>
-struct Impl<T,
+struct impl<T,
             typename enable_if<is_function<T>::value || is_reference<T>::value
                                || is_unbounded_array<T>::value
                                || is_void<T>::value>::type> : false_type {};
@@ -253,32 +253,32 @@ struct Impl<T,
 /* is_signed */
 namespace _is_signed {
 template <typename T>
-struct Impl;
+struct impl;
 } // namespace _is_signed
 
 template <typename T>
-struct is_signed : conjunction<is_arithmetic<T>, _is_signed::Impl<T> > {};
+struct is_signed : conjunction<is_arithmetic<T>, _is_signed::impl<T> > {};
 
 namespace _is_signed {
 
 template <typename T>
-struct Impl : bool_constant<T(-1) < T(0)> {};
+struct impl : bool_constant<T(-1) < T(0)> {};
 
 } // namespace _is_signed
 
 /* is_unsigned */
 namespace _is_unsigned {
 template <typename T>
-struct Impl;
+struct impl;
 } // namespace _is_unsigned
 
 template <typename T>
-struct is_unsigned : conjunction<is_arithmetic<T>, _is_unsigned::Impl<T> > {};
+struct is_unsigned : conjunction<is_arithmetic<T>, _is_unsigned::impl<T> > {};
 
 namespace _is_unsigned {
 
 template <typename T>
-struct Impl : bool_constant<T(0) < T(-1)> {};
+struct impl : bool_constant<T(0) < T(-1)> {};
 
 } // namespace _is_unsigned
 
@@ -355,11 +355,11 @@ struct is_convertible : bool_constant<BUILTIN_IS_CONVERTIBLE(From, To)> {};
 
 namespace _is_convertible {
 template <typename From, typename To, typename = void>
-struct Impl;
+struct impl;
 } // namespace _is_convertible
 
 template <typename From, typename To>
-struct is_convertible : bool_constant<_is_convertible::Impl<From, To>::value> {
+struct is_convertible : bool_constant<_is_convertible::impl<From, To>::value> {
 };
 
 template <typename From>
@@ -387,7 +387,7 @@ struct is_impossible_array_to_ref;
  * `From` can be implicitly converted to `To`.
  */
 template <typename From, typename To, typename /*= void*/>
-struct Impl {
+struct impl {
 private:
 	/**
 	 * Types that cannot be returned by value are returned by reference instead
@@ -413,7 +413,7 @@ public:
  * incorrect results.
  */
 template <typename From, typename To>
-struct Impl<
+struct impl<
     From,
     To,
     typename enable_if<is_impossible_source<From>::value
@@ -498,19 +498,19 @@ struct remove_reference<T&> : type_identity<T> {};
 /* add_lvalue_reference */
 namespace _add_lvalue_reference {
 template <typename T, typename = void>
-struct Impl;
+struct impl;
 } // namespace _add_lvalue_reference
 
 template <typename T>
-struct add_lvalue_reference : _add_lvalue_reference::Impl<T> {};
+struct add_lvalue_reference : _add_lvalue_reference::impl<T> {};
 
 namespace _add_lvalue_reference {
 
 template <typename T, typename /*= void*/>
-struct Impl : type_identity<T> {};
+struct impl : type_identity<T> {};
 
 template <typename T>
-struct Impl<T, typename voider<T&>::type> : type_identity<T&> {};
+struct impl<T, typename voider<T&>::type> : type_identity<T&> {};
 
 } // namespace _add_lvalue_reference
 
