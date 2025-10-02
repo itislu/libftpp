@@ -176,11 +176,8 @@ private:
 	    !ft::is_const<E>::value && !ft::is_volatile<E>::value);
 
 public:
-	unexpected(const unexpected& other);
 	template <typename Err>
 	explicit unexpected(const Err& e);
-	~unexpected();
-	unexpected& operator=(unexpected other);
 
 	const E& error() const throw();
 	E& error() throw();
@@ -188,8 +185,6 @@ public:
 	void swap(unexpected& other);
 
 private:
-	unexpected();
-
 	E _error;
 };
 
@@ -225,9 +220,6 @@ template <typename E>
 class bad_expected_access : public bad_expected_access<void> {
 public:
 	explicit bad_expected_access(const E& e);
-	bad_expected_access(const bad_expected_access& other);
-	~bad_expected_access() throw();
-	bad_expected_access& operator=(const bad_expected_access& other);
 
 	const E& error() const throw();
 	E& error() throw();

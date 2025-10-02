@@ -6,26 +6,10 @@
 namespace ft {
 
 template <typename E>
-unexpected<E>::unexpected(const unexpected& other)
-    : _error(other._error)
-{}
-
-template <typename E>
 template <typename Err>
 unexpected<E>::unexpected(const Err& e)
     : _error(e)
 {}
-
-template <typename E>
-unexpected<E>::~unexpected()
-{}
-
-template <typename E>
-unexpected<E>& unexpected<E>::operator=(unexpected other)
-{
-	swap(other);
-	return *this;
-}
 
 template <typename E>
 const E& unexpected<E>::error() const throw()

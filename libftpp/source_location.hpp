@@ -25,9 +25,6 @@ public:
 	source_location(uint_least32_t line,
 	                const char* file_name,
 	                const char* function_name) throw();
-	source_location(const source_location& other) throw();
-	~source_location();
-	source_location& operator=(const source_location& other) throw();
 
 	/**
 	 * @return A string in the following format:
