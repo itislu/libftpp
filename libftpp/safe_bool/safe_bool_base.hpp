@@ -6,6 +6,7 @@ namespace _safe_bool {
 class safe_bool_base {
 public:
 	typedef void (safe_bool_base::*safe_bool_t)() const;
+
 	void this_type_does_not_support_comparisons() const;
 
 protected:
