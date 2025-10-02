@@ -75,8 +75,7 @@ struct impl;
  * Short-circuit types which `std::numeric_limits` does not support.
  */
 template <typename T>
-struct is_integral
-    : conjunction<can_be_return_type<T>, _is_integral::impl<T> > {};
+struct is_integral : conjunction<is_returnable<T>, _is_integral::impl<T> > {};
 
 namespace _is_integral {
 
@@ -96,7 +95,7 @@ struct impl;
  */
 template <typename T>
 struct is_floating_point
-    : conjunction<can_be_return_type<T>, _is_floating_point::impl<T> > {};
+    : conjunction<is_returnable<T>, _is_floating_point::impl<T> > {};
 
 namespace _is_floating_point {
 
@@ -394,7 +393,7 @@ private:
 	 * to ensure the expression is well-formed. Conversions where this would
 	 * affect the result are handled in a separate specialization.
 	 */
-	static typename conditional<!can_be_return_type<From>::value,
+	static typename conditional<!is_returnable<From>::value,
 	                            typename add_lvalue_reference<From>::type,
 	                            From>::type
 	make_from();
@@ -636,18 +635,6 @@ struct negation : bool_constant<!bool(B::value)> {};
 
 /* Custom type traits */
 
-/* can_be_return_type */
-/**
- * Because of DR 1646, a lot of compiler versions before P0929R2 behave
- * differently on function declarations and template substitutions. Therefore,
- * using deduction failure to implement this trait would not be reliable.
- * https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0929r2.html
- */
-template <typename T>
-struct can_be_return_type
-    : bool_constant<!is_abstract<T>::value && !is_array<T>::value
-                    && !is_function<T>::value> {};
-
 /**
  * If `T` is a reference type then `is_const<T>::value` is always `false`. The
  * proper way to check a potentially-reference type for constness is to remove
@@ -657,5 +644,17 @@ template <typename T>
 struct is_nonconst_lvalue_reference
     : bool_constant<is_lvalue_reference<T>::value
                     && !is_const<typename remove_reference<T>::type>::value> {};
+
+/* is_returnable */
+/**
+ * Because of DR 1646, a lot of compiler versions before P0929R2 behave
+ * differently on function declarations and template substitutions. Therefore,
+ * using deduction failure to implement this trait would not be reliable.
+ * https://www.open-std.org/jtc1/sc22/wg21/docs/papers/2018/p0929r2.html
+ */
+template <typename T>
+struct is_returnable
+    : bool_constant<!is_abstract<T>::value && !is_array<T>::value
+                    && !is_function<T>::value> {};
 
 } // namespace ft

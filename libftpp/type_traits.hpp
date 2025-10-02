@@ -371,19 +371,6 @@ struct negation;
 
 /* Custom type traits */
 
-/**
- * @brief Checks wether `T` can be a return type of a function.
- *
- * Provides the member constant `value` which is equal to `true`, if `T` is not
- * an abstract class, an array, or a function. Otherwise, `value` is equal to
- * `false`.
- *
- * This trait reflects the type constraints of a function's definition
- * or call, not just its declaration.
- */
-template <typename T>
-struct can_be_return_type;
-
 /* has_member_function_swap */
 HAS_MEMBER_FUNCTION(void, swap, (T&))
 
@@ -398,6 +385,19 @@ HAS_MEMBER_FUNCTION(void, swap, (T&))
  */
 template <typename T>
 struct is_nonconst_lvalue_reference;
+
+/**
+ * @brief Checks wether `T` can be a return type of a function
+ *
+ * Provides the member constant `value` which is equal to `true`, if `T` is not
+ * an abstract class, an array, or a function. Otherwise, `value` is equal to
+ * `false`.
+ *
+ * This trait reflects the type constraints of a function's definition
+ * or call, not just its declaration.
+ */
+template <typename T>
+struct is_returnable;
 
 } // namespace ft
 
