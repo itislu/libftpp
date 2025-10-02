@@ -228,7 +228,7 @@ void array<T, N>::fill(const T& value)
 template <typename T, std::size_t N>
 void array<T, N>::swap(array& other)
 {
-	ft::swap_ranges(begin(), end(), other.begin());
+	std::swap_ranges(begin(), end(), other.begin());
 }
 
 /* Non-member functions */

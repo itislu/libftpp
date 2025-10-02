@@ -2,6 +2,7 @@
 #pragma once
 
 #include "libftpp/expected.hpp"
+#include <algorithm>
 
 namespace ft {
 
@@ -26,7 +27,8 @@ E& unexpected<E>::error() throw()
 template <typename E>
 void unexpected<E>::swap(unexpected& other)
 {
-	ft::swap(_error, other._error);
+	using std::swap;
+	swap(_error, other._error);
 }
 
 template <typename E>

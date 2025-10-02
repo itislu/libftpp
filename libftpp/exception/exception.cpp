@@ -1,7 +1,7 @@
 #include "libftpp/exception.hpp"
-#include "libftpp/algorithm.hpp"
 #include "libftpp/optional.hpp"
 #include "libftpp/source_location.hpp"
+#include <algorithm>
 #include <string>
 
 namespace ft {
@@ -76,10 +76,11 @@ const char* exception::what() const throw() { return _what_output.c_str(); }
 
 void exception::swap(exception& other) throw()
 {
-	ft::swap(_what_output, other._what_output);
-	ft::swap(_error, other._error);
-	ft::swap(_where, other._where);
-	ft::swap(_who, other._who);
+	using std::swap;
+	swap(_what_output, other._what_output);
+	swap(_error, other._error);
+	swap(_where, other._where);
+	swap(_who, other._who);
 }
 
 exception& exception::set_where(const ft::source_location& where)
