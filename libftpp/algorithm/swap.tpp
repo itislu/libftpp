@@ -3,26 +3,29 @@
 
 #include "libftpp/algorithm.hpp"
 #include "libftpp/type_traits.hpp"
+#include <algorithm>
 
 namespace ft {
 
 namespace _swap {
-template <typename T, bool HasSwap>
-struct impl {
-	static void swap(T& a, T& b);
-};
+template <typename T>
+REQUIRES(ft::has_member_function_swap<T>::value)
+(void)member_swap(T& a, T& b);
+template <typename T>
+REQUIRES(!ft::has_member_function_swap<T>::value)
+(void)member_swap(T& a, T& b);
 } // namespace _swap
 
 template <typename T>
-void swap(T& a, T& b)
+void member_swap(T& a, T& b)
 {
-	_swap::impl<T, ft::has_member_function_swap<T>::value>::swap(a, b);
+	_swap::member_swap(a, b);
 }
 
 template <typename ForwardIt1, typename ForwardIt2>
 void iter_swap(ForwardIt1 a, ForwardIt2 b)
 {
-	ft::swap(*a, *b);
+	ft::member_swap(*a, *b);
 }
 
 template <typename ForwardIt1, typename ForwardIt2>
@@ -37,25 +40,23 @@ ForwardIt2 swap_ranges(ForwardIt1 first1, ForwardIt1 last1, ForwardIt2 first2)
 namespace _swap {
 
 /**
- * Use the type's swap method.
+ * Use the type's `swap` member function.
  */
 template <typename T>
-struct impl<T, true> {
-	static void swap(T& a, T& b) { a.swap(b); }
-};
+REQUIRES(ft::has_member_function_swap<T>::value)
+(void)member_swap(T& a, T& b) { a.swap(b); }
 
 /**
- * Manual swap implementation for types that do not have a swap method.
+ * Fall back to the common swap pattern for types that do not have a `swap`
+ * member function.
  */
 template <typename T>
-struct impl<T, false> {
-	static void swap(T& a, T& b)
-	{
-		T tmp = a;
-		a = b;
-		b = tmp;
-	}
-};
+REQUIRES(!ft::has_member_function_swap<T>::value)
+(void)member_swap(T& a, T& b)
+{
+	using std::swap;
+	swap(a, b);
+}
 
 } // namespace _swap
 

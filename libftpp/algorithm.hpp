@@ -201,21 +201,30 @@ shift_right(ForwardIt first,
             typename std::iterator_traits<ForwardIt>::difference_type n);
 
 /**
- * @brief Generic swap implementation which always uses the type's internal swap
- * function, if possible, otherwise falls back to using a temporary variable.
+ * @brief Generic swap implementation which uses the type's internal `swap`
+ * function, if possible, otherwise falls back to the common
+ * `using std::swap; swap(a, b);` pattern.
+ *
+ * This can be useful when a type only has a member `swap` function and no
+ * non-member `swap` can be added safely.
  *
  * https://en.cppreference.com/w/cpp/algorithm/swap
+ * https://en.cppreference.com/w/cpp/named_req/Swappable
  */
 template <typename T>
-void swap(T& a, T& b);
+void member_swap(T& a, T& b);
 
 /**
+ * @brief Uses `ft::member_swap`
+ *
  * https://en.cppreference.com/w/cpp/algorithm/iter_swap
  */
 template <typename ForwardIt1, typename ForwardIt2>
 void iter_swap(ForwardIt1 a, ForwardIt2 b);
 
 /**
+ * @brief Uses `ft::member_swap`
+ *
  * https://en.cppreference.com/w/cpp/algorithm/swap_ranges
  */
 template <typename ForwardIt1, typename ForwardIt2>
