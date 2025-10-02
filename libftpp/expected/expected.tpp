@@ -1,9 +1,9 @@
 // IWYU pragma: private; include "libftpp/expected.hpp"
 #pragma once
 
-#include "libftpp/algorithm.hpp"
 #include "libftpp/expected.hpp"
 #include "libftpp/safe_bool.hpp"
+#include <algorithm>
 #include <cassert>
 
 namespace ft {
@@ -237,8 +237,9 @@ expected<T, E> expected<T, E>::transform_error(const F& f) const
 template <typename T, typename E>
 void expected<T, E>::swap(expected& other) throw()
 {
+	using std::swap;
 	if (_has_value && other._has_value) {
-		ft::swap(_value, other._value);
+		swap(_value, other._value);
 	}
 	else if (_has_value) {
 		T* tmp = _value;
@@ -255,7 +256,7 @@ void expected<T, E>::swap(expected& other) throw()
 		_has_value = true;
 	}
 	else {
-		ft::swap(_error, other._error);
+		swap(_error, other._error);
 	}
 }
 

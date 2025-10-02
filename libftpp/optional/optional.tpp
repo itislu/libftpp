@@ -1,9 +1,9 @@
 // IWYU pragma: private; include "libftpp/optional.hpp"
 #pragma once
 
-#include "libftpp/algorithm.hpp"
 #include "libftpp/optional.hpp"
 #include "libftpp/safe_bool.hpp"
+#include <algorithm>
 #include <cassert>
 #include <cstddef>
 
@@ -175,7 +175,8 @@ optional<T> optional<T>::or_else(const F& f) const
 template <typename T>
 void optional<T>::swap(optional& other) throw()
 {
-	ft::swap(_value, other._value);
+	using std::swap;
+	swap(_value, other._value);
 }
 
 template <typename T>

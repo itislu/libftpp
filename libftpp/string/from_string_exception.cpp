@@ -1,7 +1,7 @@
-#include "libftpp/algorithm.hpp"
 #include "libftpp/exception.hpp"
 #include "libftpp/string.hpp"
 #include "libftpp/utility.hpp"
+#include <algorithm>
 #include <string>
 #include <typeinfo>
 
@@ -49,8 +49,9 @@ const std::type_info& from_string_exception::type_id() const throw()
 
 void from_string_exception::swap(from_string_exception& other) throw()
 {
-	_input.swap(other._input);
-	ft::swap(_type_id, other._type_id);
+	using std::swap;
+	swap(_input, other._input);
+	swap(_type_id, other._type_id);
 }
 
 from_string_range_exception::from_string_range_exception(
