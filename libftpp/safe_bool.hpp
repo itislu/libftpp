@@ -13,9 +13,9 @@ namespace ft {
  * https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Safe_bool
  *
  * Usage:
- * 1. Derive from this class using CRTP idiom:
- *    `class YourClass : public safe_bool<YourClass>`
- * 2. Implement `bool boolean_test() const throw();`
+ * 1. Publicly inherit from this class using CRTP idiom:
+ *    `class YourClass : public safe_bool<YourClass>`.
+ * 2. Implement `bool boolean_test() const`.
  */
 template <typename Derived = void>
 class safe_bool : private _safe_bool::safe_bool_base {
@@ -35,26 +35,26 @@ private:
  * @brief Class to provide boolean tests for the deriving class but restricting
  * it from taking participation in unwanted expressions (safe bool problem)
  *
- * Implements the Safe Bool idiom using virtual dispatch.
+ * Implements the Safe Bool idiom using dynamic dispatch.
  * https://en.wikibooks.org/wiki/More_C%2B%2B_Idioms/Safe_bool
  *
  * Usage:
- * 1. Derive from this class with no template parameter:
- *    `class YourClass : public safe_bool<>`
- * 2. Implement `bool boolean_test() const throw();`
+ * 1. Publicly inherit from this class with no template parameter:
+ *    `class YourClass : public safe_bool<>`.
+ * 2. Implement `bool boolean_test() const`.
  *
- * @note If your class is not virtual yet, prefer to give your class as template
- * parameter (CRTP idiom) to avoid your class becoming virtual.
+ * @note If your class is not virtual yet, prefer to pass your class as template
+ * parameter (CRTP idiom) to avoid it becoming virtual.
  */
 template <>
-class safe_bool<void> // NOLINT(cppcoreguidelines-virtual-class-destructor)
-    : private _safe_bool::safe_bool_base {
+class safe_bool<void> : private _safe_bool::safe_bool_base {
 public:
 	operator safe_bool_t() const;
 
 protected:
 	safe_bool();
-	virtual ~safe_bool();
+	~safe_bool();
+
 	virtual bool boolean_test() const = 0;
 
 private:
