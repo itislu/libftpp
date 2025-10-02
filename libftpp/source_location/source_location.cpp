@@ -19,26 +19,6 @@ source_location::source_location(uint_least32_t line,
       _function_name(function_name)
 {}
 
-source_location::source_location(const source_location& other) throw()
-    : _line(other._line),
-      _file_name(other._file_name),
-      _function_name(other._function_name)
-{}
-
-source_location::~source_location() {}
-
-// Trivial types only, self-assignment is not an issue.
-// NOLINTBEGIN(bugprone-unhandled-self-assignment)
-source_location&
-source_location::operator=(const source_location& other) throw()
-{
-	_line = other._line;
-	_file_name = other._file_name;
-	_function_name = other._function_name;
-	return *this;
-}
-// NOLINTEND(bugprone-unhandled-self-assignment)
-
 std::string source_location::format() const
 {
 	std::ostringstream os;

@@ -44,8 +44,6 @@ public:
 	const ft::optional<std::string>& who() const throw();
 
 private:
-	std_exception();
-
 	void _update_what_output();
 
 	std::string _what_output;
