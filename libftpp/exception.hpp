@@ -7,55 +7,34 @@
 
 namespace ft {
 
-template <typename BaseException>
-class std_exception;
-
 /**
- * All custom exception classes in libftpp inherit from this.
+ * @brief Exception class with context information
+ *
+ * The class inherits from `std::exception`, so it can be caught as such.
+ *
+ * @note All custom exception classes in libftpp inherit from this class.
  */
-typedef std_exception<std::exception> exception;
-
-/**
- * @brief Template class to extend `std` exception classes with context
- * information
- *
- * The instantiated template class will be in the same inheritance chain as
- * `BaseException`, so it can be caught in the same ways.
- * However, to get the features and output of `std_exception`, an exception
- * needs to be caught as `std_exception` with the same template parameter as
- * when thrown.
- *
- * @attention `std_exception` classes with different template parameters are not
- * in the same inheritance chain and can only be caught as `std_exception` with
- * the SAME template parameter!
- *
- * @note All custom exception classes in libftpp inherit from `exception`, which
- * is just an alias for `std_exception<std::exception>`.
- *
- * @tparam BaseException The base exception class to extend.
- */
-template <typename BaseException>
-class std_exception : public BaseException {
+class exception : public std::exception {
 public:
-	explicit std_exception(const std::string& error);
-	std_exception(const std::string& error, const ft::source_location& where);
-	std_exception(const std::string& error, const std::string& who);
-	std_exception(const std::string& error,
-	              const ft::source_location& where,
-	              const std::string& who);
-	std_exception(const std_exception& other) throw();
-	virtual ~std_exception() throw();
-	std_exception& operator=(std_exception other) throw();
+	explicit exception(const std::string& error);
+	exception(const std::string& error, const ft::source_location& where);
+	exception(const std::string& error, const std::string& who);
+	exception(const std::string& error,
+	          const ft::source_location& where,
+	          const std::string& who);
+	exception(const exception& other) throw();
+	virtual ~exception() throw();
+	exception& operator=(exception other) throw();
 
 	/**
 	 * @return An error message in the following format:
 	 * `[where().format(): ][who(): ]<error()>`
 	 */
 	const char* what() const throw();
-	void swap(std_exception& other) throw();
+	void swap(exception& other) throw();
 
-	std_exception& set_where(const ft::source_location& where);
-	std_exception& set_who(const std::string& who);
+	exception& set_where(const ft::source_location& where);
+	exception& set_who(const std::string& who);
 	/**
 	 * @return The unformatted error message, not including information from
 	 * `where()` and `who()`
@@ -75,10 +54,6 @@ private:
 	ft::optional<std::string> _who;
 };
 
-template <typename BaseException>
-void swap(std_exception<BaseException>& lhs,
-          std_exception<BaseException>& rhs) throw();
+void swap(exception& lhs, exception& rhs) throw();
 
 } // namespace ft
-
-#include "libftpp/exception/std_exception.tpp" // IWYU pragma: export
