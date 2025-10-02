@@ -4,6 +4,7 @@
 #include "libftpp/algorithm.hpp"
 #include "libftpp/type_traits.hpp"
 #include <algorithm>
+#include <cstddef>
 
 namespace ft {
 
@@ -20,6 +21,12 @@ template <typename T>
 void member_swap(T& a, T& b)
 {
 	_swap::member_swap(a, b);
+}
+
+template <typename T2, std::size_t N>
+void member_swap(T2 (&a)[N], T2 (&b)[N])
+{
+	ft::swap_ranges(a, a + N, b);
 }
 
 template <typename ForwardIt1, typename ForwardIt2>

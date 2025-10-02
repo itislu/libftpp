@@ -1,5 +1,6 @@
 #pragma once
 
+#include <cstddef>
 #include <iterator>
 #include <utility>
 
@@ -213,6 +214,12 @@ shift_right(ForwardIt first,
  */
 template <typename T>
 void member_swap(T& a, T& b);
+
+/**
+ * https://en.cppreference.com/w/cpp/algorithm/swap
+ */
+template <typename T2, std::size_t N>
+void member_swap(T2 (&a)[N], T2 (&b)[N]);
 
 /**
  * @brief Uses `ft::member_swap`
