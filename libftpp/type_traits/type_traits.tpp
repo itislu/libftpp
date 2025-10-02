@@ -227,13 +227,13 @@ private:
 	STATIC_ASSERT(sizeof(T) != 0); // T must be a complete type
 
 	template <typename U, typename = void>
-	struct can_form_array : true_type {};
+	struct is_arrayable : false_type {};
 
 	template <typename U>
-	struct can_form_array<U, typename voider<U[1]>::type> : false_type {};
+	struct is_arrayable<U, typename voider<U[1]>::type> : true_type {};
 
 public:
-	static const bool value = can_form_array<T>::value;
+	static const bool value = !is_arrayable<T>::value;
 };
 
 /**
