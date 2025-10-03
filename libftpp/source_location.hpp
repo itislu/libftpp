@@ -4,13 +4,13 @@
 #include <string>
 
 #if defined(__GNUC__) || defined(__clang__)
-#	define SOURCE_LOCATION_CURRENT()                                  \
+#	define FT_SOURCE_LOCATION_CURRENT()                               \
 		(ft::source_location(__LINE__, __FILE__, __PRETTY_FUNCTION__))
 #elif defined(_MSC_VER)
-#	define SOURCE_LOCATION_CURRENT()                          \
+#	define FT_SOURCE_LOCATION_CURRENT()                       \
 		(ft::source_location(__LINE__, __FILE__, __FUNCSIG__))
 #else
-#	define SOURCE_LOCATION_CURRENT()                       \
+#	define FT_SOURCE_LOCATION_CURRENT()                    \
 		(ft::source_location(__LINE__, __FILE__, __func__))
 #endif
 

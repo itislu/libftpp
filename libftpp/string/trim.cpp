@@ -47,7 +47,7 @@ int main()
 	                       " ",
 	                       "Hey there"};
 
-	for (unsigned int i = 0; i < COUNTOF(tests); ++i) {
+	for (unsigned int i = 0; i < FT_COUNTOF(tests); ++i) {
 		std::cout << "'" << ft::trim(tests[i]) << "'" << '\n';
 	}
 }

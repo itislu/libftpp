@@ -1,6 +1,6 @@
 #pragma once
 
-#define HAS_MEMBER_FUNCTION_IMPL(RETURN_TYPE, NAME, ARGS_IN_PARENS)          \
+#define LIBFTPP_HAS_MEMBER_FUNCTION_IMPL(RETURN_TYPE, NAME, ARGS_IN_PARENS)  \
 	namespace detail_has_member_function_##NAME                              \
 	{                                                                        \
                                                                              \

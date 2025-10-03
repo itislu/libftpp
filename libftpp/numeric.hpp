@@ -98,7 +98,7 @@ class arithmetic_division_by_zero_exception;
  * overflow
  */
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 ((ft::expected<T, arithmetic_exception>)) add_checked(T x, T y);
 /**
  * @brief Checked integer subtraction, guaranteeing no undefined behavior
@@ -108,7 +108,7 @@ REQUIRES(ft::is_integral<T>::value)
  * would overflow
  */
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 ((ft::expected<T, arithmetic_exception>)) sub_checked(T x, T y);
 /**
  * @brief Checked integer multiplication, guaranteeing no undefined behavior
@@ -118,7 +118,7 @@ REQUIRES(ft::is_integral<T>::value)
  * multiplication would overflow
  */
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 ((ft::expected<T, arithmetic_exception>)) mul_checked(T x, T y);
 /**
  * @brief Checked integer division, guaranteeing no undefined behavior
@@ -128,26 +128,26 @@ REQUIRES(ft::is_integral<T>::value)
  * overflow or `y == 0`
  */
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 ((ft::expected<T, arithmetic_exception>)) div_checked(T x, T y);
 
 /**
  * https://en.cppreference.com/w/cpp/numeric/add_sat
  */
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (T) add_sat(T x, T y) throw();
 /**
  * https://en.cppreference.com/w/cpp/numeric/sub_sat
  */
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (T) sub_sat(T x, T y) throw();
 /**
  * https://en.cppreference.com/w/cpp/numeric/mul_sat
  */
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (T) mul_sat(T x, T y) throw();
 /**
  * https://en.cppreference.com/w/cpp/numeric/div_sat
@@ -159,7 +159,7 @@ REQUIRES(ft::is_integral<T>::value)
  * - If `x` is zero, returns zero.
  */
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (T) div_sat(T x, T y) throw();
 
 /**
@@ -171,7 +171,7 @@ REQUIRES(ft::is_integral<T>::value)
  * addition would be greater than the highest representable value of `T`
  */
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (T) add_throw(T x, T y);
 /**
  * @brief Throwing integer subtraction, guaranteeing no undefined behavior
@@ -182,7 +182,7 @@ REQUIRES(ft::is_integral<T>::value)
  * subtraction would be greater than the highest representable value of `T`
  */
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (T) sub_throw(T x, T y);
 /**
  * @brief Throwing integer multiplication, guaranteeing no undefined behavior
@@ -193,7 +193,7 @@ REQUIRES(ft::is_integral<T>::value)
  * multiplication would be greater than the highest representable value of `T`
  */
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (T) mul_throw(T x, T y);
 /**
  * @brief Throwing integer division, guaranteeing no undefined behavior
@@ -203,7 +203,7 @@ REQUIRES(ft::is_integral<T>::value)
  * @throws ft::arithmetic_division_by_zero_exception When `y == 0`
  */
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (T) div_throw(T x, T y);
 
 class arithmetic_exception : public ft::exception {

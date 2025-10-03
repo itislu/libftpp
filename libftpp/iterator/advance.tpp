@@ -43,9 +43,9 @@ void advance(InputIt& it,
 }
 
 template <typename InputIt, typename Sentinel>
-REQUIRES((!ft::is_convertible<
-          Sentinel,
-          typename std::iterator_traits<InputIt>::difference_type>::value))
+FT_REQUIRES((!ft::is_convertible<
+             Sentinel,
+             typename std::iterator_traits<InputIt>::difference_type>::value))
 (void)advance(InputIt& it, Sentinel bound)
 {
 	_advance::advance(

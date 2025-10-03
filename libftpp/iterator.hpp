@@ -105,9 +105,9 @@ template <typename InputIt>
 void advance(InputIt& it,
              typename std::iterator_traits<InputIt>::difference_type n);
 template <typename InputIt, typename Sentinel>
-REQUIRES((!ft::is_convertible<
-          Sentinel,
-          typename std::iterator_traits<InputIt>::difference_type>::value))
+FT_REQUIRES((!ft::is_convertible<
+             Sentinel,
+             typename std::iterator_traits<InputIt>::difference_type>::value))
 (void)advance(InputIt& it, Sentinel bound);
 template <typename InputIt, typename Sentinel>
 typename std::iterator_traits<InputIt>::difference_type
@@ -134,9 +134,9 @@ template <typename InputIt>
 InputIt next(InputIt it,
              typename std::iterator_traits<InputIt>::difference_type n);
 template <typename InputIt, typename Sentinel>
-REQUIRES((!ft::is_convertible<
-          Sentinel,
-          typename std::iterator_traits<InputIt>::difference_type>::value))
+FT_REQUIRES((!ft::is_convertible<
+             Sentinel,
+             typename std::iterator_traits<InputIt>::difference_type>::value))
 (InputIt) next(InputIt it, Sentinel bound);
 template <typename InputIt, typename Sentinel>
 InputIt next(InputIt it,

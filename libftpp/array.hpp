@@ -18,7 +18,7 @@ namespace _array {
 
 template <typename T, std::size_t N>
 struct impl {
-	typedef T Type[MAX(N, 1)];
+	typedef T Type[FT_MAX(N, 1)];
 
 	static T& ref(const Type& t, std::size_t n) throw();
 	static T* ptr(const Type& t) throw();

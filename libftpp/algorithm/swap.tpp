@@ -10,10 +10,10 @@ namespace ft {
 
 namespace _swap {
 template <typename T>
-REQUIRES(ft::has_member_function_swap<T>::value)
+FT_REQUIRES(ft::has_member_function_swap<T>::value)
 (void)member_swap(T& a, T& b);
 template <typename T>
-REQUIRES(!ft::has_member_function_swap<T>::value)
+FT_REQUIRES(!ft::has_member_function_swap<T>::value)
 (void)member_swap(T& a, T& b);
 } // namespace _swap
 
@@ -50,7 +50,7 @@ namespace _swap {
  * Use the type's `swap` member function.
  */
 template <typename T>
-REQUIRES(ft::has_member_function_swap<T>::value)
+FT_REQUIRES(ft::has_member_function_swap<T>::value)
 (void)member_swap(T& a, T& b) { a.swap(b); }
 
 /**
@@ -58,7 +58,7 @@ REQUIRES(ft::has_member_function_swap<T>::value)
  * member function.
  */
 template <typename T>
-REQUIRES(!ft::has_member_function_swap<T>::value)
+FT_REQUIRES(!ft::has_member_function_swap<T>::value)
 (void)member_swap(T& a, T& b)
 {
 	using std::swap;

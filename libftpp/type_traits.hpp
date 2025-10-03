@@ -9,15 +9,15 @@
  * The generated type traits are named has_member_function_<name>.
  * There can only be 1 trait with the same function name.
  *
- * Usage example: `HAS_MEMBER_FUNCTION(void, swap, (T&))`
+ * Usage example: `FT_HAS_MEMBER_FUNCTION(void, swap, (T&))`
  */
-#define HAS_MEMBER_FUNCTION(RETURN_TYPE, NAME, ARGS_IN_PARENS)  \
-	HAS_MEMBER_FUNCTION_IMPL(RETURN_TYPE, NAME, ARGS_IN_PARENS)
+#define FT_HAS_MEMBER_FUNCTION(RETURN_TYPE, NAME, ARGS_IN_PARENS)       \
+	LIBFTPP_HAS_MEMBER_FUNCTION_IMPL(RETURN_TYPE, NAME, ARGS_IN_PARENS)
 
 /**
  * @brief A macro that emulates C++20's `requires` clauses in C++98
  *
- * `REQUIRES` is used for function template overload resolution. It enables a
+ * `FT_REQUIRES` is used for function template overload resolution. It enables a
  * function template if and only if the provided compile-time `EXPRESSION`
  * evaluates to `true` when explicitly converted to `bool`.
  * The function's return type must be placed in parentheses after the macro.
@@ -28,14 +28,14 @@
  * Usage examples:
  * ```
  * template <typename T>
- * REQUIRES((ft::is_integral<T>::value && !ft::is_same<T, int>::value))
+ * FT_REQUIRES((ft::is_integral<T>::value && !ft::is_same<T, int>::value))
  * (T) function(T x);
  * ```
  * Note the double parentheses around the expression to escape the comma.
  *
  * ```
  * template <typename T, unsigned N>
- * REQUIRES(N < 10)
+ * FT_REQUIRES(N < 10)
  * ((std::pair<T, T>)) function(T x);
  * ```
  * Note the double parentheses around the return type to escape the comma.
@@ -43,9 +43,9 @@
  * Inspiration: https://stackoverflow.com/a/9220563
  *
  * `clang-format`: To help `clang-format` format code using this macro better,
- * add `REQUIRES` to `StatementMacros` in the `clang-format` config.
+ * add `FT_REQUIRES` to `StatementMacros` in the `clang-format` config.
  */
-#define REQUIRES(EXPRESSION) REQUIRES_IMPL(EXPRESSION)
+#define FT_REQUIRES(EXPRESSION) LIBFTPP_REQUIRES_IMPL(EXPRESSION)
 
 namespace ft {
 
@@ -372,7 +372,7 @@ struct negation;
 /* Custom type traits */
 
 /* has_member_function_swap */
-HAS_MEMBER_FUNCTION(void, swap, (T&))
+FT_HAS_MEMBER_FUNCTION(void, swap, (T&))
 
 /**
  * @brief Checks wether `T` is a non-const lvalue reference type

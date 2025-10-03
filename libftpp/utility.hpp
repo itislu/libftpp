@@ -7,12 +7,12 @@
  * https://en.cppreference.com/w/cpp/utility/unreachable
  */
 #if defined(__GNUC__) || defined(__clang__)
-#	define UNREACHABLE() (__builtin_unreachable())
+#	define FT_UNREACHABLE() (__builtin_unreachable())
 #elif defined(_MSC_VER)
-#	define UNREACHABLE() (__assume(false))
+#	define FT_UNREACHABLE() (__assume(false))
 #else
 #	include <exception>
-#	define UNREACHABLE() (std::terminate())
+#	define FT_UNREACHABLE() (std::terminate())
 #endif
 
 /**
@@ -22,7 +22,7 @@
  * Inspiration:
  * https://web.archive.org/web/20141223215212/http://www.drdobbs.com/cpp/counting-array-elements-at-compile-time/197800525?pgno=6
  */
-#define COUNTOF(ARRAY) COUNTOF_IMPL(ARRAY)
+#define FT_COUNTOF(ARRAY) LIBFTPP_COUNTOF_IMPL(ARRAY)
 
 namespace ft {
 
