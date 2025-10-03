@@ -17,23 +17,23 @@ enum Error {
 	DIVISION_BY_ZERO
 };
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (Error) add(T x, T y, T* result) throw();
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (Error) sub(T x, T y, T* result) throw();
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (Error) mul(T x, T y, T* result) throw();
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (Error) div(T x, T y, T* result) throw();
 } // namespace _arithmetic
 
 /* Checked arithmetic */
 
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 ((ft::expected<T, arithmetic_exception>)) add_checked(T x, T y)
 {
 	T result;
@@ -47,13 +47,13 @@ REQUIRES(ft::is_integral<T>::value)
 		return ft::unexpected<arithmetic_exception>(
 		    arithmetic_positive_overflow_exception("ft::add_checked"));
 	case _arithmetic::DIVISION_BY_ZERO:
-		UNREACHABLE();
+		FT_UNREACHABLE();
 	}
-	UNREACHABLE();
+	FT_UNREACHABLE();
 }
 
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 ((ft::expected<T, arithmetic_exception>)) sub_checked(T x, T y)
 {
 	T result;
@@ -67,13 +67,13 @@ REQUIRES(ft::is_integral<T>::value)
 		return ft::unexpected<arithmetic_exception>(
 		    arithmetic_positive_overflow_exception("ft::sub_checked"));
 	case _arithmetic::DIVISION_BY_ZERO:
-		UNREACHABLE();
+		FT_UNREACHABLE();
 	}
-	UNREACHABLE();
+	FT_UNREACHABLE();
 }
 
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 ((ft::expected<T, arithmetic_exception>)) mul_checked(T x, T y)
 {
 	T result;
@@ -87,13 +87,13 @@ REQUIRES(ft::is_integral<T>::value)
 		return ft::unexpected<arithmetic_exception>(
 		    arithmetic_positive_overflow_exception("ft::mul_checked"));
 	case _arithmetic::DIVISION_BY_ZERO:
-		UNREACHABLE();
+		FT_UNREACHABLE();
 	}
-	UNREACHABLE();
+	FT_UNREACHABLE();
 }
 
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 ((ft::expected<T, arithmetic_exception>)) div_checked(T x, T y)
 {
 	T result;
@@ -101,7 +101,7 @@ REQUIRES(ft::is_integral<T>::value)
 	case _arithmetic::OK:
 		return result;
 	case _arithmetic::NEGATIVE_OVERFLOW:
-		UNREACHABLE();
+		FT_UNREACHABLE();
 	case _arithmetic::POSITIVE_OVERFLOW:
 		return ft::unexpected<arithmetic_exception>(
 		    arithmetic_positive_overflow_exception("ft::div_checked"));
@@ -109,13 +109,13 @@ REQUIRES(ft::is_integral<T>::value)
 		return ft::unexpected<arithmetic_exception>(
 		    arithmetic_division_by_zero_exception("ft::div_checked"));
 	}
-	UNREACHABLE();
+	FT_UNREACHABLE();
 }
 
 /* Saturating arithmetic */
 
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (T) add_sat(T x, T y) throw()
 {
 	T result;
@@ -127,13 +127,13 @@ REQUIRES(ft::is_integral<T>::value)
 	case _arithmetic::POSITIVE_OVERFLOW:
 		return std::numeric_limits<T>::max();
 	case _arithmetic::DIVISION_BY_ZERO:
-		UNREACHABLE();
+		FT_UNREACHABLE();
 	}
-	UNREACHABLE();
+	FT_UNREACHABLE();
 }
 
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (T) sub_sat(T x, T y) throw()
 {
 	T result;
@@ -145,13 +145,13 @@ REQUIRES(ft::is_integral<T>::value)
 	case _arithmetic::POSITIVE_OVERFLOW:
 		return std::numeric_limits<T>::max();
 	case _arithmetic::DIVISION_BY_ZERO:
-		UNREACHABLE();
+		FT_UNREACHABLE();
 	}
-	UNREACHABLE();
+	FT_UNREACHABLE();
 }
 
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (T) mul_sat(T x, T y) throw()
 {
 	T result;
@@ -163,13 +163,13 @@ REQUIRES(ft::is_integral<T>::value)
 	case _arithmetic::POSITIVE_OVERFLOW:
 		return std::numeric_limits<T>::max();
 	case _arithmetic::DIVISION_BY_ZERO:
-		UNREACHABLE();
+		FT_UNREACHABLE();
 	}
-	UNREACHABLE();
+	FT_UNREACHABLE();
 }
 
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (T) div_sat(T x, T y) throw()
 {
 	T result;
@@ -177,7 +177,7 @@ REQUIRES(ft::is_integral<T>::value)
 	case _arithmetic::OK:
 		return result;
 	case _arithmetic::NEGATIVE_OVERFLOW:
-		UNREACHABLE();
+		FT_UNREACHABLE();
 	case _arithmetic::POSITIVE_OVERFLOW:
 		return std::numeric_limits<T>::max();
 	case _arithmetic::DIVISION_BY_ZERO:
@@ -189,13 +189,13 @@ REQUIRES(ft::is_integral<T>::value)
 		}
 		return 0; // 0/0
 	}
-	UNREACHABLE();
+	FT_UNREACHABLE();
 }
 
 /* Throwing arithmetic */
 
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (T) add_throw(T x, T y)
 {
 	T result;
@@ -207,13 +207,13 @@ REQUIRES(ft::is_integral<T>::value)
 	case _arithmetic::POSITIVE_OVERFLOW:
 		throw arithmetic_positive_overflow_exception("ft::add_throw");
 	case _arithmetic::DIVISION_BY_ZERO:
-		UNREACHABLE();
+		FT_UNREACHABLE();
 	}
-	UNREACHABLE();
+	FT_UNREACHABLE();
 }
 
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (T) sub_throw(T x, T y)
 {
 	T result;
@@ -225,13 +225,13 @@ REQUIRES(ft::is_integral<T>::value)
 	case _arithmetic::POSITIVE_OVERFLOW:
 		throw arithmetic_positive_overflow_exception("ft::sub_throw");
 	case _arithmetic::DIVISION_BY_ZERO:
-		UNREACHABLE();
+		FT_UNREACHABLE();
 	}
-	UNREACHABLE();
+	FT_UNREACHABLE();
 }
 
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (T) mul_throw(T x, T y)
 {
 	T result;
@@ -243,13 +243,13 @@ REQUIRES(ft::is_integral<T>::value)
 	case _arithmetic::POSITIVE_OVERFLOW:
 		throw arithmetic_positive_overflow_exception("ft::mul_throw");
 	case _arithmetic::DIVISION_BY_ZERO:
-		UNREACHABLE();
+		FT_UNREACHABLE();
 	}
-	UNREACHABLE();
+	FT_UNREACHABLE();
 }
 
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (T) div_throw(T x, T y)
 {
 	T result;
@@ -257,19 +257,19 @@ REQUIRES(ft::is_integral<T>::value)
 	case _arithmetic::OK:
 		return result;
 	case _arithmetic::NEGATIVE_OVERFLOW:
-		UNREACHABLE();
+		FT_UNREACHABLE();
 	case _arithmetic::POSITIVE_OVERFLOW:
 		throw arithmetic_positive_overflow_exception("ft::div_throw");
 	case _arithmetic::DIVISION_BY_ZERO:
 		throw arithmetic_division_by_zero_exception("ft::div_throw");
 	}
-	UNREACHABLE();
+	FT_UNREACHABLE();
 }
 
 namespace _arithmetic {
 
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (Error) add(T x, T y, T* result) throw()
 {
 	const T max = std::numeric_limits<T>::max();
@@ -293,7 +293,7 @@ REQUIRES(ft::is_integral<T>::value)
 }
 
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (Error) sub(T x, T y, T* result) throw()
 {
 	if (std::numeric_limits<T>::is_signed) {
@@ -317,7 +317,7 @@ REQUIRES(ft::is_integral<T>::value)
 }
 
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (Error) mul(T x, T y, T* result) throw()
 {
 	const T max = std::numeric_limits<T>::max();
@@ -343,7 +343,7 @@ REQUIRES(ft::is_integral<T>::value)
 }
 
 template <typename T>
-REQUIRES(ft::is_integral<T>::value)
+FT_REQUIRES(ft::is_integral<T>::value)
 (Error) div(T x, T y, T* result) throw()
 {
 	if (y == 0) {

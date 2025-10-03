@@ -16,15 +16,15 @@ class bad_optional_access;
 template <typename T>
 class optional : public ft::safe_bool<optional<T> > {
 private:
-	STATIC_ASSERT( // T must not be a reference type
+	FT_STATIC_ASSERT( // T must not be a reference type
 	    !ft::is_reference<T>::value);
-	STATIC_ASSERT( // T must not be a function type
+	FT_STATIC_ASSERT( // T must not be a function type
 	    !ft::is_function<T>::value);
-	STATIC_ASSERT( // T must not be an array type
+	FT_STATIC_ASSERT( // T must not be an array type
 	    !ft::is_array<T>::value);
-	STATIC_ASSERT( // T must not be (possibly cv-qualified) void
+	FT_STATIC_ASSERT( // T must not be (possibly cv-qualified) void
 	    !ft::is_void<T>::value);
-	STATIC_ASSERT( // T must not be ft::nullopt_t
+	FT_STATIC_ASSERT( // T must not be ft::nullopt_t
 	    (!ft::is_same<typename ft::remove_cv<T>::type, ft::nullopt_t>::value));
 
 public:

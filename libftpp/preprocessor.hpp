@@ -13,9 +13,9 @@
  * Inspiration: https://stackoverflow.com/a/71899854
  */
 #ifdef __COUNTER__
-#	define APPEND_UNIQUE_NUM(NAME) CONCAT_EXPANDED(NAME, __COUNTER__)
+#	define FT_APPEND_UNIQUE_NUM(NAME) FT_CONCAT_EXPANDED(NAME, __COUNTER__)
 #else
-#	define APPEND_UNIQUE_NUM(NAME) CONCAT_EXPANDED(NAME, __LINE__)
+#	define FT_APPEND_UNIQUE_NUM(NAME) FT_CONCAT_EXPANDED(NAME, __LINE__)
 #endif
 
 /**
@@ -23,11 +23,11 @@
  *
  * Inspiration: https://stackoverflow.com/a/71899854
  */
-#define CONCAT(PREFIX, SUFFIX) PREFIX##SUFFIX
+#define FT_CONCAT(PREFIX, SUFFIX) PREFIX##SUFFIX
 
 /**
  * @brief Expand `PREFIX` and `SUFFIX` before concatenating
  *
  * Inspiration: https://stackoverflow.com/a/71899854
  */
-#define CONCAT_EXPANDED(PREFIX, SUFFIX) CONCAT(PREFIX, SUFFIX)
+#define FT_CONCAT_EXPANDED(PREFIX, SUFFIX) FT_CONCAT(PREFIX, SUFFIX)

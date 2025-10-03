@@ -14,8 +14,8 @@ InputIt next(InputIt it)
 	typedef typename std::iterator_traits<InputIt>::difference_type
 	    InputIt_must_be_an_iterator_type;
 	// Use to avoid unused typedef warnings.
-	STATIC_ASSERT((ft::is_same<InputIt_must_be_an_iterator_type,
-	                           InputIt_must_be_an_iterator_type>::value));
+	FT_STATIC_ASSERT((ft::is_same<InputIt_must_be_an_iterator_type,
+	                              InputIt_must_be_an_iterator_type>::value));
 
 	++it;
 	return it;
@@ -30,9 +30,9 @@ InputIt next(InputIt it,
 }
 
 template <typename InputIt, typename Sentinel>
-REQUIRES((!ft::is_convertible<
-          Sentinel,
-          typename std::iterator_traits<InputIt>::difference_type>::value))
+FT_REQUIRES((!ft::is_convertible<
+             Sentinel,
+             typename std::iterator_traits<InputIt>::difference_type>::value))
 (InputIt) next(InputIt it, Sentinel bound)
 {
 	ft::advance(it, bound);

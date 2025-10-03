@@ -168,21 +168,21 @@ struct is_volatile<volatile T> : true_type {};
 /* is_abstract */
 #if defined(__clang__) && defined(__has_feature)
 #	if __has_feature(is_abstract)
-#		define BUILTIN_IS_ABSTRACT(T) __is_abstract(T)
+#		define LIBFTPP_BUILTIN_IS_ABSTRACT(T) __is_abstract(T)
 #	endif
 #elif defined(__GNUC__)                                         \
     && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3))
 // Introduced to gcc in commit cb68ec50055e516ac270a043f772935561b01968
-#	define BUILTIN_IS_ABSTRACT(T) __is_abstract(T)
+#	define LIBFTPP_BUILTIN_IS_ABSTRACT(T) __is_abstract(T)
 #elif defined(_MSC_VER) && _MSC_VER >= 1400
 // Appears in Visual Studio 2005 Docs, but not in 2003
-#	define BUILTIN_IS_ABSTRACT(T) __is_abstract(T)
+#	define LIBFTPP_BUILTIN_IS_ABSTRACT(T) __is_abstract(T)
 #endif
 
-#ifdef BUILTIN_IS_ABSTRACT
+#ifdef LIBFTPP_BUILTIN_IS_ABSTRACT
 
 template <typename T>
-struct is_abstract : bool_constant<BUILTIN_IS_ABSTRACT(T)> {};
+struct is_abstract : bool_constant<LIBFTPP_BUILTIN_IS_ABSTRACT(T)> {};
 
 #else
 
@@ -223,7 +223,7 @@ private:
 	 * T must be a complete type. Further, if T is a template then this also
 	 * ensures to instantiate it, which is required to get the correct answer.
 	 */
-	STATIC_ASSERT(sizeof(T) != 0); // T must be a complete type
+	FT_STATIC_ASSERT(sizeof(T) != 0); // T must be a complete type
 
 	template <typename U, typename = void>
 	struct is_arrayable : false_type {};
@@ -331,7 +331,8 @@ struct is_same<T, T> : true_type {};
 /* is_convertible */
 #if defined(__clang__) && defined(__has_feature)
 #	if __has_feature(is_convertible_to)
-#		define BUILTIN_IS_CONVERTIBLE(FROM, TO) __is_convertible_to(FROM, TO)
+#		define LIBFTPP_BUILTIN_IS_CONVERTIBLE(FROM, TO) \
+			__is_convertible_to(FROM, TO)
 #	endif
 #elif defined(__GNUC__)                                           \
     && (__GNUC__ > 13 || (__GNUC__ == 13 && __GNUC_MINOR__ >= 4))
@@ -339,16 +340,18 @@ struct is_same<T, T> : true_type {};
 // Fixed 13.4: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=109680
 // Related writeup about "Abominable Function Types":
 // https://www.open-std.org/JTC1/SC22/WG21/docs/papers/2015/p0172r0.html
-#	define BUILTIN_IS_CONVERTIBLE(FROM, TO) __is_convertible(FROM, TO)
+#	define LIBFTPP_BUILTIN_IS_CONVERTIBLE(FROM, TO) __is_convertible(FROM, TO)
 #elif defined(_MSC_VER) && _MSC_VER >= 1400
 // Appears in Visual Studio 2005 Docs, but not in 2003
-#	define BUILTIN_IS_CONVERTIBLE(FROM, TO) __is_convertible_to(FROM, TO)
+#	define LIBFTPP_BUILTIN_IS_CONVERTIBLE(FROM, TO) \
+		__is_convertible_to(FROM, TO)
 #endif
 
-#ifdef BUILTIN_IS_CONVERTIBLE
+#ifdef LIBFTPP_BUILTIN_IS_CONVERTIBLE
 
 template <typename From, typename To>
-struct is_convertible : bool_constant<BUILTIN_IS_CONVERTIBLE(From, To)> {};
+struct is_convertible
+    : bool_constant<LIBFTPP_BUILTIN_IS_CONVERTIBLE(From, To)> {};
 
 #else
 
