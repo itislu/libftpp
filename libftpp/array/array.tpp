@@ -294,9 +294,7 @@ template <typename T, std::size_t N>
 array<typename ft::remove_cv<T>::type, N> to_array(T (&a)[N])
 {
 	array<typename ft::remove_cv<T>::type, N> arr;
-	for (std::size_t i = 0; i < N; ++i) {
-		arr[i] = a[i];
-	}
+	std::copy(a, a + N, arr.begin());
 	return arr;
 }
 
