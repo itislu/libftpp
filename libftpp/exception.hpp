@@ -12,7 +12,7 @@ namespace ft {
  *
  * The class inherits from `std::exception`, so it can be caught as such.
  *
- * @note All custom exception classes in libftpp inherit from this class.
+ * @note All non-standard exception classes in libftpp inherit from this class.
  */
 class exception : public std::exception {
 public:
