@@ -255,13 +255,13 @@ bool operator<(const array<T, N>& lhs, const array<T, N>& rhs)
 template <typename T, std::size_t N>
 bool operator<=(const array<T, N>& lhs, const array<T, N>& rhs)
 {
-	return rhs < lhs;
+	return !(lhs > rhs);
 }
 
 template <typename T, std::size_t N>
 bool operator>(const array<T, N>& lhs, const array<T, N>& rhs)
 {
-	return !(lhs > rhs);
+	return rhs < lhs;
 }
 
 template <typename T, std::size_t N>
