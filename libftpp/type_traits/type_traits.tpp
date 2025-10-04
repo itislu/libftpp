@@ -1,9 +1,9 @@
 // IWYU pragma: private; include "libftpp/type_traits.hpp"
 #pragma once
 
+#include "libftpp/type_traits.hpp"
 #include "_type_traits.hpp"
 #include "libftpp/assert.hpp" // IWYU pragma: keep: Conditionally needed.
-#include "libftpp/type_traits.hpp"
 #include <cstddef>
 #include <limits>
 
