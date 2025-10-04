@@ -12,10 +12,10 @@
 #		define FT_UNREACHABLE() (__builtin_unreachable())
 #	elif defined(_MSC_VER)
 #		define FT_UNREACHABLE() (__assume(false))
-#	else
+#	else // defined(__GNUC__) || defined(__clang__)
 #		include <exception>
 #		define FT_UNREACHABLE() (std::terminate())
-#	endif
+#	endif // defined(__GNUC__) || defined(__clang__)
 
 /**
  * @brief Macro to get the length of a C-array at compile time in a type-safe
