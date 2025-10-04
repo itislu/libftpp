@@ -1,9 +1,9 @@
 // IWYU pragma: private; include "_type_traits.hpp"
 #pragma once
-#ifndef LIBFTPP_TYPE_TRAITS__TYPE_TRAITS_TPP
-#	define LIBFTPP_TYPE_TRAITS__TYPE_TRAITS_TPP
+#ifndef LIBFTPP_TYPE_TRAITS_TYPE_TRAITS_DETAIL_TPP
+#	define LIBFTPP_TYPE_TRAITS_TYPE_TRAITS_DETAIL_TPP
 
-#	include "_type_traits.hpp"
+#	include "type_traits_detail.hpp"
 #	include "libftpp/type_traits.hpp"
 
 namespace ft {
@@ -31,4 +31,4 @@ struct impl<T, typename voider<typename T::type>::type>
 } // namespace _type_traits
 } // namespace ft
 
-#endif // LIBFTPP_TYPE_TRAITS__TYPE_TRAITS_TPP
+#endif // LIBFTPP_TYPE_TRAITS_TYPE_TRAITS_DETAIL_TPP
