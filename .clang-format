@@ -49,6 +49,7 @@ NamespaceIndentation: None
 PackConstructorInitializers: Never
 PointerAlignment: Left
 ReflowComments: true # Always doesn't work
+RemoveEmptyLinesInUnwrappedLines: true
 ShortNamespaceLines: 0
 SortIncludes: CaseSensitive
 SortUsingDeclarations: Lexicographic
