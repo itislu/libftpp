@@ -34,6 +34,7 @@ BreakTemplateDeclarations: Yes
 CommentPragmas: '^ NOLINT.*'
 FixNamespaceComments: true
 IncludeBlocks: Merge
+IncludeIsMainSourceRegex: '\.(ipp|tpp)$'
 IndentCaseLabels: false
 IndentPPDirectives: AfterHash
 IndentWidth: 4

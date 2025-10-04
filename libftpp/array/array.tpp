@@ -1,8 +1,8 @@
 // IWYU pragma: private; include "libftpp/array.hpp"
 #pragma once
 
-#include "libftpp/algorithm.hpp"
 #include "libftpp/array.hpp"
+#include "libftpp/algorithm.hpp"
 #include "libftpp/assert.hpp"
 #include "libftpp/string.hpp"
 #include "libftpp/type_traits.hpp"
