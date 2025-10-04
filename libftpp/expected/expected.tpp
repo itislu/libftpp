@@ -281,13 +281,13 @@ bool operator==(const expected<T, E>& lhs, const expected<T2, E2>& rhs)
 template <typename T, typename E, typename E2>
 bool operator==(const expected<T, E>& lhs, const unexpected<E2>& unex)
 {
-	return (!lhs.has_value() && lhs.error() == unex.error());
+	return !lhs.has_value() && lhs.error() == unex.error();
 }
 
 template <typename T, typename E, typename T2>
 bool operator==(const expected<T, E>& lhs, const T2& val)
 {
-	return (lhs.has_value() && *lhs == val);
+	return lhs.has_value() && *lhs == val;
 }
 
 template <typename T, typename E, typename T2, typename E2>
