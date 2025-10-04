@@ -171,7 +171,7 @@ struct is_volatile<volatile T> : true_type {};
 #	if defined(__clang__) && defined(__has_feature)
 #		if __has_feature(is_abstract)
 #			define LIBFTPP_BUILTIN_IS_ABSTRACT(T) __is_abstract(T)
-#		endif
+#		endif // __has_feature(is_abstract)
 #	elif defined(__GNUC__)                                         \
 	    && (__GNUC__ > 4 || (__GNUC__ == 4 && __GNUC_MINOR__ >= 3))
 // Introduced to gcc in commit cb68ec50055e516ac270a043f772935561b01968
@@ -179,14 +179,14 @@ struct is_volatile<volatile T> : true_type {};
 #	elif defined(_MSC_VER) && _MSC_VER >= 1400
 // Appears in Visual Studio 2005 Docs, but not in 2003
 #		define LIBFTPP_BUILTIN_IS_ABSTRACT(T) __is_abstract(T)
-#	endif
+#	endif // defined(__clang__) && defined(__has_feature)
 
 #	ifdef LIBFTPP_BUILTIN_IS_ABSTRACT
 
 template <typename T>
 struct is_abstract : bool_constant<LIBFTPP_BUILTIN_IS_ABSTRACT(T)> {};
 
-#	else
+#	else // LIBFTPP_BUILTIN_IS_ABSTRACT
 
 /**
  * Fallback implementation.
@@ -249,7 +249,7 @@ struct impl<T,
 
 } // namespace _is_abstract
 
-#	endif
+#	endif // LIBFTPP_BUILTIN_IS_ABSTRACT
 
 /* is_signed */
 namespace _is_signed {
@@ -335,7 +335,7 @@ struct is_same<T, T> : true_type {};
 #		if __has_feature(is_convertible_to)
 #			define LIBFTPP_BUILTIN_IS_CONVERTIBLE(FROM, TO) \
 				__is_convertible_to(FROM, TO)
-#		endif
+#		endif // __has_feature(is_convertible_to)
 #	elif defined(__GNUC__)                                           \
 	    && (__GNUC__ > 13 || (__GNUC__ == 13 && __GNUC_MINOR__ >= 4))
 // Buggy 13.1: https://gcc.gnu.org/bugzilla/show_bug.cgi?id=106784
@@ -348,7 +348,7 @@ struct is_same<T, T> : true_type {};
 // Appears in Visual Studio 2005 Docs, but not in 2003
 #		define LIBFTPP_BUILTIN_IS_CONVERTIBLE(FROM, TO) \
 			__is_convertible_to(FROM, TO)
-#	endif
+#	endif // defined(__clang__) && defined(__has_feature)
 
 #	ifdef LIBFTPP_BUILTIN_IS_CONVERTIBLE
 
@@ -356,7 +356,7 @@ template <typename From, typename To>
 struct is_convertible
     : bool_constant<LIBFTPP_BUILTIN_IS_CONVERTIBLE(From, To)> {};
 
-#	else
+#	else // LIBFTPP_BUILTIN_IS_CONVERTIBLE
 
 namespace _is_convertible {
 template <typename From, typename To, typename = void>
@@ -455,7 +455,7 @@ struct is_impossible_array_to_ref
 
 } // namespace _is_convertible
 
-#	endif
+#	endif // LIBFTPP_BUILTIN_IS_CONVERTIBLE
 
 /* Type transformations */
 
