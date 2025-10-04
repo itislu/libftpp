@@ -8,8 +8,7 @@
 		namespace detail_has_member_function_##NAME                           \
 		{                                                                     \
                                                                               \
-			/* 2nd param: member-function pointer non-type template parameter \
-			 */                                                               \
+			/* 2nd param: member-function pointer non-type template param. */ \
 			template <typename T, RETURN_TYPE(T::*) ARGS_IN_PARENS>           \
 			struct sfinae {};                                                 \
                                                                               \

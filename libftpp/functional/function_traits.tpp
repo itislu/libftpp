@@ -73,8 +73,8 @@ struct argument_type<ReducedFunc, 0, LastArg, N, false> {};
 #	define LIBFTPP_FUNCTION_TRAITS_SPECIALIZATIONS(FUNC_SIG, IMPL_ARGS) \
 		LIBFTPP_TEMPLATE_SIG                                             \
 		struct function_traits<FUNC_SIG> {                               \
-			LIBFTPP_FUNCTION_TRAITS_IMPL                                 \
-			IMPL_ARGS /* Uses parens of IMPL_ARGS. */                    \
+			/* Uses parens of IMPL_ARGS. */                              \
+			LIBFTPP_FUNCTION_TRAITS_IMPL IMPL_ARGS                       \
 		};                                                               \
 		LIBFTPP_TEMPLATE_SIG                                             \
 		struct function_traits<FUNC_SIG const> {                         \

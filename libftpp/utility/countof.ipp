@@ -8,10 +8,10 @@
  */
 // clang-format off
 // NOLINTBEGIN
-#define LIBFTPP_COUNTOF_IMPL(ARRAY)                                                          \
-	((0 * sizeof(reinterpret_cast<const volatile ft::_countof::bad_arg_to_COUNTOF*>(ARRAY))) \
-	 + (0 * sizeof(ft::_countof::bad_arg_to_COUNTOF::check_type((ARRAY), &(ARRAY))))         \
-	 + (sizeof(ARRAY) / sizeof((ARRAY)[0])))
+#	define LIBFTPP_COUNTOF_IMPL(ARRAY)                                                          \
+		((0 * sizeof(reinterpret_cast<const volatile ft::_countof::bad_arg_to_COUNTOF*>(ARRAY))) \
+		 + (0 * sizeof(ft::_countof::bad_arg_to_COUNTOF::check_type((ARRAY), &(ARRAY))))         \
+		 + (sizeof(ARRAY) / sizeof((ARRAY)[0])))
 // NOLINTEND
 // clang-format on
 
