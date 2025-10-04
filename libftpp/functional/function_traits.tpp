@@ -18,7 +18,7 @@ struct argument_type;
 
 template <typename F>
 struct function_traits {
-	FT_STATIC_ASSERT( // Only functions with up to 10 parameters supported
+	FT_STATIC_ASSERT( // Only functions with up to 10 parameters supported.
 	    !ft::is_function<F>::value);
 };
 

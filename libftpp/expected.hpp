@@ -24,23 +24,23 @@ struct is_unexpected;
 template <typename T, typename E>
 class expected : public ft::safe_bool<expected<T, E> > {
 private:
-	FT_STATIC_ASSERT( // T must not be an array type
+	FT_STATIC_ASSERT( // T must not be an array type.
 	    !ft::is_array<T>::value);
-	FT_STATIC_ASSERT( // T must not be a reference type
+	FT_STATIC_ASSERT( // T must not be a reference type.
 	    !ft::is_reference<T>::value);
-	FT_STATIC_ASSERT( // T must not be a function type
+	FT_STATIC_ASSERT( // T must not be a function type.
 	    !ft::is_function<T>::value);
-	FT_STATIC_ASSERT( // T must not be a specialization of ft::unexpected
+	FT_STATIC_ASSERT( // T must not be a specialization of ft::unexpected.
 	    !_unexpected::is_unexpected<typename ft::remove_cv<T>::type>::value);
-	FT_STATIC_ASSERT( // T must not be ft::unexpect_t
+	FT_STATIC_ASSERT( // T must not be ft::unexpect_t.
 	    (!ft::is_same<typename ft::remove_cv<T>::type, ft::unexpect_t>::value));
-	FT_STATIC_ASSERT( // E must be an object type
+	FT_STATIC_ASSERT( // E must be an object type.
 	    ft::is_object<E>::value);
-	FT_STATIC_ASSERT( // E must not be an array type
+	FT_STATIC_ASSERT( // E must not be an array type.
 	    !ft::is_array<E>::value);
-	FT_STATIC_ASSERT( // E must not be a specialization of ft::unexpected
+	FT_STATIC_ASSERT( // E must not be a specialization of ft::unexpected.
 	    !_unexpected::is_unexpected<typename ft::remove_cv<E>::type>::value);
-	FT_STATIC_ASSERT( // E must not be cv-qualified type
+	FT_STATIC_ASSERT( // E must not be a cv-qualified type.
 	    !ft::is_const<E>::value && !ft::is_volatile<E>::value);
 
 public:
@@ -112,13 +112,13 @@ bool operator!=(const expected<T, E>& lhs, const T2& val);
 template <typename E>
 class expected<void, E> : public ft::safe_bool<expected<void, E> > {
 private:
-	FT_STATIC_ASSERT( // E must be an object type
+	FT_STATIC_ASSERT( // E must be an object type.
 	    ft::is_object<E>::value);
-	FT_STATIC_ASSERT( // E must not be an array type
+	FT_STATIC_ASSERT( // E must not be an array type.
 	    !ft::is_array<E>::value);
-	FT_STATIC_ASSERT( // E must not be a specialization of ft::unexpected
+	FT_STATIC_ASSERT( // E must not be a specialization of ft::unexpected.
 	    !_unexpected::is_unexpected<typename ft::remove_cv<E>::type>::value);
-	FT_STATIC_ASSERT( // E must not be cv-qualified type
+	FT_STATIC_ASSERT( // E must not be a cv-qualified type.
 	    !ft::is_const<E>::value && !ft::is_volatile<E>::value);
 
 public:
@@ -166,13 +166,13 @@ bool operator==(const expected<void, E>& lhs, const expected<T2, E2>& rhs);
 template <typename E>
 class unexpected {
 private:
-	FT_STATIC_ASSERT( // E must be an object type
+	FT_STATIC_ASSERT( // E must be an object type.
 	    ft::is_object<E>::value);
-	FT_STATIC_ASSERT( // E must not be an array type
+	FT_STATIC_ASSERT( // E must not be an array type.
 	    !ft::is_array<E>::value);
-	FT_STATIC_ASSERT( // E must not be a specialization of ft::unexpected
+	FT_STATIC_ASSERT( // E must not be a specialization of ft::unexpected.
 	    !_unexpected::is_unexpected<typename ft::remove_cv<E>::type>::value);
-	FT_STATIC_ASSERT( // E must not be cv-qualified type
+	FT_STATIC_ASSERT( // E must not be a cv-qualified type.
 	    !ft::is_const<E>::value && !ft::is_volatile<E>::value);
 
 public:
