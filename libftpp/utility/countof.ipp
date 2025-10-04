@@ -1,4 +1,6 @@
 #pragma once
+#ifndef LIBFTPP_UTILITY_COUNTOF_IPP
+#	define LIBFTPP_UTILITY_COUNTOF_IPP
 
 /**
  * Inspiration:
@@ -28,3 +30,5 @@ public:
 
 } // namespace _countof
 } // namespace ft
+
+#endif // LIBFTPP_UTILITY_COUNTOF_IPP
