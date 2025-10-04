@@ -223,7 +223,7 @@ private:
 	 * T must be a complete type. Further, if T is a template then this also
 	 * ensures to instantiate it, which is required to get the correct answer.
 	 */
-	FT_STATIC_ASSERT(sizeof(T) != 0); // T must be a complete type
+	FT_STATIC_ASSERT(sizeof(T) != 0); // T must be a complete type.
 
 	template <typename U, typename = void>
 	struct is_arrayable : false_type {};

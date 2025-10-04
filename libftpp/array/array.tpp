@@ -18,7 +18,7 @@ namespace _array {
 template <typename T, std::size_t N>
 T& impl<T, N>::ref(const Type& t, std::size_t n) throw()
 {
-	FT_STATIC_ASSERT(N > 0); // Cannot index into a zero-sized array
+	FT_STATIC_ASSERT(N > 0); // Cannot index into a zero-sized array.
 	/*
 	The const_cast only removes const-ness temporarily added by the parameter
 	type, not from truly const objects. When called from a const member
@@ -273,14 +273,14 @@ bool operator>=(const array<T, N>& lhs, const array<T, N>& rhs)
 template <std::size_t I, typename T, std::size_t N>
 T& get(array<T, N>& a)
 {
-	FT_STATIC_ASSERT(I < N); // Index out of bounds in ft::get
+	FT_STATIC_ASSERT(I < N); // Index out of bounds.
 	return a[I];
 }
 
 template <std::size_t I, typename T, std::size_t N>
 const T& get(const array<T, N>& a)
 {
-	FT_STATIC_ASSERT(I < N); // Index out of bounds in ft::get
+	FT_STATIC_ASSERT(I < N); // Index out of bounds.
 	return a[I];
 }
 
