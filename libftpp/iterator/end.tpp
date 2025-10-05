@@ -23,7 +23,9 @@ typename C::const_iterator end(const C& c)
 template <typename T, std::size_t N>
 T* end(T (&array)[N])
 {
-	return array + N;
+	// Get one past the end.
+	// NOLINTNEXTLINE(cppcoreguidelines-pro-bounds-pointer-arithmetic)
+	return static_cast<T*>(array) + N;
 }
 
 template <typename C>

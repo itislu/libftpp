@@ -22,7 +22,9 @@ namespace ft {
 template <typename Derived = void>
 class safe_bool : private _safe_bool::safe_bool_base {
 public:
-	operator safe_bool_t() const;
+	// Implicit conversion wanted; pointer-to-member not convertible to any
+	// other type except for `bool`.
+	operator safe_bool_t() const; // NOLINT(google-explicit-constructor)
 
 protected:
 	safe_bool();
@@ -51,7 +53,9 @@ private:
 template <>
 class safe_bool<void> : private _safe_bool::safe_bool_base {
 public:
-	operator safe_bool_t() const;
+	// Implicit conversion wanted; pointer-to-member not convertible to any
+	// other type except for `bool`.
+	operator safe_bool_t() const; // NOLINT(google-explicit-constructor)
 
 protected:
 	safe_bool();

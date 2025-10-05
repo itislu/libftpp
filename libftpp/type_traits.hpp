@@ -74,7 +74,8 @@ struct integral_constant {
 	typedef T value_type;
 	typedef integral_constant type;
 
-	operator value_type() const throw();
+	// Original in `std::integral_constant` is not `explicit`.
+	operator value_type() const throw(); // NOLINT(google-explicit-constructor)
 	value_type operator()() const throw();
 };
 

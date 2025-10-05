@@ -31,12 +31,17 @@ private:
 
 public:
 	optional() throw();
+	// Original in `std::optional` is not `explicit`.
+	// NOLINTNEXTLINE(google-explicit-constructor)
 	optional(nullopt_t /*unused*/) throw();
 	optional(const optional& other);
+	// Originals in `std::optional` are conditionally `explicit`.
+	// NOLINTBEGIN(google-explicit-constructor)
 	template <typename U>
 	optional(const optional<U>& other);
 	template <typename U>
 	optional(const U& value);
+	// NOLINTEND(google-explicit-constructor)
 	~optional();
 	optional& operator=(nullopt_t /*unused*/) throw();
 	optional& operator=(optional other) throw();

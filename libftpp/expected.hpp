@@ -48,12 +48,15 @@ private:
 public:
 	expected();
 	expected(const expected& other);
+	// Originals in `std::expected` are conditionally `explicit`.
+	// NOLINTBEGIN(google-explicit-constructor)
 	template <typename U, typename G>
 	expected(const expected<U, G>& other);
 	template <typename U>
 	expected(const U& v);
 	template <typename G>
 	expected(const unexpected<G>& e);
+	// NOLINTEND(google-explicit-constructor)
 	explicit expected(unexpect_t /*unused*/);
 	~expected();
 	expected& operator=(expected other) throw();
@@ -126,10 +129,13 @@ private:
 public:
 	expected() throw();
 	expected(const expected& other);
+	// Originals in `std::expected` are conditionally `explicit`.
+	// NOLINTBEGIN(google-explicit-constructor)
 	template <typename U, typename G>
 	expected(const expected<U, G>& other);
 	template <typename G>
 	expected(const unexpected<G>& e);
+	// NOLINTEND(google-explicit-constructor)
 	explicit expected(unexpect_t /*unused*/);
 	~expected();
 	expected& operator=(expected other) throw();
