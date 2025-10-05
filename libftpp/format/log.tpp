@@ -17,7 +17,7 @@ std::string ok(const T& msg)
 {
 	std::ostringstream os;
 	os << std::left << std::setw(label_width_colored)
-	   << FT_BOLD(FT_GREEN("[OK]")) << msg;
+	   << ft::bold(ft::green("[OK]")) << msg;
 	return os.str();
 }
 
@@ -26,7 +26,7 @@ std::string info(const T& msg)
 {
 	std::ostringstream os;
 	os << std::left << std::setw(label_width_colored)
-	   << FT_BOLD(FT_BLUE("[INFO]")) << msg;
+	   << ft::bold(ft::blue("[INFO]")) << msg;
 	return os.str();
 }
 
@@ -35,7 +35,7 @@ std::string warn(const T& msg)
 {
 	std::ostringstream os;
 	os << std::left << std::setw(label_width_colored)
-	   << FT_BOLD(FT_YELLOW("[WARN]")) << msg;
+	   << ft::bold(ft::yellow("[WARN]")) << msg;
 	return os.str();
 }
 
@@ -44,7 +44,7 @@ std::string error(const T& msg)
 {
 	std::ostringstream os;
 	os << std::left << std::setw(label_width_colored)
-	   << FT_BOLD(FT_RED("[ERROR]")) << msg;
+	   << ft::bold(ft::red("[ERROR]")) << msg;
 	return os.str();
 }
 
