@@ -48,6 +48,7 @@ bear			:	.bear-image
 					docker build -t $(BEAR_IMG) $(DOCKER_DIR)/$(BEAR_IMG)
 					$(call PRINTLN,Built bear image.)
 
+#TODO PROJECT_NAME format is prolly not appropriate anymore.
 doxygen			:	.doxygen-image bear $(DOXYFILE)
 					$(call PRINTLN,Generating Doxygen documentation ...)
 					mkdir -p $(DOXYGEN_OUTDIR)

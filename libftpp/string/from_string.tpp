@@ -35,6 +35,7 @@ struct impl {
 };
 } // namespace _from_string
 
+// TODO Fix cv qualified To
 template <typename To>
 To from_string(const std::string& str,
                std::string::size_type* endpos_out /*= NULL*/)

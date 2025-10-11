@@ -5,8 +5,10 @@
 
 #	include "libftpp/expected.hpp"
 #	include "libftpp/safe_bool.hpp"
+#include "libftpp/type_traits.hpp"
 #	include <algorithm>
 #	include <cassert>
+#include <iostream>
 
 namespace ft {
 
@@ -16,13 +18,16 @@ template <typename T, typename E>
 expected<T, E>::expected()
     : _value(new T()),
       _has_value(true)
-{}
+{
+	std::cerr << "expected<T, E>::expected()" << '\n';
+}
 
 template <typename T, typename E>
 expected<T, E>::expected(const expected& other)
     : ft::safe_bool<expected<T, E> >(),
       _has_value(false)
 {
+	std::cerr << "expected<T, E>::expected(const expected& other)" << '\n';
 	if (other._has_value) {
 		_value = new T(*other._value);
 		_has_value = true;
@@ -34,9 +39,36 @@ expected<T, E>::expected(const expected& other)
 
 template <typename T, typename E>
 template <typename U, typename G>
-expected<T, E>::expected(const expected<U, G>& other)
+expected<T, E>::expected(
+    const expected<U, G>& other,
+    typename ft::enable_if<(ft::is_convertible<const U&, T>::value
+                            && ft::is_convertible<const G&, E>::value),
+                           enabler>::type /*unused*/)
     : _has_value(false)
 {
+	std::cerr << "expected<T, E>::expected(const expected<U, G>& other)"
+	          << '\n';
+	if (other.has_value()) {
+		_value = new T(*other);
+		_has_value = true;
+	}
+	else {
+		_error = new E(other.error());
+	}
+}
+
+template <typename T, typename E>
+template <typename U, typename G>
+expected<T, E>::expected(
+    const expected<U, G>& other,
+    typename ft::enable_if<!(ft::is_convertible<const U&, T>::value
+                             && ft::is_convertible<const G&, E>::value),
+                           enabler>::type /*unused*/)
+    : _has_value(false)
+{
+	std::cerr
+	    << "explicit expected<T, E>::expected(const expected<U, G>& other)"
+	    << '\n';
 	if (other.has_value()) {
 		_value = new T(*other);
 		_has_value = true;
@@ -51,20 +83,26 @@ template <typename U>
 expected<T, E>::expected(const U& v)
     : _value(new T(v)),
       _has_value(true)
-{}
+{
+	std::cerr << "expected<T, E>::expected(const U& v)" << '\n';
+}
 
 template <typename T, typename E>
 template <typename G>
 expected<T, E>::expected(const unexpected<G>& e)
     : _error(new E(e.error())),
       _has_value(false)
-{}
+{
+	std::cerr << "expected<T, E>::expected(const unexpected<G>& e)" << '\n';
+}
 
 template <typename T, typename E>
 expected<T, E>::expected(unexpect_t /*unused*/)
     : _error(new E()),
       _has_value(false)
-{}
+{
+	std::cerr << "expected<T, E>::expected(unexpect_t /*unused*/)" << '\n';
+}
 
 template <typename T, typename E>
 expected<T, E>::~expected()
@@ -80,6 +118,9 @@ expected<T, E>::~expected()
 template <typename T, typename E>
 expected<T, E>& expected<T, E>::operator=(expected other) throw()
 {
+	std::cerr
+	    << "expected<T, E>& expected<T, E>::operator=(expected other) throw()"
+	    << '\n';
 	swap(other);
 	return *this;
 }
@@ -269,7 +310,8 @@ void swap(expected<T, E>& lhs, expected<T, E>& rhs) throw()
 }
 
 template <typename T, typename E, typename T2, typename E2>
-bool operator==(const expected<T, E>& lhs, const expected<T2, E2>& rhs)
+typename ft::enable_if<!ft::is_void<T2>::value, bool>::type
+operator==(const expected<T, E>& lhs, const expected<T2, E2>& rhs)
 {
 	if (lhs.has_value() != rhs.has_value()) {
 		return false;
