@@ -4,6 +4,7 @@
 
 #	include "libftpp/utility/countof.ipp"
 #	include "libftpp/movable.hpp"
+#	include "libftpp/type_traits.hpp"
 #	include <string>
 
 /**
@@ -40,10 +41,12 @@ std::string demangle(const char* mangled_name);
  * Needed for functions taking `ft::rvalue<T>&` parameters to be chosen by
  * overload resolution.
  *
+ * `ft::remove_reference<T&>::type` is used to prevent nesting of `ft::rvalue`s.
+ *
  * https://en.cppreference.com/w/cpp/utility/move
  */
 template <typename T>
-ft::rvalue<T>& move(T& t) throw();
+ft::rvalue<typename ft::remove_reference<T&>::type>& move(T& t) throw();
 
 } // namespace ft
 
