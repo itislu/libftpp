@@ -2,6 +2,8 @@
 #ifndef LIBFTPP_FUNCTIONAL_HPP
 #	define LIBFTPP_FUNCTIONAL_HPP
 
+#	include <cstddef>
+
 namespace ft {
 
 /**
@@ -230,9 +232,33 @@ struct less_equal<void> {
 	bool operator()(T* a, U* b) const;
 };
 
+/* Non-standard functors */
+
+// Don't commit, this doesn't really work with std algorithms bc they make
+// copies of the predicate... Would require std::reference_wrapper.
+// But I think most of the times it's not guaranteed in which order it is called
+// anw.
+/**
+ * @brief Function object that returns `true` every Nth time it is called
+ */
+struct Nth {
+	/**
+	 * @throws ft::Exception When `n` is 0
+	 */
+	explicit Nth(std::size_t n, std::size_t start_value = 0);
+
+	template <typename T>
+	bool operator()(const T& /*unused*/) throw();
+
+private:
+	std::size_t _n;
+	std::size_t _cur;
+};
+
 } // namespace ft
 
-#	include "libftpp/functional/comparisons.tpp"     // IWYU pragma: export
-#	include "libftpp/functional/function_traits.tpp" // IWYU pragma: export
+#	include "libftpp/functional/comparisons.tpp"      // IWYU pragma: export
+#	include "libftpp/functional/function_traits.tpp"  // IWYU pragma: export
+#	include "libftpp/functional/non_std_functors.tpp" // IWYU pragma: export
 
 #endif // LIBFTPP_FUNCTIONAL_HPP

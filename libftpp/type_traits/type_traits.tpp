@@ -827,6 +827,78 @@ struct is_returnable
     : bool_constant<!is_abstract<T>::value && !is_array<T>::value
                     && !is_function<T>::value> {};
 
+/* is_assignable */
+
+// template <typename T, typename U>
+// struct is_assignable {
+// private:
+// 	typedef char yes[1];
+// 	typedef char no[2];
+
+// 	template <typename T1, typename T2>
+// 	static yes& try_assignment(char (*)[sizeof(declval<T>() =
+// declval<U>())]);
+
+// 	static no& try_assignment(...);
+
+// public:
+// 	typedef bool_constant<sizeof(try_assignment<T, U>(NULL)) == sizeof(yes)>
+// 	    type;
+
+// 	static const bool value = type::value;
+// };
+
+// template <typename T, typename U>
+// struct is_assignable {
+// private:
+// 	typedef char yes[1];
+// 	typedef char no[2];
+
+// 	template <typename T1, typename U1>
+// 	static typename enable_if<sizeof(declval<T1>() = declval<U1>()),
+// yes&>::type 	try_assignment();
+
+// 	static no& try_assignment();
+
+// public:
+// 	typedef bool_constant<sizeof(try_assignment<T, U>()) == sizeof(yes)>
+// 	    type;
+
+// 	static const bool value = type::value;
+// };
+
+// template <typename T, typename U>
+// struct is_assignable {
+// private:
+// 	typedef char yes[1];
+// 	typedef char no[2];
+
+// 	template <typename = void>
+// 	struct Impl {
+// 		static no& try_assignment();
+// 	};
+
+// 	template <>
+// 	struct Impl<
+// 	    typename enable_if<sizeof(declval<T>() = declval<U>())>::type> {
+// 		static yes& try_assignment();
+// 	};
+
+// public:
+// 	typedef bool_constant<sizeof(Impl<>::try_assignment()) == sizeof(yes)>
+// type;
+
+// 	static const bool value = type::value;
+// };
+
+/* has_type_member */
+template <typename, typename /*= void*/>
+struct has_type_member : false_type {};
+
+template <typename T>
+struct has_type_member<T, typename voider<typename T::type>::type> : true_type {
+};
+
 } // namespace ft
 
 #endif // LIBFTPP_TYPE_TRAITS_TYPE_TRAITS_TPP

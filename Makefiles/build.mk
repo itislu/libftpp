@@ -21,6 +21,7 @@ DEP_SUBDIRS		:=	$(sort $(dir $(DEP)))
 
 #	Target categories
 
+# TODO Would be nice to put these to the corresponding mk files
 BUILD_TARGETS	:=	all clear modes run term val valfd
 REBUILD_TARGETS	:=	opt re san
 DOC_TARGETS		:=	bear doxygen uml
@@ -43,6 +44,7 @@ PHONY_TARGETS	+=	$(HELP_TARGETS) $(HIDDEN_TARGETS) $(LIB_DIRS)
 
 # ***************************** BUILD TARGETS ******************************** #
 
+#TODO On macOS, projects with library still always print "Building ..."
 all				:
 					if $(READY); then \
 						$(call PRINTLN,"$(MSG_NO_CHANGE)"); \

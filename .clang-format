@@ -45,11 +45,16 @@ KeepEmptyLines:
   AtEndOfFile: false
   AtStartOfBlock: false
   AtStartOfFile: false
+# MacrosSkippedByRemoveParentheses: [FT_HAS_MEMBER_FUNCTION] # TODO Add once clang-format-21 is stable.
 NamespaceIndentation: None
 PackConstructorInitializers: Never
+# TODO Experiment with penalties
+# PenaltyIndentedWhitespace: 1
+# PenaltyReturnTypeOnItsOwnLine: 10 # also works
 PointerAlignment: Left
 ReflowComments: true # Always doesn't work
 RemoveEmptyLinesInUnwrappedLines: true
+# RemoveParentheses: ReturnStatement # TODO Add once clang-format-21 is stable.
 ShortNamespaceLines: 0
 SortIncludes: CaseSensitive
 SortUsingDeclarations: Lexicographic

@@ -195,6 +195,11 @@ template <typename T>
 std::string to_string(T v, std::ios::fmtflags fmt = std::ios::fmtflags());
 std::string to_string(bool v, std::ios::fmtflags fmt = std::ios::boolalpha);
 
+struct ToString {
+	template <typename T>
+	std::string operator()(T v) {return ft::to_string(v);}
+};
+
 /* trim */
 
 std::string& trim(std::string& str);

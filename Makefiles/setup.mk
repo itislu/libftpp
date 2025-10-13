@@ -4,6 +4,7 @@ SETUP_MK		:=	1
 
 # ******************************* MAKE SETUP ********************************* #
 
+#TODO set the --jobs more fine grained, not global, so that multiple CMDGOALS work (although atm I don't see any issue with it)
 MAKEFLAGS		+=	--silent --no-builtin-rules --no-builtin-variables
 SHELL			:=	/bin/bash
 PWD				:=	$(shell pwd)

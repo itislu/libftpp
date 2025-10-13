@@ -148,6 +148,11 @@ optional<T> optional<T>::and_then(const F& f) const
 	return optional();
 }
 
+// TODO "For example, your current code forces and_then to always return an
+// Optional<T>, but with declval and decltype you could have allowed it to
+// return an Optional of a different type based on the return type of the
+// function f."
+//* I can achieve unevaluated context with sizeof instead of decltype.
 /**
  * f should return a value of type T
  */

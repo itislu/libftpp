@@ -6,6 +6,7 @@
 #	include "libftpp/safe_bool.hpp"
 #	include "libftpp/type_traits.hpp"
 #	include <exception>
+#include <string>
 
 namespace ft {
 
@@ -45,20 +46,31 @@ private:
 	FT_STATIC_ASSERT( // E must not be a cv-qualified type.
 	    !ft::is_const<E>::value && !ft::is_volatile<E>::value);
 
+	struct enabler {};
+
 public:
 	expected();
 	expected(const expected& other);
-	// Originals in `std::expected` are conditionally `explicit`.
-	// NOLINTBEGIN(google-explicit-constructor)
 	template <typename U, typename G>
-	expected(const expected<U, G>& other);
+	expected(const expected<U, G>& other,
+	         typename ft::enable_if<(ft::is_convertible<const U&, T>::value
+	                                 && ft::is_convertible<const G&, E>::value),
+	                                enabler>::type /*unused*/
+	         = enabler());
+	template <typename U, typename G>
+	explicit expected(
+	    const expected<U, G>& other,
+	    typename ft::enable_if<!(ft::is_convertible<const U&, T>::value
+	                             && ft::is_convertible<const G&, E>::value),
+	                           enabler>::type /*unused*/
+	    = enabler());
 	template <typename U>
 	expected(const U& v);
 	template <typename G>
 	expected(const unexpected<G>& e);
-	// NOLINTEND(google-explicit-constructor)
 	explicit expected(unexpect_t /*unused*/);
 	~expected();
+	// TODO Test if sufficient after adding explicit (same for void special.)
 	expected& operator=(expected other) throw();
 
 	const T* operator->() const throw();
@@ -88,6 +100,7 @@ public:
 	void swap(expected& other) throw();
 
 private:
+	/* C++98 union members are restricted to POD types, so use the heap. */
 	union {
 		T* _value;
 		E* _error;
@@ -99,7 +112,8 @@ template <typename T, typename E>
 void swap(expected<T, E>& lhs, expected<T, E>& rhs) throw();
 
 template <typename T, typename E, typename T2, typename E2>
-bool operator==(const expected<T, E>& lhs, const expected<T2, E2>& rhs);
+typename ft::enable_if<!ft::is_void<T2>::value, bool>::type
+operator==(const expected<T, E>& lhs, const expected<T2, E2>& rhs);
 template <typename T, typename E, typename E2>
 bool operator==(const expected<T, E>& lhs, const unexpected<E2>& unex);
 template <typename T, typename E, typename T2>
@@ -165,8 +179,11 @@ private:
 	bool _has_value;
 };
 
+// TODO "requires is_void<T2>"
 template <typename E, typename T2, typename E2>
-bool operator==(const expected<void, E>& lhs, const expected<T2, E2>& rhs);
+typename ft::enable_if<ft::is_void<T2>::value, bool>::type
+operator==(const expected<void, E>& lhs, const expected<T2, E2>& rhs);
+// TODO Why is expected == unexpected missing?
 
 /**
  * https://en.cppreference.com/w/cpp/utility/expected/unexpected

@@ -11,7 +11,7 @@
 namespace ft {
 
 /* abs_diff */
-
+// TODO Make generic template that requires arithmetic and returns larger type
 unsigned char abs_diff(char a, char b) throw();
 unsigned short abs_diff(short a, short b) throw();
 unsigned int abs_diff(int a, int b) throw();

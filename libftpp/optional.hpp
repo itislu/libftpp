@@ -68,6 +68,7 @@ public:
 	void reset() throw();
 
 private:
+	/* C++98 union members are restricted to POD types, so use heap instead. */
 	T* _value;
 };
 

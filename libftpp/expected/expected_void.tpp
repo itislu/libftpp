@@ -5,6 +5,7 @@
 
 #	include "libftpp/expected.hpp"
 #	include "libftpp/safe_bool.hpp"
+#include "libftpp/type_traits.hpp"
 #	include <algorithm>
 #	include <cassert>
 #	include <cstddef>
@@ -177,7 +178,8 @@ void expected<void, E>::swap(expected& other) throw()
 }
 
 template <typename E, typename T2, typename E2>
-bool operator==(const expected<void, E>& lhs, const expected<T2, E2>& rhs)
+typename ft::enable_if<ft::is_void<T2>::value, bool>::type
+operator==(const expected<void, E>& lhs, const expected<T2, E2>& rhs)
 {
 	if (lhs.has_value() != rhs.has_value()) {
 		return false;

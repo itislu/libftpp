@@ -29,6 +29,7 @@ struct impl {
 };
 } // namespace _numeric_cast
 
+// TODO Use FT_REQUIRES to check is_arithmetic for both types
 template <typename To, typename From>
 To numeric_cast(From from)
 {
@@ -36,12 +37,19 @@ To numeric_cast(From from)
 		if (ft::is_integral<From>::value) {
 			return _numeric_cast::int_to_int<To>(from);
 		}
-		return _numeric_cast::fp_to_int<To>(from);
+		if (ft::is_floating_point<From>::value) {
+			return _numeric_cast::fp_to_int<To>(from);
+		}
 	}
-	if (ft::is_integral<From>::value) {
-		return _numeric_cast::int_to_fp<To>(from);
+	else if (ft::is_floating_point<To>::value) {
+		if (ft::is_integral<From>::value) {
+			return _numeric_cast::int_to_fp<To>(from);
+		}
+		if (ft::is_floating_point<From>::value) {
+			return _numeric_cast::fp_to_fp<To>(from);
+		}
 	}
-	return _numeric_cast::fp_to_fp<To>(from);
+	// TODO need FT_UNREACHABLE?
 }
 
 template <typename To, typename From>

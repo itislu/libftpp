@@ -390,6 +390,15 @@ struct disjunction;
 template <typename B>
 struct negation;
 
+/* declval */ // TODO Should maybe go in another header
+
+template <typename T>
+typename add_lvalue_reference<T>::type declval() throw();
+
+// TODO hide the default template argument
+template <typename T, typename = void>
+struct has_type_member;
+
 /* Custom type traits */
 
 /* has_member_function_swap */
