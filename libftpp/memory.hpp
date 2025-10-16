@@ -7,58 +7,11 @@
 #	include "libftpp/movable.hpp"
 #	include "libftpp/safe_bool.hpp"
 #	include "libftpp/type_traits.hpp"
+#	include "libftpp/utility.hpp"
 #	include <cstddef>
 #	include <ostream>
 
-/**
- * @brief `nullptr` emulation
- *
- * Implemented as a macro because `nullptr` is a prvalue.
- *
- * https://en.cppreference.com/w/cpp/language/nullptr
- */
-#	define FT_NULLPTR ft::nullptr_t()
-
 namespace ft {
-
-/* nullptr_t */
-
-/**
- * https://en.cppreference.com/w/cpp/types/nullptr_t
- */
-class nullptr_t {
-public:
-	// NOLINTBEGIN(google-explicit-constructor): `std::nullptr_t` may be
-	// implicitly converted to any pointer and pointer to member type.
-	template <typename T>
-	operator T*() const throw();
-
-	template <typename C, typename T>
-	operator T C::*() const throw();
-	// NOLINTEND(google-explicit-constructor)
-
-private:
-	// `sizeof(std::nullptr_t)` is equal to `sizeof(void *)`.
-	void* _;
-};
-
-// Disabled ordered comparison operators.
-template <typename T>
-bool operator<(T* /*unused*/, nullptr_t /*unused*/);
-template <typename T>
-bool operator<(nullptr_t /*unused*/, T* /*unused*/);
-template <typename T>
-bool operator<=(T* /*unused*/, nullptr_t /*unused*/);
-template <typename T>
-bool operator<=(nullptr_t /*unused*/, T* /*unused*/);
-template <typename T>
-bool operator>(T* /*unused*/, nullptr_t /*unused*/);
-template <typename T>
-bool operator>(nullptr_t /*unused*/, T* /*unused*/);
-template <typename T>
-bool operator>=(T* /*unused*/, nullptr_t /*unused*/);
-template <typename T>
-bool operator>=(nullptr_t /*unused*/, T* /*unused*/);
 
 /* default_delete */
 
@@ -523,6 +476,5 @@ FT_REQUIRES(ft::is_unbounded_array<T>::value)
 #	include "libftpp/memory/default_delete.tpp"   // IWYU pragma: export
 #	include "libftpp/memory/unique_ptr.tpp"       // IWYU pragma: export
 #	include "libftpp/memory/unique_ptr_array.tpp" // IWYU pragma: export
-#	include "libftpp/memory/nullptr_t.tpp"        // IWYU pragma: export
 
 #endif // LIBFTPP_MEMORY_HPP
