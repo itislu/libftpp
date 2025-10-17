@@ -3,13 +3,16 @@
 #	define LIBFTPP_MEMORY_HPP
 
 #	include "libftpp/assert.hpp"
+#	include "libftpp/memory/shared_ptr_detail.hpp"
 #	include "libftpp/memory/unique_ptr_detail.hpp"
 #	include "libftpp/movable.hpp"
 #	include "libftpp/safe_bool.hpp"
 #	include "libftpp/type_traits.hpp"
 #	include "libftpp/utility.hpp"
 #	include <cstddef>
+#	include <memory>
 #	include <ostream>
+#	include <typeinfo>
 
 namespace ft {
 
@@ -61,6 +64,518 @@ public:
 	FT_REQUIRES((ft::is_convertible<U (*)[], T (*)[]>::value))
 	(void)operator()(U * ptr) const;
 };
+
+/* shared_ptr */
+
+class bad_weak_ptr : public std::exception {
+public:
+	const char* what() const throw();
+};
+
+template <typename T>
+class shared_ptr;
+
+template <typename T>
+class weak_ptr;
+
+template <typename T>
+class enable_shared_from_this;
+
+template <typename T>
+shared_ptr<T> make_shared();
+template <typename T, typename A0>
+shared_ptr<T> make_shared(const A0& a0);
+template <typename T, typename A0, typename A1>
+shared_ptr<T> make_shared(const A0& a0, const A1& a1);
+template <typename T, typename A0, typename A1, typename A2>
+shared_ptr<T> make_shared(const A0& a0, const A1& a1, const A2& a2);
+template <typename T, typename A0, typename A1, typename A2, typename A3>
+shared_ptr<T>
+make_shared(const A0& a0, const A1& a1, const A2& a2, const A3& a3);
+template <typename T,
+          typename A0,
+          typename A1,
+          typename A2,
+          typename A3,
+          typename A4>
+shared_ptr<T> make_shared(const A0& a0,
+                          const A1& a1,
+                          const A2& a2,
+                          const A3& a3,
+                          const A4& a4);
+template <typename T,
+          typename A0,
+          typename A1,
+          typename A2,
+          typename A3,
+          typename A4,
+          typename A5>
+shared_ptr<T> make_shared(const A0& a0,
+                          const A1& a1,
+                          const A2& a2,
+                          const A3& a3,
+                          const A4& a4,
+                          const A5& a5);
+template <typename T,
+          typename A0,
+          typename A1,
+          typename A2,
+          typename A3,
+          typename A4,
+          typename A5,
+          typename A6>
+shared_ptr<T> make_shared(const A0& a0,
+                          const A1& a1,
+                          const A2& a2,
+                          const A3& a3,
+                          const A4& a4,
+                          const A5& a5,
+                          const A6& a6);
+template <typename T,
+          typename A0,
+          typename A1,
+          typename A2,
+          typename A3,
+          typename A4,
+          typename A5,
+          typename A6,
+          typename A7>
+shared_ptr<T> make_shared(const A0& a0,
+                          const A1& a1,
+                          const A2& a2,
+                          const A3& a3,
+                          const A4& a4,
+                          const A5& a5,
+                          const A6& a6,
+                          const A7& a7);
+template <typename T,
+          typename A0,
+          typename A1,
+          typename A2,
+          typename A3,
+          typename A4,
+          typename A5,
+          typename A6,
+          typename A7,
+          typename A8>
+shared_ptr<T> make_shared(const A0& a0,
+                          const A1& a1,
+                          const A2& a2,
+                          const A3& a3,
+                          const A4& a4,
+                          const A5& a5,
+                          const A6& a6,
+                          const A7& a7,
+                          const A8& a8);
+template <typename T,
+          typename A0,
+          typename A1,
+          typename A2,
+          typename A3,
+          typename A4,
+          typename A5,
+          typename A6,
+          typename A7,
+          typename A8,
+          typename A9>
+shared_ptr<T> make_shared(const A0& a0,
+                          const A1& a1,
+                          const A2& a2,
+                          const A3& a3,
+                          const A4& a4,
+                          const A5& a5,
+                          const A6& a6,
+                          const A7& a7,
+                          const A8& a8,
+                          const A9& a9);
+
+template <typename T, typename Alloc>
+shared_ptr<T> allocate_shared(const Alloc& alloc);
+template <typename T, typename Alloc, typename A0>
+shared_ptr<T> allocate_shared(const Alloc& alloc, const A0& a0);
+template <typename T, typename Alloc, typename A0, typename A1>
+shared_ptr<T> allocate_shared(const Alloc& alloc, const A0& a0, const A1& a1);
+template <typename T, typename Alloc, typename A0, typename A1, typename A2>
+shared_ptr<T>
+allocate_shared(const Alloc& alloc, const A0& a0, const A1& a1, const A2& a2);
+template <typename T,
+          typename Alloc,
+          typename A0,
+          typename A1,
+          typename A2,
+          typename A3>
+shared_ptr<T> allocate_shared(const Alloc& alloc,
+                              const A0& a0,
+                              const A1& a1,
+                              const A2& a2,
+                              const A3& a3);
+template <typename T,
+          typename Alloc,
+          typename A0,
+          typename A1,
+          typename A2,
+          typename A3,
+          typename A4>
+shared_ptr<T> allocate_shared(const Alloc& alloc,
+                              const A0& a0,
+                              const A1& a1,
+                              const A2& a2,
+                              const A3& a3,
+                              const A4& a4);
+template <typename T,
+          typename Alloc,
+          typename A0,
+          typename A1,
+          typename A2,
+          typename A3,
+          typename A4,
+          typename A5>
+shared_ptr<T> allocate_shared(const Alloc& alloc,
+                              const A0& a0,
+                              const A1& a1,
+                              const A2& a2,
+                              const A3& a3,
+                              const A4& a4,
+                              const A5& a5);
+template <typename T,
+          typename Alloc,
+          typename A0,
+          typename A1,
+          typename A2,
+          typename A3,
+          typename A4,
+          typename A5,
+          typename A6>
+shared_ptr<T> allocate_shared(const Alloc& alloc,
+                              const A0& a0,
+                              const A1& a1,
+                              const A2& a2,
+                              const A3& a3,
+                              const A4& a4,
+                              const A5& a5,
+                              const A6& a6);
+template <typename T,
+          typename Alloc,
+          typename A0,
+          typename A1,
+          typename A2,
+          typename A3,
+          typename A4,
+          typename A5,
+          typename A6,
+          typename A7>
+shared_ptr<T> allocate_shared(const Alloc& alloc,
+                              const A0& a0,
+                              const A1& a1,
+                              const A2& a2,
+                              const A3& a3,
+                              const A4& a4,
+                              const A5& a5,
+                              const A6& a6,
+                              const A7& a7);
+template <typename T,
+          typename Alloc,
+          typename A0,
+          typename A1,
+          typename A2,
+          typename A3,
+          typename A4,
+          typename A5,
+          typename A6,
+          typename A7,
+          typename A8>
+shared_ptr<T> allocate_shared(const Alloc& alloc,
+                              const A0& a0,
+                              const A1& a1,
+                              const A2& a2,
+                              const A3& a3,
+                              const A4& a4,
+                              const A5& a5,
+                              const A6& a6,
+                              const A7& a7,
+                              const A8& a8);
+template <typename T,
+          typename Alloc,
+          typename A0,
+          typename A1,
+          typename A2,
+          typename A3,
+          typename A4,
+          typename A5,
+          typename A6,
+          typename A7,
+          typename A8,
+          typename A9>
+shared_ptr<T> allocate_shared(const Alloc& alloc,
+                              const A0& a0,
+                              const A1& a1,
+                              const A2& a2,
+                              const A3& a3,
+                              const A4& a4,
+                              const A5& a5,
+                              const A6& a6,
+                              const A7& a7,
+                              const A8& a8,
+                              const A9& a9);
+
+template <typename T>
+class shared_ptr : public ft::safe_bool<shared_ptr<T> > {
+public:
+	typedef T element_type;
+	typedef weak_ptr<T> weak_type;
+
+	shared_ptr() throw();
+	template <typename Y>
+	explicit shared_ptr(
+	    Y* p,
+	    typename ft::enable_if<ft::is_convertible<Y*, T*>::value>::type* =
+	        FT_NULLPTR);
+	template <typename Y, typename Deleter>
+	shared_ptr(
+	    Y* p,
+	    Deleter d,
+	    typename ft::enable_if<ft::is_convertible<Y*, T*>::value>::type* =
+	        FT_NULLPTR);
+	template <typename Y, typename Deleter, typename Alloc>
+	shared_ptr(
+	    Y* p,
+	    Deleter d,
+	    Alloc a,
+	    typename ft::enable_if<ft::is_convertible<Y*, T*>::value>::type* =
+	        FT_NULLPTR);
+	shared_ptr(const shared_ptr& r) throw();
+	template <typename Y>
+	shared_ptr(
+	    const shared_ptr<Y>& r,
+	    typename ft::enable_if<ft::is_convertible<Y*, T*>::value>::type* =
+	        FT_NULLPTR) throw();
+	template <typename Y>
+	explicit shared_ptr(
+	    const weak_ptr<Y>& r,
+	    typename ft::enable_if<ft::is_convertible<Y*, T*>::value>::type* =
+	        FT_NULLPTR);
+	template <typename Y>
+	shared_ptr(
+	    const shared_ptr<Y>& r,
+	    element_type* p,
+	    typename ft::enable_if<ft::is_convertible<Y*, T*>::value>::type* =
+	        FT_NULLPTR) throw();
+	template <typename Y>
+	shared_ptr(
+	    std::auto_ptr<Y>& r,
+	    typename ft::enable_if<ft::is_convertible<Y*, T*>::value>::type* =
+	        FT_NULLPTR);
+	shared_ptr(ft::rvalue<shared_ptr>& r) throw();
+	template <typename Y>
+	shared_ptr(ft::rvalue<shared_ptr<Y> >& r,
+	           typename ft::enable_if<
+	               ft::is_convertible<typename shared_ptr<Y>::element_type*,
+	                                  element_type*>::value>::type* =
+	               FT_NULLPTR) throw();
+	~shared_ptr();
+
+	shared_ptr& operator=(const shared_ptr& r) throw();
+	template <typename Y>
+	shared_ptr& operator=(const shared_ptr<Y>& r) throw();
+	shared_ptr& operator=(ft::rvalue<shared_ptr>& r) throw();
+	template <typename Y>
+	shared_ptr& operator=(ft::rvalue<shared_ptr<Y> >& r) throw();
+	template <typename Y>
+	shared_ptr& operator=(std::auto_ptr<Y> r);
+
+	void reset() throw();
+	template <typename Y>
+	void reset(Y* p);
+	template <typename Y, typename Deleter>
+	void reset(Y* p, Deleter d);
+	template <typename Y, typename Deleter, typename Alloc>
+	void reset(Y* p, Deleter d, Alloc a);
+
+	element_type* get() const throw();
+	element_type& operator*() const;
+	element_type* operator->() const throw();
+	long use_count() const throw();
+	bool unique() const throw();
+	bool boolean_test() const throw();
+
+	void swap(shared_ptr& other) throw();
+	template <typename Y>
+	bool owner_before(const shared_ptr<Y>& other) const throw();
+	template <typename Y>
+	bool owner_before(const weak_ptr<Y>& other) const throw();
+
+private:
+	template <typename Y>
+	friend class shared_ptr;
+	template <typename Y>
+	friend class weak_ptr;
+	template <typename Y>
+	friend class enable_shared_from_this;
+
+	shared_ptr(_shared_ptr::control_block_base* control,
+	           element_type* ptr) throw();
+
+	template <typename Y, typename Deleter, typename Alloc>
+	void _construct_control(Y* p, Deleter d, const Alloc& a);
+	template <typename Y, typename Deleter>
+	void _construct_control(Y* p, Deleter d, const std::allocator<void>& a);
+	void _enable_shared_from_this(element_type* p) throw();
+	void _release() throw();
+
+	element_type* _ptr;
+	_shared_ptr::control_block_base* _control;
+};
+
+template <typename T>
+class weak_ptr : public ft::safe_bool<weak_ptr<T> > {
+public:
+	typedef T element_type;
+
+	weak_ptr() throw();
+	template <typename Y>
+	weak_ptr(const shared_ptr<Y>& r,
+	         typename ft::enable_if<ft::is_convertible<Y*, T*>::value>::type* =
+	             FT_NULLPTR) throw();
+	weak_ptr(const weak_ptr& r) throw();
+	template <typename Y>
+	weak_ptr(const weak_ptr<Y>& r,
+	         typename ft::enable_if<ft::is_convertible<Y*, T*>::value>::type* =
+	             FT_NULLPTR) throw();
+	weak_ptr(ft::rvalue<weak_ptr>& r) throw();
+	template <typename Y>
+	weak_ptr(ft::rvalue<weak_ptr<Y> >& r,
+	         typename ft::enable_if<ft::is_convertible<Y*, T*>::value>::type* =
+	             FT_NULLPTR) throw();
+	~weak_ptr();
+
+	weak_ptr& operator=(const weak_ptr& r) throw();
+	template <typename Y>
+	weak_ptr& operator=(const weak_ptr<Y>& r) throw();
+	template <typename Y>
+	weak_ptr& operator=(const shared_ptr<Y>& r) throw();
+	weak_ptr& operator=(ft::rvalue<weak_ptr>& r) throw();
+	template <typename Y>
+	weak_ptr& operator=(ft::rvalue<weak_ptr<Y> >& r) throw();
+
+	void reset() throw();
+	void swap(weak_ptr& other) throw();
+	long use_count() const throw();
+	bool expired() const throw();
+	shared_ptr<T> lock() const;
+	bool boolean_test() const throw();
+
+private:
+	template <typename Y>
+	friend class weak_ptr;
+	template <typename Y>
+	friend class shared_ptr;
+
+	weak_ptr(_shared_ptr::control_block_base* control,
+	         element_type* ptr) throw();
+	void _release() throw();
+
+	element_type* _ptr;
+	_shared_ptr::control_block_base* _control;
+};
+
+template <typename T>
+class enable_shared_from_this {
+protected:
+	enable_shared_from_this() throw();
+	enable_shared_from_this(const enable_shared_from_this& other) throw();
+	enable_shared_from_this&
+	operator=(const enable_shared_from_this& other) throw();
+	~enable_shared_from_this();
+
+public:
+	shared_ptr<T> shared_from_this();
+	shared_ptr<const T> shared_from_this() const;
+	weak_ptr<T> weak_from_this() throw();
+	weak_ptr<const T> weak_from_this() const throw();
+
+private:
+	template <typename T1, typename Y>
+	friend void _shared_ptr::enable_shared_from_this(
+	    const shared_ptr<T1>* owner,
+	    const Y* p,
+	    const enable_shared_from_this<Y>* base);
+
+	void _internal_accept_owner(const shared_ptr<T>& sp) const throw();
+
+	mutable weak_ptr<T> _weak_this;
+};
+
+template <typename T>
+void swap(shared_ptr<T>& lhs, shared_ptr<T>& rhs) throw();
+template <typename T>
+void swap(weak_ptr<T>& lhs, weak_ptr<T>& rhs) throw();
+
+template <typename T1, typename T2>
+bool operator==(const shared_ptr<T1>& lhs, const shared_ptr<T2>& rhs) throw();
+template <typename T1, typename T2>
+bool operator!=(const shared_ptr<T1>& lhs, const shared_ptr<T2>& rhs) throw();
+template <typename T1, typename T2>
+bool operator<(const shared_ptr<T1>& lhs, const shared_ptr<T2>& rhs) throw();
+template <typename T1, typename T2>
+bool operator<=(const shared_ptr<T1>& lhs, const shared_ptr<T2>& rhs) throw();
+template <typename T1, typename T2>
+bool operator>(const shared_ptr<T1>& lhs, const shared_ptr<T2>& rhs) throw();
+template <typename T1, typename T2>
+bool operator>=(const shared_ptr<T1>& lhs, const shared_ptr<T2>& rhs) throw();
+
+template <typename T>
+bool operator==(const shared_ptr<T>& lhs, nullptr_t /*unused*/) throw();
+template <typename T>
+bool operator==(nullptr_t /*unused*/, const shared_ptr<T>& rhs) throw();
+template <typename T>
+bool operator!=(const shared_ptr<T>& lhs, nullptr_t /*unused*/) throw();
+template <typename T>
+bool operator!=(nullptr_t /*unused*/, const shared_ptr<T>& rhs) throw();
+template <typename T>
+bool operator<(const shared_ptr<T>& lhs, nullptr_t /*unused*/) throw();
+template <typename T>
+bool operator<(nullptr_t /*unused*/, const shared_ptr<T>& rhs) throw();
+template <typename T>
+bool operator<=(const shared_ptr<T>& lhs, nullptr_t /*unused*/) throw();
+template <typename T>
+bool operator<=(nullptr_t /*unused*/, const shared_ptr<T>& rhs) throw();
+template <typename T>
+bool operator>(const shared_ptr<T>& lhs, nullptr_t /*unused*/) throw();
+template <typename T>
+bool operator>(nullptr_t /*unused*/, const shared_ptr<T>& rhs) throw();
+template <typename T>
+bool operator>=(const shared_ptr<T>& lhs, nullptr_t /*unused*/) throw();
+template <typename T>
+bool operator>=(nullptr_t /*unused*/, const shared_ptr<T>& rhs) throw();
+
+template <typename T1, typename T2>
+bool operator==(const weak_ptr<T1>& lhs, const weak_ptr<T2>& rhs) throw();
+template <typename T1, typename T2>
+bool operator!=(const weak_ptr<T1>& lhs, const weak_ptr<T2>& rhs) throw();
+template <typename T1, typename T2>
+bool operator<(const weak_ptr<T1>& lhs, const weak_ptr<T2>& rhs) throw();
+template <typename T1, typename T2>
+bool operator<=(const weak_ptr<T1>& lhs, const weak_ptr<T2>& rhs) throw();
+template <typename T1, typename T2>
+bool operator>(const weak_ptr<T1>& lhs, const weak_ptr<T2>& rhs) throw();
+template <typename T1, typename T2>
+bool operator>=(const weak_ptr<T1>& lhs, const weak_ptr<T2>& rhs) throw();
+
+template <typename T, typename U>
+shared_ptr<T> static_pointer_cast(const shared_ptr<U>& r) throw();
+template <typename T, typename U>
+shared_ptr<T> const_pointer_cast(const shared_ptr<U>& r) throw();
+template <typename T, typename U>
+shared_ptr<T> dynamic_pointer_cast(const shared_ptr<U>& r);
+template <typename T, typename U>
+shared_ptr<T> reinterpret_pointer_cast(const shared_ptr<U>& r) throw();
+
+template <typename Deleter, typename T>
+Deleter* get_deleter(const shared_ptr<T>& p) throw();
+
+template <typename CharT, typename Traits, typename Y>
+std::basic_ostream<CharT, Traits>&
+operator<<(std::basic_ostream<CharT, Traits>& os, const shared_ptr<Y>& p);
 
 /* unique_ptr */
 
