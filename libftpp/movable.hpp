@@ -118,6 +118,8 @@ private:
  * argument is an rvalue (temporary object or `ft::move()` cast).
  *
  * https://www.boost.org/doc/libs/1_84_0/doc/html/move/how_the_library_works.html
+ *
+ * @note `T` must be a class type.
  */
 template <typename T>
 struct rvalue : public copy_assign_ref<T> {
