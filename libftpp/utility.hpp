@@ -37,7 +37,7 @@
  *
  * https://en.cppreference.com/w/cpp/language/nullptr
  */
-#	define FT_NULLPTR static_cast<ft::nullptr_t>(ft::nullptr_t())
+#	define FT_NULLPTR static_cast<ft::nullptr_t>(ft::_nullptr::_nullptr)
 
 namespace ft {
 
@@ -113,6 +113,7 @@ bool operator>=(nullptr_t /*unused*/, T* /*unused*/);
 } // namespace ft
 
 #	include "libftpp/utility/move.tpp"      // IWYU pragma: export
+#	include "libftpp/utility/nullptr.tpp"   // IWYU pragma: export
 #	include "libftpp/utility/nullptr_t.tpp" // IWYU pragma: export
 
 #endif // LIBFTPP_UTILITY_HPP
