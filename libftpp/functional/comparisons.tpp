@@ -8,6 +8,13 @@
 
 namespace ft {
 
+namespace _comparisons {
+template <template <typename> class Compare, typename T, typename U>
+bool common_compare(T* lhs, U* rhs);
+template <template <typename> class Compare, typename T>
+bool common_compare(T* lhs, T* rhs);
+} // namespace _comparisons
+
 /* equal_to */
 
 template <typename T /*= void*/>
@@ -22,12 +29,6 @@ bool equal_to<void>::operator()(const T& lhs, const U& rhs) const
 	return lhs == rhs;
 }
 
-template <typename T, typename U>
-bool equal_to<void>::operator()(T* a, U* b) const
-{
-	return std::equal_to<const volatile void*>()(a, b);
-}
-
 /* not_equal_to */
 
 template <typename T /*= void*/>
@@ -40,12 +41,6 @@ template <typename T, typename U>
 bool not_equal_to<void>::operator()(const T& lhs, const U& rhs) const
 {
 	return lhs != rhs;
-}
-
-template <typename T, typename U>
-bool not_equal_to<void>::operator()(T* a, U* b) const
-{
-	return std::not_equal_to<const volatile void*>()(a, b);
 }
 
 /* greater */
@@ -63,9 +58,9 @@ bool greater<void>::operator()(const T& lhs, const U& rhs) const
 }
 
 template <typename T, typename U>
-bool greater<void>::operator()(T* a, U* b) const
+bool greater<void>::operator()(T* lhs, U* rhs) const
 {
-	return std::greater<const volatile void*>()(a, b);
+	return _comparisons::common_compare<std::greater>(lhs, rhs);
 }
 
 /* less */
@@ -83,9 +78,9 @@ bool less<void>::operator()(const T& lhs, const U& rhs) const
 }
 
 template <typename T, typename U>
-bool less<void>::operator()(T* a, U* b) const
+bool less<void>::operator()(T* lhs, U* rhs) const
 {
-	return std::less<const volatile void*>()(a, b);
+	return _comparisons::common_compare<std::less>(lhs, rhs);
 }
 
 /* greater_equal */
@@ -103,9 +98,9 @@ bool greater_equal<void>::operator()(const T& lhs, const U& rhs) const
 }
 
 template <typename T, typename U>
-bool greater_equal<void>::operator()(T* a, U* b) const
+bool greater_equal<void>::operator()(T* lhs, U* rhs) const
 {
-	return std::greater_equal<const volatile void*>()(a, b);
+	return _comparisons::common_compare<std::greater_equal>(lhs, rhs);
 }
 
 /* less_equal */
@@ -123,10 +118,28 @@ bool less_equal<void>::operator()(const T& lhs, const U& rhs) const
 }
 
 template <typename T, typename U>
-bool less_equal<void>::operator()(T* a, U* b) const
+bool less_equal<void>::operator()(T* lhs, U* rhs) const
 {
-	return std::less_equal<const volatile void*>()(a, b);
+	return _comparisons::common_compare<std::less_equal>(lhs, rhs);
 }
+
+namespace _comparisons {
+
+template <template <typename> class Compare, typename T, typename U>
+bool common_compare(T* lhs, U* rhs)
+{
+	// Use conditional operator to get common type.
+	return _comparisons::common_compare<Compare>(true ? lhs : rhs,
+	                                             true ? rhs : lhs);
+}
+
+template <template <typename> class Compare, typename T>
+bool common_compare(T* lhs, T* rhs)
+{
+	return Compare<T*>()(lhs, rhs);
+}
+
+} // namespace _comparisons
 
 } // namespace ft
 

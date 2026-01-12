@@ -52,8 +52,6 @@ struct equal_to<void> {
 
 	template <typename T, typename U>
 	bool operator()(const T& lhs, const U& rhs) const;
-	template <typename T, typename U>
-	bool operator()(T* a, U* b) const;
 };
 
 /**
@@ -82,8 +80,6 @@ struct not_equal_to<void> {
 
 	template <typename T, typename U>
 	bool operator()(const T& lhs, const U& rhs) const;
-	template <typename T, typename U>
-	bool operator()(T* a, U* b) const;
 };
 
 /**
@@ -113,7 +109,7 @@ struct greater<void> {
 	template <typename T, typename U>
 	bool operator()(const T& lhs, const U& rhs) const;
 	template <typename T, typename U>
-	bool operator()(T* a, U* b) const;
+	bool operator()(T* lhs, U* rhs) const;
 };
 
 /**
@@ -143,7 +139,7 @@ struct less<void> {
 	template <typename T, typename U>
 	bool operator()(const T& lhs, const U& rhs) const;
 	template <typename T, typename U>
-	bool operator()(T* a, U* b) const;
+	bool operator()(T* lhs, U* rhs) const;
 };
 
 /**
@@ -173,7 +169,7 @@ struct greater_equal<void> {
 	template <typename T, typename U>
 	bool operator()(const T& lhs, const U& rhs) const;
 	template <typename T, typename U>
-	bool operator()(T* a, U* b) const;
+	bool operator()(T* lhs, U* rhs) const;
 };
 
 /**
@@ -203,7 +199,7 @@ struct less_equal<void> {
 	template <typename T, typename U>
 	bool operator()(const T& lhs, const U& rhs) const;
 	template <typename T, typename U>
-	bool operator()(T* a, U* b) const;
+	bool operator()(T* lhs, U* rhs) const;
 };
 
 } // namespace ft
