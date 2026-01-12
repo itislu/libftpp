@@ -402,7 +402,7 @@ bool operator!=(const unique_ptr<T1, D1>& x, const unique_ptr<T2, D2>& y)
 template <typename T1, typename D1, typename T2, typename D2>
 bool operator<(const unique_ptr<T1, D1>& x, const unique_ptr<T2, D2>& y)
 {
-	return x.get() < y.get();
+	return ft::less<>()(x.get(), y.get());
 }
 
 template <typename T1, typename D1, typename T2, typename D2>

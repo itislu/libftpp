@@ -265,7 +265,7 @@ template <typename T>
 template <typename Y>
 bool shared_ptr<T>::owner_before(const shared_ptr<Y>& other) const throw()
 {
-	return _control < other._control;
+	return ft::less<>()(_control, other._control);
 }
 
 template <typename T>
@@ -553,7 +553,7 @@ bool operator!=(const shared_ptr<T>& lhs, const shared_ptr<U>& rhs) throw()
 template <typename T, typename U>
 bool operator<(const shared_ptr<T>& lhs, const shared_ptr<U>& rhs) throw()
 {
-	return lhs.get() < rhs.get();
+	return ft::less<>()(lhs.get(), rhs.get());
 }
 
 template <typename T, typename U>
