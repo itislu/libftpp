@@ -3,6 +3,7 @@
 #	define LIBFTPP_SAFE_BOOL_HPP
 
 #	include "libftpp/safe_bool/safe_bool_base.hpp"
+#	include "libftpp/type_traits.hpp"
 
 namespace ft {
 
@@ -92,11 +93,13 @@ bool operator!=(bool b, const safe_bool<T>& rhs);
 template <typename T, typename U>
 bool operator==(const safe_bool<T>& lhs, const U& /*rhs*/);
 template <typename T, typename U>
-bool operator==(const U& /*lhs*/, const safe_bool<T>& rhs);
+FT_REQUIRES((!ft::is_convertible<const T&, const safe_bool<T>&>::value))
+(bool)operator==(const T& /*lhs*/, const safe_bool<U>& rhs);
 template <typename T, typename U>
 bool operator!=(const safe_bool<T>& lhs, const U& /*rhs*/);
 template <typename T, typename U>
-bool operator!=(const U& /*lhs*/, const safe_bool<T>& rhs);
+FT_REQUIRES((!ft::is_convertible<const T&, const safe_bool<T>&>::value))
+(bool)operator!=(const T& /*lhs*/, const safe_bool<U>& rhs);
 
 } // namespace ft
 
