@@ -53,28 +53,28 @@ template <typename T, typename U>
 bool operator==(const safe_bool<T>& lhs, const U& /*rhs*/)
 {
 	lhs.this_type_does_not_support_comparisons();
-	return false;
+	FT_UNREACHABLE();
 }
 
 template <typename T, typename U>
 bool operator==(const U& /*lhs*/, const safe_bool<T>& rhs)
 {
 	rhs.this_type_does_not_support_comparisons();
-	return false;
+	FT_UNREACHABLE();
 }
 
 template <typename T, typename U>
 bool operator!=(const safe_bool<T>& lhs, const U& /*rhs*/)
 {
 	lhs.this_type_does_not_support_comparisons();
-	return false;
+	FT_UNREACHABLE();
 }
 
 template <typename T, typename U>
 bool operator!=(const U& /*lhs*/, const safe_bool<T>& rhs)
 {
 	rhs.this_type_does_not_support_comparisons();
-	return false;
+	FT_UNREACHABLE();
 }
 
 } // namespace ft
