@@ -4,6 +4,7 @@
 #	define LIBFTPP_SAFE_BOOL_SAFE_BOOL_TPP
 
 #	include "libftpp/safe_bool.hpp"
+#	include "libftpp/type_traits.hpp"
 #	include "libftpp/utility.hpp"
 #	include "safe_bool_base.hpp"
 
@@ -57,7 +58,8 @@ bool operator==(const safe_bool<T>& lhs, const U& /*rhs*/)
 }
 
 template <typename T, typename U>
-bool operator==(const U& /*lhs*/, const safe_bool<T>& rhs)
+FT_REQUIRES((!ft::is_convertible<const T&, const safe_bool<T>&>::value))
+(bool)operator==(const T& /*lhs*/, const safe_bool<U>& rhs)
 {
 	rhs.this_type_does_not_support_comparisons();
 	FT_UNREACHABLE();
@@ -71,7 +73,8 @@ bool operator!=(const safe_bool<T>& lhs, const U& /*rhs*/)
 }
 
 template <typename T, typename U>
-bool operator!=(const U& /*lhs*/, const safe_bool<T>& rhs)
+FT_REQUIRES((!ft::is_convertible<const T&, const safe_bool<T>&>::value))
+(bool)operator!=(const T& /*lhs*/, const safe_bool<U>& rhs)
 {
 	rhs.this_type_does_not_support_comparisons();
 	FT_UNREACHABLE();
