@@ -45,6 +45,38 @@ namespace ft {
 std::string demangle(const std::type_info& type_id);
 std::string demangle(const char* mangled_name);
 
+/* forward */
+
+/**
+ * @brief Conditionally casts the argument to an lvalue or rvalue reference
+ * emulation depending on the template parameter `T`
+ *
+ * Useful for reference collapsing emulation.
+ *
+ * The overload taking an rvalue reference emulation statically rejects
+ * forwarding an rvalue reference emulation as an lvalue reference, mirroring
+ * the standard library constraint.
+ *
+ * https://en.cppreference.com/w/cpp/utility/forward
+ *
+ * @note Does not support union types.
+ * @note Due to implementation limitations, non-class types are always returned
+ * as lvalue references.
+ */
+template <typename T>
+typename ft::conditional<
+    ft::is_reference<T>::value,
+    T,
+    typename ft::conditional<
+        ft::is_class_or_union<T>::value,
+        typename ft::add_rvalue_reference<T>::type,
+        typename ft::add_lvalue_reference<T>::type>::type>::type
+forward(typename ft::add_lvalue_reference<T>::type t) throw();
+template <typename T>
+typename ft::add_rvalue_reference<T>::type
+forward(typename ft::add_rvalue_reference<
+        typename ft::remove_reference<T>::type>::type t) throw();
+
 /* move */
 
 /**
@@ -109,6 +141,7 @@ bool operator>=(nullptr_t /*unused*/, T* /*unused*/);
 
 } // namespace ft
 
+#	include "libftpp/utility/forward.tpp"   // IWYU pragma: export
 #	include "libftpp/utility/move.tpp"      // IWYU pragma: export
 #	include "libftpp/utility/nullptr_t.tpp" // IWYU pragma: export
 
