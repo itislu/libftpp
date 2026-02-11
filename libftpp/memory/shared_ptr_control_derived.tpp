@@ -42,7 +42,7 @@ control_block_pointer_deleter<Yp, Deleter>::control_block_pointer_deleter(
     Yp ptr,
     Deleter d) throw()
     : _ptr(ptr),
-      _deleter(d)
+      _deleter(ft::move(d))
 {}
 
 template <typename Yp, typename Deleter>
