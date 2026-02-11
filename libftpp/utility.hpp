@@ -3,7 +3,6 @@
 #	define LIBFTPP_UTILITY_HPP
 
 #	include "libftpp/utility/countof.ipp"
-#	include "libftpp/movable.hpp"
 #	include "libftpp/type_traits.hpp"
 #	include <string>
 #	include <typeinfo>
@@ -55,8 +54,6 @@ std::string demangle(const char* mangled_name);
  * Needed for functions taking `ft::rvalue<T>&` parameters to be chosen by
  * overload resolution.
  *
- * `ft::remove_reference<T&>::type` is used to prevent nesting of `ft::rvalue`s.
- *
  * https://en.cppreference.com/w/cpp/utility/move
  *
  * @note Does not support union types.
@@ -65,7 +62,7 @@ std::string demangle(const char* mangled_name);
  */
 template <typename T>
 typename ft::conditional<ft::is_class_or_union<T>::value,
-                         ft::rvalue<typename ft::remove_reference<T&>::type>&,
+                         typename ft::add_rvalue_reference<T>::type,
                          T&>::type
 move(T& t) throw();
 
