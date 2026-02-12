@@ -96,8 +96,7 @@ unique_ptr<T, Deleter>::unique_ptr(
             && _unique_ptr::is_compatible_deleter<E, Deleter>::value,
         _enabler>::type /*unused = _enabler()*/) throw()
     : _ptr(u.release()),
-      _deleter(ft::is_reference<E>::value ? u.get_deleter()
-                                          : ft::move(u.get_deleter()))
+      _deleter(ft::forward<E>(u.get_deleter()))
 {}
 
 #	if LIBFTPP_SUPPORT_AUTO_PTR
