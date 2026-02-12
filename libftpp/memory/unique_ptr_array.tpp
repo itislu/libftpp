@@ -122,7 +122,7 @@ unique_ptr<T[], Deleter>&
 unique_ptr<T[], Deleter>::operator=(ft::rvalue<unique_ptr>& r) throw()
 {
 	reset(r.release());
-	_deleter = ft::move(r._deleter);
+	_deleter = ft::forward<Deleter>(r._deleter);
 	return *this;
 }
 
@@ -134,7 +134,7 @@ unique_ptr<T[], Deleter>::operator=(ft::rvalue<unique_ptr<U, E> >& r) throw()
 	FT_STATIC_ASSERT((_is_compatible_unique_ptr<U, E>::value));
 
 	reset(r.release());
-	_deleter = ft::move(r.get_deleter());
+	_deleter = ft::forward<E>(r.get_deleter());
 	return *this;
 }
 
