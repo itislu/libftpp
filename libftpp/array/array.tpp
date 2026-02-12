@@ -102,15 +102,13 @@ typename array<T, N>::const_reference array<T, N>::front() const
 template <typename T, std::size_t N>
 typename array<T, N>::reference array<T, N>::back()
 {
-	return N > 0 ? _array::impl<T, N>::ref(_elems, N - 1)
-	             : _array::impl<T, N>::ref(_elems, 0);
+	return _array::impl<T, N>::ref(_elems, N > 0 ? N - 1 : 0);
 }
 
 template <typename T, std::size_t N>
 typename array<T, N>::const_reference array<T, N>::back() const
 {
-	return N > 0 ? _array::impl<T, N>::ref(_elems, N - 1)
-	             : _array::impl<T, N>::ref(_elems, 0);
+	return _array::impl<T, N>::ref(_elems, N > 0 ? N - 1 : 0);
 }
 
 template <typename T, std::size_t N>
