@@ -13,6 +13,7 @@ namespace ft {
 /* abs_diff */
 
 unsigned char abs_diff(char a, char b) throw();
+unsigned char abs_diff(signed char a, signed char b) throw();
 unsigned short abs_diff(short a, short b) throw();
 unsigned int abs_diff(int a, int b) throw();
 unsigned long abs_diff(long a, long b) throw();

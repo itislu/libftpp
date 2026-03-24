@@ -12,6 +12,11 @@ unsigned char abs_diff(char a, char b) throw()
 	return _abs_diff::abs_diff<unsigned char>(a, b);
 }
 
+unsigned char abs_diff(signed char a, signed char b) throw()
+{
+	return _abs_diff::abs_diff<unsigned char>(a, b);
+}
+
 unsigned short abs_diff(short a, short b) throw()
 {
 	return _abs_diff::abs_diff<unsigned short>(a, b);
