@@ -35,27 +35,27 @@ I kept the name for this project as a nod to that.
   - [Smart Pointers](#smart-pointers)
   - [Optional & Expected](#optional--expected)
 - [Full Header Reference](#full-header-reference)
-  - [memory](#memory)
-  - [movable](#movable)
-  - [type\_traits](#type_traits)
-  - [optional](#optional)
-  - [expected](#expected)
-  - [utility](#utility)
-  - [algorithm](#algorithm)
-  - [iterator](#iterator)
-  - [array](#array)
-  - [functional](#functional)
-  - [numeric](#numeric)
-  - [string](#string)
-  - [exception](#exception)
-  - [safe\_bool](#safe_bool)
-  - [assert](#assert)
-  - [source\_location](#source_location)
-  - [operators](#operators)
-  - [format](#format)
-  - [ctype](#ctype)
-  - [random](#random)
-  - [preprocessor](#preprocessor)
+  - [algorithm.hpp](#algorithmhpp)
+  - [array.hpp](#arrayhpp)
+  - [assert.hpp](#asserthpp)
+  - [ctype.hpp](#ctypehpp)
+  - [exception.hpp](#exceptionhpp)
+  - [expected.hpp](#expectedhpp)
+  - [format.hpp](#formathpp)
+  - [functional.hpp](#functionalhpp)
+  - [iterator.hpp](#iteratorhpp)
+  - [memory.hpp](#memoryhpp)
+  - [movable.hpp](#movablehpp)
+  - [numeric.hpp](#numerichpp)
+  - [operators.hpp](#operatorshpp)
+  - [optional.hpp](#optionalhpp)
+  - [preprocessor.hpp](#preprocessorhpp)
+  - [random.hpp](#randomhpp)
+  - [safe\_bool.hpp](#safe_boolhpp)
+  - [source\_location.hpp](#source_locationhpp)
+  - [string.hpp](#stringhpp)
+  - [type\_traits.hpp](#type_traitshpp)
+  - [utility.hpp](#utilityhpp)
 - [Roadmap](#roadmap)
 - [A Note on Testing](#a-note-on-testing)
 - [Building](#building)
@@ -129,102 +129,7 @@ Also provides [`ft::default_delete`](libftpp/memory/default_delete.tpp) (with ar
 
 ## Full Header Reference
 
-### memory
-
-[`#include "libftpp/memory.hpp"`](libftpp/memory.hpp)
-
-| Component | Standard | Description |
-|-----------|----------|-------------|
-| `ft::unique_ptr<T, Deleter>` | C++11 | Exclusive-ownership smart pointer (single object + array specialization) |
-| `ft::make_unique` | C++14 | Factory function (up to 10 args, emulating variadic templates) |
-| `ft::make_unique_for_overwrite` | C++20 | Default-initializing factory |
-| `ft::shared_ptr<T>` | C++11 | Reference-counted shared-ownership smart pointer |
-| `ft::make_shared` | C++11 | Factory function (up to 10 args + array overloads) |
-| `ft::make_shared_for_overwrite` | C++20 | Default-initializing factory |
-| `ft::default_delete<T>` | C++11 | Default deleter (single object + array specialization) |
-| `ft::static_pointer_cast` | C++11 | `static_cast` for `shared_ptr` |
-| `ft::dynamic_pointer_cast` | C++11 | `dynamic_cast` for `shared_ptr` |
-| `ft::const_pointer_cast` | C++11 | `const_cast` for `shared_ptr` |
-| `ft::reinterpret_pointer_cast` | C++17 | `reinterpret_cast` for `shared_ptr` |
-| `ft::get_deleter` | C++11 | Retrieve deleter from `shared_ptr` |
-| `ft::owner_less` | C++11 | Owner-based ordering for `shared_ptr` |
-| `ft::owner_equal` | C++26 | Owner-based equality for `shared_ptr` |
-| `ft::addressof` | C++11 | Obtains actual address even if `operator&` is overloaded |
-
----
-
-### movable
-
-[`#include "libftpp/movable.hpp"`](libftpp/movable.hpp)
-
-| Component | Description |
-|-----------|-------------|
-| `ft::rvalue<T>` | Rvalue reference emulation type |
-| `ft::copy_assign_ref<T>` | Copy assignment wrapper for correct overload priority |
-| `FT_MOVABLE_BUT_NOT_COPYABLE(T)` | Make a type move-only |
-| `FT_COPYABLE_AND_MOVABLE(T)` | Make a type copyable and movable |
-| `FT_COPYABLE_AND_MOVABLE_SWAP(T)` | Copyable and movable using copy-and-swap |
-
----
-
-### type_traits
-
-[`#include "libftpp/type_traits.hpp"`](libftpp/type_traits.hpp)
-
-See [Type Traits](#type-traits) for the full list.
-
-Also provides:
-- `FT_REQUIRES(expr)` – requires clause emulation
-- `FT_HAS_MEMBER_FUNCTION(ret, name, args)` – generate traits detecting public member functions
-- `ft::yes_type` / `ft::no_type` – helper types for SFINAE `sizeof` tricks
-
----
-
-### optional
-
-[`#include "libftpp/optional.hpp"`](libftpp/optional.hpp)
-
-| Component | Standard | Description |
-|-----------|----------|-------------|
-| `ft::optional<T>` | C++17 | Optional value container |
-| `ft::nullopt_t` / `ft::nullopt` | C++17 | Empty optional sentinel |
-| `ft::bad_optional_access` | C++17 | Exception for invalid access |
-| `ft::make_optional` | C++17 | Factory function |
-
----
-
-### expected
-
-[`#include "libftpp/expected.hpp"`](libftpp/expected.hpp)
-
-| Component | Standard | Description |
-|-----------|----------|-------------|
-| `ft::expected<T, E>` | C++23 | Value-or-error container |
-| `ft::expected<void, E>` | C++23 | Void specialization |
-| `ft::unexpected<E>` | C++23 | Error wrapper |
-| `ft::unexpect_t` / `ft::unexpect` | C++23 | In-place error construction tag |
-| `ft::bad_expected_access<E>` | C++23 | Exception for invalid access |
-
----
-
-### utility
-
-[`#include "libftpp/utility.hpp"`](libftpp/utility.hpp)
-
-| Component | Standard | Description |
-|-----------|----------|-------------|
-| `ft::move` | C++11 | Cast to rvalue reference emulation |
-| `ft::forward` | C++11 | Perfect forwarding (reference collapsing emulation) |
-| `ft::nullptr_t` / `FT_NULLPTR` | C++11 | `nullptr` emulation as a class + macro |
-| `ft::demangle` | — | Demangle `typeid` names (non-standard) |
-| `FT_UNREACHABLE()` | C++23 | Marks unreachable code paths |
-| `FT_COUNTOF(arr)` | — | Type-safe compile-time array length |
-
----
-
-### algorithm
-
-[`#include "libftpp/algorithm.hpp"`](libftpp/algorithm.hpp)
+### [algorithm.hpp](libftpp/algorithm.hpp)
 
 | Component | Standard | Description |
 |-----------|----------|-------------|
@@ -245,9 +150,79 @@ Some functions also accept "ranges" – any type with `begin()`/`end()` and iter
 
 ---
 
-### iterator
+### [array.hpp](libftpp/array.hpp)
 
-[`#include "libftpp/iterator.hpp"`](libftpp/iterator.hpp)
+| Component | Standard | Description |
+|-----------|----------|-------------|
+| `ft::array<T, N>` | C++11 | Fixed-size aggregate container with iterators, element access, comparisons, `fill`, `swap` |
+| `ft::get<I>` | C++11 | Compile-time indexed access |
+| `ft::to_array` | C++20 | Create `ft::array` from a C-array |
+
+---
+
+### [assert.hpp](libftpp/assert.hpp)
+
+| Component | Description |
+|-----------|-------------|
+| `FT_STATIC_ASSERT(expr)` | Compile-time assertion for C++98 |
+| `ft::make_false<T...>` | Dependent `false` for unconditionally failing static assertions in templates |
+| `ft::make_true<T...>` | Dependent `true` to suppress unused typedef warnings |
+
+---
+
+### [ctype.hpp](libftpp/ctype.hpp)
+
+Wrappers around standard `<cctype>` functions that prevent undefined behavior by casting arguments to `unsigned char` first. Also returns `bool` and takes `char` for a cleaner interface.
+
+---
+
+### [exception.hpp](libftpp/exception.hpp)
+
+| Component | Description |
+|-----------|-------------|
+| `ft::exception` | Base exception class with `error()`, `where()` (source location), and `who()` context fields |
+
+All non-standard exception classes in the library inherit from `ft::exception`. Uses `ft::source_location` and `ft::optional` internally.
+
+---
+
+### [expected.hpp](libftpp/expected.hpp)
+
+| Component | Standard | Description |
+|-----------|----------|-------------|
+| `ft::expected<T, E>` | C++23 | Value-or-error container |
+| `ft::expected<void, E>` | C++23 | Void specialization |
+| `ft::unexpected<E>` | C++23 | Error wrapper |
+| `ft::unexpect_t` / `ft::unexpect` | C++23 | In-place error construction tag |
+| `ft::bad_expected_access<E>` | C++23 | Exception for invalid access |
+
+---
+
+### [format.hpp](libftpp/format.hpp)
+
+| Component | Description |
+|-----------|-------------|
+| `ft::bold`, `ft::italic`, `ft::underline` | ANSI text styling |
+| `ft::red`, `ft::green`, `ft::yellow`, `ft::blue`, `ft::magenta`, `ft::cyan`, `ft::gray` | ANSI color formatting |
+| `ft::log::ok`, `ft::log::info`, `ft::log::warn`, `ft::log::error`, `ft::log::line` | Structured log-line formatters |
+
+---
+
+### [functional.hpp](libftpp/functional.hpp)
+
+| Component | Standard | Description |
+|-----------|----------|-------------|
+| `ft::function_traits<F>` | — | Query arity, return type, and argument types of function types (non-standard) |
+| `ft::equal_to<T>` | C++14 | Transparent comparator with `void` specialization |
+| `ft::not_equal_to<T>` | C++14 | Transparent comparator with `void` specialization |
+| `ft::greater<T>` | C++14 | Transparent comparator with `void` specialization |
+| `ft::less<T>` | C++14 | Transparent comparator with `void` specialization |
+| `ft::greater_equal<T>` | C++14 | Transparent comparator with `void` specialization |
+| `ft::less_equal<T>` | C++14 | Transparent comparator with `void` specialization |
+
+---
+
+### [iterator.hpp](libftpp/iterator.hpp)
 
 | Component | Standard | Description |
 |-----------|----------|-------------|
@@ -269,37 +244,41 @@ Some functions also accept "ranges" – any type with `begin()`/`end()` and iter
 
 ---
 
-### array
-
-[`#include "libftpp/array.hpp"`](libftpp/array.hpp)
+### [memory.hpp](libftpp/memory.hpp)
 
 | Component | Standard | Description |
 |-----------|----------|-------------|
-| `ft::array<T, N>` | C++11 | Fixed-size aggregate container with iterators, element access, comparisons, `fill`, `swap` |
-| `ft::get<I>` | C++11 | Compile-time indexed access |
-| `ft::to_array` | C++20 | Create `ft::array` from a C-array |
+| `ft::unique_ptr<T, Deleter>` | C++11 | Exclusive-ownership smart pointer (single object + array specialization) |
+| `ft::make_unique` | C++14 | Factory function (up to 10 args, emulating variadic templates) |
+| `ft::make_unique_for_overwrite` | C++20 | Default-initializing factory |
+| `ft::shared_ptr<T>` | C++11 | Reference-counted shared-ownership smart pointer |
+| `ft::make_shared` | C++11 | Factory function (up to 10 args + array overloads) |
+| `ft::make_shared_for_overwrite` | C++20 | Default-initializing factory |
+| `ft::default_delete<T>` | C++11 | Default deleter (single object + array specialization) |
+| `ft::static_pointer_cast` | C++11 | `static_cast` for `shared_ptr` |
+| `ft::dynamic_pointer_cast` | C++11 | `dynamic_cast` for `shared_ptr` |
+| `ft::const_pointer_cast` | C++11 | `const_cast` for `shared_ptr` |
+| `ft::reinterpret_pointer_cast` | C++17 | `reinterpret_cast` for `shared_ptr` |
+| `ft::get_deleter` | C++11 | Retrieve deleter from `shared_ptr` |
+| `ft::owner_less` | C++11 | Owner-based ordering for `shared_ptr` |
+| `ft::owner_equal` | C++26 | Owner-based equality for `shared_ptr` |
+| `ft::addressof` | C++11 | Obtains actual address even if `operator&` is overloaded |
 
 ---
 
-### functional
+### [movable.hpp](libftpp/movable.hpp)
 
-[`#include "libftpp/functional.hpp"`](libftpp/functional.hpp)
-
-| Component | Standard | Description |
-|-----------|----------|-------------|
-| `ft::function_traits<F>` | — | Query arity, return type, and argument types of function types (non-standard) |
-| `ft::equal_to<T>` | C++14 | Transparent comparator with `void` specialization |
-| `ft::not_equal_to<T>` | C++14 | Transparent comparator with `void` specialization |
-| `ft::greater<T>` | C++14 | Transparent comparator with `void` specialization |
-| `ft::less<T>` | C++14 | Transparent comparator with `void` specialization |
-| `ft::greater_equal<T>` | C++14 | Transparent comparator with `void` specialization |
-| `ft::less_equal<T>` | C++14 | Transparent comparator with `void` specialization |
+| Component | Description |
+|-----------|-------------|
+| `ft::rvalue<T>` | Rvalue reference emulation type |
+| `ft::copy_assign_ref<T>` | Copy assignment wrapper for correct overload priority |
+| `FT_MOVABLE_BUT_NOT_COPYABLE(T)` | Make a type move-only |
+| `FT_COPYABLE_AND_MOVABLE(T)` | Make a type copyable and movable |
+| `FT_COPYABLE_AND_MOVABLE_SWAP(T)` | Copyable and movable using copy-and-swap |
 
 ---
 
-### numeric
-
-[`#include "libftpp/numeric.hpp"`](libftpp/numeric.hpp)
+### [numeric.hpp](libftpp/numeric.hpp)
 
 | Component | Standard | Description |
 |-----------|----------|-------------|
@@ -314,9 +293,63 @@ Both `numeric_cast` and `from_string` support a non-throwing overload via `std::
 
 ---
 
-### string
+### [operators.hpp](libftpp/operators.hpp)
 
-[`#include "libftpp/string.hpp"`](libftpp/string.hpp)
+| Component | Description |
+|-----------|-------------|
+| `ft::operators::comparison` | Inherit from this and implement `operator<` to auto-generate `==`, `!=`, `>`, `<=`, `>=` |
+
+---
+
+### [optional.hpp](libftpp/optional.hpp)
+
+| Component | Standard | Description |
+|-----------|----------|-------------|
+| `ft::optional<T>` | C++17 | Optional value container |
+| `ft::nullopt_t` / `ft::nullopt` | C++17 | Empty optional sentinel |
+| `ft::bad_optional_access` | C++17 | Exception for invalid access |
+| `ft::make_optional` | C++17 | Factory function |
+
+---
+
+### [preprocessor.hpp](libftpp/preprocessor.hpp)
+
+| Component | Description |
+|-----------|-------------|
+| `FT_CONCAT` / `FT_CONCAT_EXPANDED` | Token pasting with expansion |
+| `FT_APPEND_UNIQUE_NUM(name)` | Generate unique identifiers using `__COUNTER__` |
+
+---
+
+### [random.hpp](libftpp/random.hpp)
+
+| Component | Description |
+|-----------|-------------|
+| `ft::urandom<T>()` | Read random data from `/dev/urandom` |
+
+---
+
+### [safe_bool.hpp](libftpp/safe_bool.hpp)
+
+| Component | Description |
+|-----------|-------------|
+| `ft::safe_bool<Derived>` | CRTP mixin implementing the Safe Bool idiom – prevents implicit conversions to `int` and cross-type comparisons |
+| `ft::safe_bool<void>` | Virtual dispatch variant for polymorphic hierarchies |
+
+Needed because C++98 lacks `explicit operator bool()`. Used by `unique_ptr`, `shared_ptr`, `optional`, and `expected`.
+
+---
+
+### [source_location.hpp](libftpp/source_location.hpp)
+
+| Component | Standard | Description |
+|-----------|----------|-------------|
+| `ft::source_location` | C++20 | Captures file name, line, and function name |
+| `FT_SOURCE_LOCATION_CURRENT()` | C++20 | Macro to capture current source location |
+
+---
+
+### [string.hpp](libftpp/string.hpp)
 
 | Component | Standard | Description |
 |-----------|----------|-------------|
@@ -330,102 +363,27 @@ Both `numeric_cast` and `from_string` support a non-throwing overload via `std::
 
 ---
 
-### exception
+### [type_traits.hpp](libftpp/type_traits.hpp)
 
-[`#include "libftpp/exception.hpp"`](libftpp/exception.hpp)
+See [Type Traits](#type-traits) for the full list.
 
-| Component | Description |
-|-----------|-------------|
-| `ft::exception` | Base exception class with `error()`, `where()` (source location), and `who()` context fields |
-
-All non-standard exception classes in the library inherit from `ft::exception`. Uses `ft::source_location` and `ft::optional` internally.
-
----
-
-### safe_bool
-
-[`#include "libftpp/safe_bool.hpp"`](libftpp/safe_bool.hpp)
-
-| Component | Description |
-|-----------|-------------|
-| `ft::safe_bool<Derived>` | CRTP mixin implementing the Safe Bool idiom – prevents implicit conversions to `int` and cross-type comparisons |
-| `ft::safe_bool<void>` | Virtual dispatch variant for polymorphic hierarchies |
-
-Needed because C++98 lacks `explicit operator bool()`. Used by `unique_ptr`, `shared_ptr`, `optional`, and `expected`.
+Also provides:
+- `FT_REQUIRES(expr)` – requires clause emulation
+- `FT_HAS_MEMBER_FUNCTION(ret, name, args)` – generate traits detecting public member functions
+- `ft::yes_type` / `ft::no_type` – helper types for SFINAE `sizeof` tricks
 
 ---
 
-### assert
-
-[`#include "libftpp/assert.hpp"`](libftpp/assert.hpp)
-
-| Component | Description |
-|-----------|-------------|
-| `FT_STATIC_ASSERT(expr)` | Compile-time assertion for C++98 |
-| `ft::make_false<T...>` | Dependent `false` for unconditionally failing static assertions in templates |
-| `ft::make_true<T...>` | Dependent `true` to suppress unused typedef warnings |
-
----
-
-### source_location
-
-[`#include "libftpp/source_location.hpp"`](libftpp/source_location.hpp)
+### [utility.hpp](libftpp/utility.hpp)
 
 | Component | Standard | Description |
 |-----------|----------|-------------|
-| `ft::source_location` | C++20 | Captures file name, line, and function name |
-| `FT_SOURCE_LOCATION_CURRENT()` | C++20 | Macro to capture current source location |
-
----
-
-### operators
-
-[`#include "libftpp/operators.hpp"`](libftpp/operators.hpp)
-
-| Component | Description |
-|-----------|-------------|
-| `ft::operators::comparison` | Inherit from this and implement `operator<` to auto-generate `==`, `!=`, `>`, `<=`, `>=` |
-
----
-
-### format
-
-[`#include "libftpp/format.hpp"`](libftpp/format.hpp)
-
-| Component | Description |
-|-----------|-------------|
-| `ft::bold`, `ft::italic`, `ft::underline` | ANSI text styling |
-| `ft::red`, `ft::green`, `ft::yellow`, `ft::blue`, `ft::magenta`, `ft::cyan`, `ft::gray` | ANSI color formatting |
-| `ft::log::ok`, `ft::log::info`, `ft::log::warn`, `ft::log::error`, `ft::log::line` | Structured log-line formatters |
-
----
-
-### ctype
-
-[`#include "libftpp/ctype.hpp"`](libftpp/ctype.hpp)
-
-Wrappers around standard `<cctype>` functions that prevent undefined behavior by casting arguments to `unsigned char` first. Also returns `bool` and takes `char` for a cleaner interface.
-
----
-
-### random
-
-[`#include "libftpp/random.hpp"`](libftpp/random.hpp)
-
-| Component | Description |
-|-----------|-------------|
-| `ft::urandom<T>()` | Read random data from `/dev/urandom` |
-
----
-
-### preprocessor
-
-[`#include "libftpp/preprocessor.hpp"`](libftpp/preprocessor.hpp)
-
-| Component | Description |
-|-----------|-------------|
-| `FT_CONCAT` / `FT_CONCAT_EXPANDED` | Token pasting with expansion |
-| `FT_APPEND_UNIQUE_NUM(name)` | Generate unique identifiers using `__COUNTER__` |
+| `ft::move` | C++11 | Cast to rvalue reference emulation |
+| `ft::forward` | C++11 | Perfect forwarding (reference collapsing emulation) |
+| `ft::nullptr_t` / `FT_NULLPTR` | C++11 | `nullptr` emulation as a class + macro |
+| `ft::demangle` | — | Demangle `typeid` names (non-standard) |
+| `FT_UNREACHABLE()` | C++23 | Marks unreachable code paths |
+| `FT_COUNTOF(arr)` | — | Type-safe compile-time array length |
 
 ---
 
