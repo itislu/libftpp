@@ -2,9 +2,6 @@
 
 A C++98 library reimplementing modern C++ standard library features – from C++11 all the way up to C++26.
 
-Everything lives in the `ft::` namespace and mirrors `std::` interfaces as closely as C++98 allows.
-Public macros always start with `FT_`.
-
 ### But why?
 
 My goal is to gain a deep understanding of how the standard library works behind the scenes. Doing it in C++98 originated out of necessity because my school ([42](https://42.fr/en/homepage/)) only allowed C++98 for our first projects in C++ (including an [HTTP/1.1 webserver](https://github.com/itislu/42-Webserv)). 
@@ -58,7 +55,7 @@ I kept the name for this project as a nod to that.
   - [utility.hpp](#utilityhpp)
 - [Roadmap](#roadmap)
 - [A Note on Testing](#a-note-on-testing)
-- [Building](#building)
+- [Building & Usage](#building--usage)
 
 ---
 
@@ -407,10 +404,18 @@ The biggest mistake I made was to not set up a proper testing framework. Now I h
 
 ---
 
-## Building
+## Building & Usage
 
 ```bash
 make
 ```
 
 This produces `libftpp.a`. Link against it and add the project root to your include path.
+
+- Public headers live in the `libftpp/` directory.
+
+- All symbols are in the `ft::` namespace and mirror `std::` interfaces as closely as C++98 allows.
+
+- Public macros always start with `FT_`.
+
+- Most symbols have doxygen-style comments linking either to the cppreference.com page if they behave like the stdlib version, or providing notes about their usage, behavior, and limitations.
