@@ -1,6 +1,6 @@
 # libftpp
 
-A C++98 library reimplementing modern C++ standard library features — from C++11 all the way up to C++26.
+A C++98 library reimplementing modern C++ standard library features – from C++11 all the way up to C++26.
 
 Everything lives in the `ft::` namespace and mirrors `std::` interfaces as closely as C++98 allows.
 Public macros always start with `FT_`.
@@ -15,13 +15,13 @@ The things I chose to implement first were therefore mostly driven by what I cou
 
 I learned to see the positives in this ordeal as I discovered the intricacies and quirks of C++, and I gained a deep appreciation for the newer standards, and compilers. How compilers parse and optimize some of this C++98 mess is mind-blowing to me (looking at you [`ft::is_convertible`](libftpp/type_traits/type_traits.tpp) and [`ft::shared_ptr` constructors](libftpp/memory/shared_ptr.tpp)).
 
-I also discovered multiple bugs in `gcc` and `clang` along the way — luckily they all got fixed already in newer versions. But finding those bug reports and reading up on how they got fixed was a great learning experience. I left comments with links throughout the code wherever I encountered some.
+I also discovered multiple bugs in `gcc` and `clang` along the way – luckily they all got fixed already in newer versions. But finding those bug reports and reading up on how they got fixed was a great learning experience. I left comments with links throughout the code wherever I encountered some.
 
-Now it has turned into a fun challenge that often requires creative solutions — like [custom move semantics](libftpp/movable.hpp). And wow is [Boost](https://www.boost.org/) impressive, doing all this so many years ago and so much better than I could come up with.
+Now it has turned into a fun challenge that often requires creative solutions – like [custom move semantics](libftpp/movable.hpp). And wow is [Boost](https://www.boost.org/) impressive, doing all this so many years ago and so much better than I could come up with.
 
 ### Why the name?
 
-The first project I did at 42 was a C library reimplementing some C features called [libft](https://github.com/itislu/42-Libft) — **lib**-**f**ourty-**t**wo. I used this library throughout my studies there because we were not allowed to use most of the standard library. What we wanted to use we had to implement ourselves.
+The first project I did at 42 was a C library reimplementing some C features called [libft](https://github.com/itislu/42-Libft) (**lib**-**f**ourty-**t**wo). I used this library throughout my studies there because we were not allowed to use most of the standard library. What we wanted to use we had to implement ourselves.
 I kept the name for this project as a nod to that.
 
 ---
@@ -31,7 +31,7 @@ I kept the name for this project as a nod to that.
 - [Highlights](#highlights)
   - [Move Semantics & Rvalue Emulation](#move-semantics--rvalue-emulation)
   - [Type Traits](#type-traits)
-  - [FT\_REQUIRES — requires Clause Emulation](#ft_requires--requires-clause-emulation)
+  - [FT\_REQUIRES – requires Clause Emulation](#ft_requires--requires-clause-emulation)
   - [Smart Pointers](#smart-pointers)
   - [Optional & Expected](#optional--expected)
 - [Full Header Reference](#full-header-reference)
@@ -66,7 +66,7 @@ I kept the name for this project as a nod to that.
 
 ### Move Semantics & Rvalue Emulation
 
-C++98 only has lvalue references (`&`) — rvalue references (`&&`) were introduced in C++11, along with `std::move`. This library implements a [Boost-inspired move emulation system](libftpp/movable.hpp) that enables move-only and move-aware types in C++98.
+C++98 only has lvalue references (`&`) – rvalue references (`&&`) were introduced in C++11, along with `std::move`. This library implements a [Boost-inspired move emulation system](libftpp/movable.hpp) that enables move-only and move-aware types in C++98.
 
 The core idea: [`ft::rvalue<T>`](libftpp/movable.hpp) is a type that only rvalues (temporaries or explicit [`ft::move()`](libftpp/utility.hpp) casts) can bind to, exploiting how C++98 overload resolution works with derived-to-base conversions. Three macros configure a class for move semantics:
 
@@ -80,18 +80,18 @@ The core idea: [`ft::rvalue<T>`](libftpp/movable.hpp) is a type that only rvalue
 
 ### Type Traits
 
-A comprehensive [`<type_traits>`](libftpp/type_traits.hpp)-style header, built entirely with C++98 template metaprogramming — `sizeof` tricks, SFINAE, and partial specializations. ([implementation](libftpp/type_traits/type_traits.tpp))
+A comprehensive [`<type_traits>`](libftpp/type_traits.hpp)-style header, built entirely with C++98 template metaprogramming – `sizeof` tricks, SFINAE, and partial specializations. ([implementation](libftpp/type_traits/type_traits.tpp))
 
 Includes:
-- **Unary type traits** — `is_void`, `is_integral`, `is_floating_point`, `is_array`, `is_function`, `is_pointer`, `is_lvalue_reference`, `is_rvalue_reference`, `is_arithmetic`, `is_object`, `is_reference`, `is_const`, `is_volatile`, `is_abstract`, `is_signed`, `is_unsigned`, `is_bounded_array`, `is_unbounded_array`
-- **Type relationships** — `is_same`, `is_convertible`
-- **Type transformations** — `remove_cv`/`add_cv`, `remove_const`/`add_const`, `remove_volatile`/`add_volatile`, `remove_reference`, `add_lvalue_reference`/`add_rvalue_reference`, `remove_extent`/`remove_all_extents`, `remove_pointer`/`add_pointer`, `remove_cvref`, `enable_if`, `conditional`, `voider` (C++17's `void_t`)
-- **Logical operations** — `conjunction`, `disjunction`, `negation` (emulated with up to 10 template parameters in place of variadic templates)
-- **Property queries** — `rank`, `extent`
-- **Base types** — `integral_constant`, `bool_constant`, `true_type`, `false_type`, `type_identity`
-- **Custom traits** — `is_class_or_union`, `is_complete`, `is_const_lvalue_reference`, `is_nonconst_lvalue_reference`, `is_returnable`, `has_member_function_swap` (with a macro `FT_HAS_MEMBER_FUNCTION` to generate member function detection traits)
+- **Unary type traits** – `is_void`, `is_integral`, `is_floating_point`, `is_array`, `is_function`, `is_pointer`, `is_lvalue_reference`, `is_rvalue_reference`, `is_arithmetic`, `is_object`, `is_reference`, `is_const`, `is_volatile`, `is_abstract`, `is_signed`, `is_unsigned`, `is_bounded_array`, `is_unbounded_array`
+- **Type relationships** – `is_same`, `is_convertible`
+- **Type transformations** – `remove_cv`/`add_cv`, `remove_const`/`add_const`, `remove_volatile`/`add_volatile`, `remove_reference`, `add_lvalue_reference`/`add_rvalue_reference`, `remove_extent`/`remove_all_extents`, `remove_pointer`/`add_pointer`, `remove_cvref`, `enable_if`, `conditional`, `voider` (C++17's `void_t`)
+- **Logical operations** – `conjunction`, `disjunction`, `negation` (emulated with up to 10 template parameters in place of variadic templates)
+- **Property queries** – `rank`, `extent`
+- **Base types** – `integral_constant`, `bool_constant`, `true_type`, `false_type`, `type_identity`
+- **Custom traits** – `is_class_or_union`, `is_complete`, `is_const_lvalue_reference`, `is_nonconst_lvalue_reference`, `is_returnable`, `has_member_function_swap` (with a macro `FT_HAS_MEMBER_FUNCTION` to generate member function detection traits)
 
-### FT_REQUIRES — requires Clause Emulation
+### FT_REQUIRES – requires Clause Emulation
 
 A [macro](libftpp/type_traits/requires.ipp) that emulates C++20's `requires` clauses, making SFINAE-constrained function signatures more readable:
 
@@ -109,19 +109,19 @@ FT_REQUIRES(!ft::is_array<T>::value)
 
 ### Smart Pointers
 
-**[`ft::unique_ptr`](libftpp/memory.hpp)** — Full implementation for both [single objects](libftpp/memory/unique_ptr.tpp) and [arrays](libftpp/memory/unique_ptr_array.tpp), including custom deleters, `make_unique`, `make_unique_for_overwrite`, and full comparison operator sets. Uses the custom move semantics to enforce exclusive ownership. Supports constructing from `std::auto_ptr` when compiling under C++98.
+**[`ft::unique_ptr`](libftpp/memory.hpp)** – Full implementation for both [single objects](libftpp/memory/unique_ptr.tpp) and [arrays](libftpp/memory/unique_ptr_array.tpp), including custom deleters, `make_unique`, `make_unique_for_overwrite`, and full comparison operator sets. Uses the custom move semantics to enforce exclusive ownership. Supports constructing from `std::auto_ptr` when compiling under C++98.
 
-**[`ft::shared_ptr`](libftpp/memory/shared_ptr.tpp)** — Reference-counted shared ownership with type-erased deleters, aliasing constructors, pointer casts (`static_pointer_cast`, `dynamic_pointer_cast`, `const_pointer_cast`, `reinterpret_pointer_cast`), `owner_less`, `owner_equal`, and `get_deleter`. Supports array types and constructing from both `ft::unique_ptr` and `std::auto_ptr`.
+**[`ft::shared_ptr`](libftpp/memory/shared_ptr.tpp)** – Reference-counted shared ownership with type-erased deleters, aliasing constructors, pointer casts (`static_pointer_cast`, `dynamic_pointer_cast`, `const_pointer_cast`, `reinterpret_pointer_cast`), `owner_less`, `owner_equal`, and `get_deleter`. Supports array types and constructing from both `ft::unique_ptr` and `std::auto_ptr`.
 
-Both smart pointer classes use [`ft::safe_bool`](libftpp/safe_bool.hpp) for safe boolean conversions and [`FT_REQUIRES`](libftpp/type_traits/requires.ipp)/`enable_if` to constrain constructors and conversions — resulting in some seriously dense template signatures.
+Both smart pointer classes use [`ft::safe_bool`](libftpp/safe_bool.hpp) for safe boolean conversions and [`FT_REQUIRES`](libftpp/type_traits/requires.ipp)/`enable_if` to constrain constructors and conversions – resulting in some seriously dense template signatures.
 
 Also provides [`ft::default_delete`](libftpp/memory/default_delete.tpp) (with array specialization), `ft::make_shared` / `ft::make_shared_for_overwrite`, and [`ft::addressof`](libftpp/memory/addressof.tpp).
 
 ### Optional & Expected
 
-**[`ft::optional<T>`](libftpp/optional.hpp)** — A C++17-style optional type with `nullopt`, `has_value()`, `value()`, `value_or()`, monadic operations (`and_then`, `transform`, `or_else`), and full comparison operators. Enforces constraints at compile time via [`FT_STATIC_ASSERT`](libftpp/assert.hpp) (no references, no arrays, no functions, no void, no `nullopt_t`).
+**[`ft::optional<T>`](libftpp/optional.hpp)** – A C++17-style optional type with `nullopt`, `has_value()`, `value()`, `value_or()`, monadic operations (`and_then`, `transform`, `or_else`), and full comparison operators. Enforces constraints at compile time via [`FT_STATIC_ASSERT`](libftpp/assert.hpp) (no references, no arrays, no functions, no void, no `nullopt_t`).
 
-**[`ft::expected<T, E>`](libftpp/expected.hpp)** — A C++23-style expected type for error handling without exceptions, with `unexpected<E>`, `unexpect_t`, `has_value()`, `value()`, `error()`, `value_or()`, `error_or()`, and monadic operations (`and_then`, `transform`, `or_else`, `transform_error`). Includes a `void` specialization for operations that can fail but don't return a value. Throws `ft::bad_expected_access<E>` on invalid access.
+**[`ft::expected<T, E>`](libftpp/expected.hpp)** – A C++23-style expected type for error handling without exceptions, with `unexpected<E>`, `unexpect_t`, `has_value()`, `value()`, `error()`, `value_or()`, `error_or()`, and monadic operations (`and_then`, `transform`, `or_else`, `transform_error`). Includes a `void` specialization for operations that can fail but don't return a value. Throws `ft::bad_expected_access<E>` on invalid access.
 
 > **Note:** Both currently use heap allocation internally. A future rework using discriminated union storage is planned (see [Roadmap](#roadmap)). The main challenge there is memory alignment.
 
@@ -174,9 +174,9 @@ Also provides [`ft::default_delete`](libftpp/memory/default_delete.tpp) (with ar
 See [Type Traits](#type-traits) for the full list.
 
 Also provides:
-- `FT_REQUIRES(expr)` — requires clause emulation
-- `FT_HAS_MEMBER_FUNCTION(ret, name, args)` — generate traits detecting public member functions
-- `ft::yes_type` / `ft::no_type` — helper types for SFINAE `sizeof` tricks
+- `FT_REQUIRES(expr)` – requires clause emulation
+- `FT_HAS_MEMBER_FUNCTION(ret, name, args)` – generate traits detecting public member functions
+- `ft::yes_type` / `ft::no_type` – helper types for SFINAE `sizeof` tricks
 
 ---
 
@@ -241,7 +241,7 @@ Also provides:
 | `ft::iter_swap` / `ft::swap_ranges` | — | Iterator-based swap using `ft::member_swap` |
 | `ft::min` / `ft::max` | — | Non-const overloads allowing assignment to the result |
 
-Some functions also accept "ranges" — any type with `begin()`/`end()` and iterator typedefs, or bounded arrays.
+Some functions also accept "ranges" – any type with `begin()`/`end()` and iterator typedefs, or bounded arrays.
 
 ---
 
@@ -348,7 +348,7 @@ All non-standard exception classes in the library inherit from `ft::exception`. 
 
 | Component | Description |
 |-----------|-------------|
-| `ft::safe_bool<Derived>` | CRTP mixin implementing the Safe Bool idiom — prevents implicit conversions to `int` and cross-type comparisons |
+| `ft::safe_bool<Derived>` | CRTP mixin implementing the Safe Bool idiom – prevents implicit conversions to `int` and cross-type comparisons |
 | `ft::safe_bool<void>` | Virtual dispatch variant for polymorphic hierarchies |
 
 Needed because C++98 lacks `explicit operator bool()`. Used by `unique_ptr`, `shared_ptr`, `optional`, and `expected`.
@@ -433,19 +433,19 @@ Wrappers around standard `<cctype>` functions that prevent undefined behavior by
 
 Things I would love to work on next:
 
-- [ ] **`ft::variant`** and compile-time **type-list** — discriminated union, the foundation for stack-allocated polymorphic storage
-- [ ] **Rework `ft::optional` and `ft::expected`** — eliminate heap allocations using aligned storage and placement `new`, applying knowledge gained from `ft::variant`
-- [ ] **`ft::function`** — type-erased callable wrapper
-- [ ] **`ft::reference_wrapper`** — reference semantics in value contexts
-- [ ] **`ft::unordered_*` containers** — hash-based containers
-- [ ] **`ft::string_view`** — non-owning string reference
+- [ ] **`ft::variant`** and compile-time **type-list** – discriminated union, the foundation for stack-allocated polymorphic storage
+- [ ] **Rework `ft::optional` and `ft::expected`** – eliminate heap allocations using aligned storage and placement `new`, applying knowledge gained from `ft::variant`
+- [ ] **`ft::function`** – type-erased callable wrapper
+- [ ] **`ft::reference_wrapper`** – reference semantics in value contexts
+- [ ] **`ft::unordered_*` containers** – hash-based containers
+- [ ] **`ft::string_view`** – non-owning string reference
 - [ ] **Ranges** including range-based algorithms
 
 ---
 
 ## A Note on Testing
 
-The biggest mistake I made was to not set up a proper testing framework. Now I have lots of things that have no tests, and the test files I have are so ugly and made in different and inconsistent styles that I don't even dare to have them on the main branch. I truly learned the importance of testing in this project — through regret.
+The biggest mistake I made was to not set up a proper testing framework. Now I have lots of things that have no tests, and the test files I have are so ugly and made in different and inconsistent styles that I don't even dare to have them on the main branch. I truly learned the importance of testing in this project – through regret.
 
 ---
 
