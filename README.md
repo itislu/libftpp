@@ -18,7 +18,7 @@ Now it has turned into a fun challenge that often requires creative solutions â€
 
 ### Why the name?
 
-The first project I did at 42 was a C library reimplementing some C features called [libft](https://github.com/itislu/42-Libft) (**lib**-**f**ourty-**t**wo). I used this library throughout my studies there because we were not allowed to use most of the standard library. What we wanted to use we had to implement ourselves.
+The first project I did at 42 was a C library reimplementing some C features called [libft](https://github.com/itislu/42-Libft) (**lib**-**f**orty-**t**wo). I used this library throughout my studies there because we were not allowed to use most of the standard library. What we wanted to use we had to implement ourselves.
 I kept the name for this project as a nod to that.
 
 ---
